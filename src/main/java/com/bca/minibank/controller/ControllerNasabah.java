@@ -7,14 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.repository.RepositoryTbUsers;
+import com.bca.minibank.repository.RepositoryTbJnsTab;
+
 
 @Controller
 public class ControllerNasabah {
 
 	@Autowired
-	private RepositoryTbUsers repoTbUser;
+	private RepositoryTbJnsTab repoJnsTab;
 	
 	@GetMapping("/")
 	public String test() {
@@ -23,7 +23,8 @@ public class ControllerNasabah {
 	
 	@GetMapping("/list")
 	public String getAll(Model model) {
-		model.addAttribute("users", this.repoTbUser.findAll());
+		model.addAttribute("jnsTab", this.repoJnsTab.findAll());
+		System.out.println(repoJnsTab.findAll());
 		return "list";
 	}
 	
