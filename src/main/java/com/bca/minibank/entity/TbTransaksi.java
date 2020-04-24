@@ -30,6 +30,7 @@ public class TbTransaksi implements java.io.Serializable {
 	private String noRekTujuan;
 	private Date tglTransaksi;
 	private String statusTransaksi;
+	private int transaksiHarian;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
 
 	public TbTransaksi() {
@@ -121,6 +122,15 @@ public class TbTransaksi implements java.io.Serializable {
 
 	public void setTbMutasis(Set<TbMutasi> tbMutasis) {
 		this.tbMutasis = tbMutasis;
+	}
+
+	@Column(name = "TRANSAKSI_HARIAN", nullable = false, length = 11)
+	public int getTransaksiHarian() {
+		return transaksiHarian;
+	}
+
+	public void setTransaksiHarian(int transaksiHarian) {
+		this.transaksiHarian = transaksiHarian;
 	}
 
 }
