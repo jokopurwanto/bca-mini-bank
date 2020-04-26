@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="ISO-8859-1">
+	 <title>WEST BANK</title>
+	 <link rel="stylesheet" th:href="@{style.css}">
+</head>
+
+<body>
+	<form class="box" action="" method="post">
+	<h2  th:text="${keterangan}" style="color:Red;"></h2>
+	<input type="text" name="username" placeholder="username">
+	<input type="password" name="password" placeholder="password">
+	<input type="submit" value="Login">
+	<a class="a" th:href="@{/register}">Daftar User Baru</a>
+</form>
+
+</body>
+
+</html>
