@@ -49,6 +49,9 @@ public class ControllerLogin {
 			}
 			else if(username.equals(TU.getUsername()))
 			{
+				request.getSession().setAttribute("idUser", TU.getIdUser());
+				request.getSession().setAttribute("statusUser", TU.getStatusUser());
+				request.getSession().setAttribute("keterangan", TU.getKeterangan());
 				flag = 1;
 			}
 		}
