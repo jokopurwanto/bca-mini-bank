@@ -106,7 +106,8 @@ public class ControllerLogin {
 		//Username benar, Password Salah
 		if(flag == 1)
 		{
-			model.addAttribute("keterangan", "Your password is incorrect");
+			salahPassword++;
+			model.addAttribute("keterangan", "Your password is incorrect :" + salahPassword);
 			return "login.html";
 		}
 		//Username Tidak Ada
