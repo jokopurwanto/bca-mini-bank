@@ -33,7 +33,7 @@ public class ControllerLogin {
 	@PostMapping("/login")
 	public String postLogin(HttpServletRequest request, HttpSession session, Model model, String username, String password) {
 		//Mencari kecocokan username dan password dalam database
-		int flag = 0;
+		int flag = 3;
 		List<TbUsers> Users = DaoTbUsers.getAll();
 		for(TbUsers TU : Users)
 		{	
