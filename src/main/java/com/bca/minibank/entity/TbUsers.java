@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -30,7 +31,9 @@ public class TbUsers implements java.io.Serializable {
 	private String statusUser;
 	private String email;
 	private String keterangan;
-	private Set<TbRekening> tbRekenings = new HashSet<TbRekening>(0);
+	
+	private TbRekening tbRekening;
+//	private Set<TbRekening> tbRekenings = new HashSet<TbRekening>(0);
 	private Set<TbLogAdmin> tbLogAdmins = new HashSet<TbLogAdmin>(0);
 
 	public TbUsers() {
@@ -51,7 +54,7 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	public TbUsers(int idUser, String username, String password, String nama, String alamat, String noHp,
-			String noKtp, String role, String statusUser, String email, String keterangan, Set<TbRekening> tbRekenings,
+			String noKtp, String role, String statusUser, String email, String keterangan, TbRekening tbRekening, //Set<TbRekening> tbRekenings,
 			Set<TbLogAdmin> tbLogAdmins) {
 		this.idUser = idUser;
 		this.username = username;
@@ -64,7 +67,8 @@ public class TbUsers implements java.io.Serializable {
 		this.statusUser = statusUser;
 		this.email = email;
 		this.keterangan = keterangan;
-		this.tbRekenings = tbRekenings;
+		this.tbRekening = tbRekening;
+//		this.tbRekenings = tbRekenings;
 		this.tbLogAdmins = tbLogAdmins;
 	}
 
@@ -169,13 +173,23 @@ public class TbUsers implements java.io.Serializable {
 		this.keterangan = keterangan;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbUsers")
-	public Set<TbRekening> getTbRekenings() {
-		return this.tbRekenings;
+	
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbUsers")
+//	public Set<TbRekening> getTbRekenings() {
+//		return this.tbRekenings;
+//	}
+//
+//	public void setTbRekenings(Set<TbRekening> tbRekenings) {
+//		this.tbRekenings = tbRekenings;
+//	}
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy="tbUsers")
+	public TbRekening getTbRekening() {
+		return tbRekening;
 	}
 
-	public void setTbRekenings(Set<TbRekening> tbRekenings) {
-		this.tbRekenings = tbRekenings;
+	public void setTbRekening(TbRekening tbRekening) {
+		this.tbRekening = tbRekening;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbUsers")
