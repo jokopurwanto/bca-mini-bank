@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +23,9 @@ import javax.persistence.Table;
 public class TbRekening implements java.io.Serializable {
 
 	private String noRek;
+	
+	@OneToOne
+	@JoinColumn(name="ID_USER")
 	private TbUsers tbUsers;
 	private TbJnsTab tbJnsTab;
 	private String noKartu;
