@@ -1,5 +1,4 @@
-
-﻿<!DOCTYPE html>
+﻿�<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
@@ -11,13 +10,12 @@
 </head>
 
 <body>
-	<form class="box"  th:action="@{/postlogin}" method="post">
+	<form class="box"  th:action="@{/login}" method="post">
 	<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;">Username or Password is invalid.</p></div>
 
 	<input type="text" name="username" placeholder="username">
 	<input type="password" name="password" placeholder="password">
 	<input type="submit" value="Login">
-	<button class="btn btn-lg btn-primary" name="Submit" value="Login" type="Submit" th:text="Login" style="margin-right:10px;"></button>
 	<a href="/recover-password">Forgot password?</a>
 	<a class="a" th:href="@{/register}">Daftar User Baru</a>
 </form>

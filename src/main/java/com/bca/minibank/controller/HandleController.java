@@ -10,17 +10,17 @@ public class HandleController {
 	
 	@GetMapping("/login")
 	public String loginPage() {
-		return "login";
+		return "login.html";
 	}
 	
 	@GetMapping("/register")
 	public String registerPage(TbUsers tbUsers) {
-		return "register";
+		return "register.html";
 	}
 	
 	@GetMapping("/home")
 	public String homePage(TbUsers tbUsers) {
-		return "home";
+		return "home.html";
 	}
 	
 }
