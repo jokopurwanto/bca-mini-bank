@@ -25,8 +25,10 @@ public class ControllerLogin {
 	@Autowired
 	private DaoTbRekening DaoTbRekening;
 	
+	int salahPassword = 0;
+	
 	@GetMapping("/login")
-	public String getLogin() {
+	public String getLogin(HttpServletRequest request) {
 		return "login.html";
 	}
 	
@@ -52,6 +54,7 @@ public class ControllerLogin {
 				request.getSession().setAttribute("idUser", TU.getIdUser());
 				request.getSession().setAttribute("statusUser", TU.getStatusUser());
 				request.getSession().setAttribute("keterangan", TU.getKeterangan());
+				request.getSession().setAttribute("salahPassword", salahPassword);
 				flag = 1;
 			}
 		}
