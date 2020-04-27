@@ -33,8 +33,11 @@ public class DaoTbUsers {
 		this.repositoryTbUsers.deleteById(idUser);
 	}
 	
-	public void update(TbUsers tbUsers) {
-		this.repositoryTbUsers.save(tbUsers);
+	public void update(int idUser, TbUsers newTbUsers) {
+		TbUsers TbUserTemp = this.repositoryTbUsers.getOne(idUser);
+		TbUserTemp.setKeterangan(newTbUsers.getKeterangan());
+		TbUserTemp.setStatusUser(newTbUsers.getStatusUser());
+		TbUserTemp.setPassword(newTbUsers.getPassword());
 	}
 
 }
