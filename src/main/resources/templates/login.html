@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<form class="box" action="" method="post">
+	<form class="box"  th:action="@{/postlogin}" method="post">
 	<h2  th:text="${keterangan}" style="color:Red;"></h2>
 	<input type="text" name="username" placeholder="username">
 	<input type="password" name="password" placeholder="password">

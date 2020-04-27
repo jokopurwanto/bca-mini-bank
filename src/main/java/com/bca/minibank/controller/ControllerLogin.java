@@ -25,14 +25,14 @@ public class ControllerLogin {
 	@Autowired
 	private DaoTbRekening DaoTbRekening;
 	
-	int salahPassword = 0;
+	
 	
 	@GetMapping("/login")
 	public String getLogin(HttpServletRequest request) {
 		return "login.html";
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("/postlogin")
 	public String postLogin(HttpServletRequest request, HttpSession session, Model model, String username, String password) {
 		//Mencari kecocokan username dan password dalam database
 		int flag = 0;
@@ -54,7 +54,6 @@ public class ControllerLogin {
 				request.getSession().setAttribute("idUser", TU.getIdUser());
 				request.getSession().setAttribute("statusUser", TU.getStatusUser());
 				request.getSession().setAttribute("keterangan", TU.getKeterangan());
-				request.getSession().setAttribute("salahPassword", salahPassword);
 				flag = 1;
 			}
 		}
@@ -62,16 +61,22 @@ public class ControllerLogin {
 		//Memilih route bedasarkan data input
 		//Berhasil Login
 		if(flag == 2)
-		{
+		{	
 			//memilih route bedasarkan role
 			//Role Admin
 			if(session.getAttribute("role").equals("ADMIN"))
 			{
 				return "redirect:/admin";
 			}
+			
 			//Role Nasabah
 			else if(session.getAttribute("role").equals("NASABAH") && session.getAttribute("statusUser").equals("AKTIF"))
 			{
+				//Reset SalahPassword
+				TbUsers TbUsersTemp = DaoTbUsers.getOne((int)session.getAttribute("idUser"));
+				TbUsersTemp.setKeterangan("0");
+				DaoTbUsers.update(TbUsersTemp.getIdUser(), TbUsersTemp);
+				
 				int idUser = (int)session.getAttribute("idUser");
 				List<TbRekening> Rekenings = DaoTbRekening.getAll();
 				for(TbRekening TR : Rekenings)
@@ -106,8 +111,30 @@ public class ControllerLogin {
 		//Username benar, Password Salah
 		if(flag == 1)
 		{
-			salahPassword++;
-			model.addAttribute("keterangan", "Your password is incorrect :" + salahPassword);
+			if(session.getAttribute("role").equals("NASABAH") && session.getAttribute("statusUser").equals("AKTIF"))
+			{
+				TbUsers TbUsersTemp = DaoTbUsers.getOne((int)session.getAttribute("idUser"));
+				if(session.getAttribute("keterangan") == null)
+				{
+					TbUsersTemp.setKeterangan("0");
+				}
+				int salahPassword = Integer.parseInt(TbUsersTemp.getKeterangan());
+				salahPassword++;
+				TbUsersTemp.setKeterangan(salahPassword + "");
+				DaoTbUsers.update(TbUsersTemp.getIdUser(), TbUsersTemp);
+				if(salahPassword == 3)
+				{
+					TbUsersTemp = DaoTbUsers.getOne((int)session.getAttribute("idUser"));
+					TbUsersTemp.setKeterangan("Akun anda terblokir dikarenakan salah password 3x berturut-turut");
+					TbUsersTemp.setStatusUser("BLOCK");
+					DaoTbUsers.update(TbUsersTemp.getIdUser(), TbUsersTemp);
+				}
+				model.addAttribute("keterangan", "Your password is incorrect : " + salahPassword);
+			}
+			else
+			{
+				model.addAttribute("keterangan", "Your password is incorrect");
+			}	
 			return "login.html";
 		}
 		//Username Tidak Ada
