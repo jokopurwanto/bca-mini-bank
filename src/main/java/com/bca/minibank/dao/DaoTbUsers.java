@@ -39,5 +39,8 @@ public class DaoTbUsers {
 		TbUserTemp.setStatusUser(newTbUsers.getStatusUser());
 		TbUserTemp.setPassword(newTbUsers.getPassword());
 	}
-
+	
+	public TbUsers findTbUsersByUsername(String username) {
+		return this.repositoryTbUsers.findByUsername(username);
+	}
 }

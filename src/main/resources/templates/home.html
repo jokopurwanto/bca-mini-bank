@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Home</title>
 </head>
 <body>
-	Hello user
-
-	<div sec:authorize="hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')">
+	<h1 th:text="Hello + ' ' +${nama} + ' ' + ${idUser} + ' ' + nasabah "></h1>
+	<p th:text="${keterangan}"></p> 
+	<div sec:authorize="hasAnyAuthority('NASABAH', 'ADMIN')">
 		<form th:action="@{/logout}">
 			<button onclick="return confirm('yakin ingin keluar dari sistem?')"
 				type="submit" class="btn btn-danger navbar-btn btn-logout">
 				LOGOUT</button>
 		</form>
-	</div>
 </body>
 </html>

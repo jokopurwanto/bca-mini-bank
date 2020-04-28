@@ -1,4 +1,4 @@
-﻿�<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
@@ -6,20 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta charset="ISO-8859-1">
 	 <title>WEST BANK</title>
-	 <link rel="stylesheet" th:href="@{style.css}">
+	 <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
-	<form class="box"  th:action="@{/login}" method="post">
-	<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;">Username or Password is invalid.</p></div>
+	<form class="box" name='f'  th:action="@{/login}" method="post">
+		<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;">Username or Password Invalid</p></div>
+	
+		<input type="text" name="username" placeholder="username">
+		<input type="password" name="password" placeholder="password">
+		<input type="submit" value="Login">
+<!-- 		<a class="a" th:href="@{/recover-password}">Forgot password?</a> -->
+		<a class="a" th:href="@{/register}">Daftar User Baru</a>
+	</form>
 
-	<input type="text" name="username" placeholder="username">
-	<input type="password" name="password" placeholder="password">
-	<input type="submit" value="Login">
-	<a href="/recover-password">Forgot password?</a>
-	<a class="a" th:href="@{/register}">Daftar User Baru</a>
-</form>
+<script>
+function validate() {
+	var username = document.forms["f"]["username"].value
+	var password = document.forms["f"]["password"].value
+    if (username == "" && password == "") {
+        alert("Username and password are required");
+        document.f.username.focus();
+        return false;
+    }
+    if (username == "") {
+        alert("Username is required");
+        document.f.username.focus();
+        return false;
+    }
+    if (password == "") {
+    alert("Password is required");
+    document.f.password.focus();
+        return false;
+    }
+}
+</script>
 
 </body>
+
+
 
 </html>

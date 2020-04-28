@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+</head>
+<body>
+	<h1 th:text="Hello  + ' ' +${nama} + ' ' + ${idUser} + ' ' + admin "></h1>
+	<p th:text="${keterangan}"></p> 
+	<div sec:authorize="hasAnyAuthority('ADMIN')">
+		<form th:action="@{/logout}">
+			<button onclick="return confirm('yakin ingin keluar dari sistem?')"
+				type="submit" class="btn btn-danger navbar-btn btn-logout">
+				LOGOUT</button>
+		</form>
+	</div>
+</body>
+</html>
