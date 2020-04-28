@@ -30,24 +30,25 @@ public class TbTransaksi implements java.io.Serializable {
 	private String noRekTujuan;
 	private Date tglTransaksi;
 	private String statusTransaksi;
-	private int transaksiHarian;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
+	private int nominal;
 
 	public TbTransaksi() {
 	}
 
 	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Date tglTransaksi, String statusTransaksi) {
+			Date tglTransaksi, String statusTransaksi, int nominal) {
 		this.idTransaksi = idTransaksi;
 		this.tbRekening = tbRekening;
 		this.jnsTransaksi = jnsTransaksi;
 		this.noRekTujuan = noRekTujuan;
 		this.tglTransaksi = tglTransaksi;
 		this.statusTransaksi = statusTransaksi;
+		this.nominal = nominal;
 	}
 
 	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Date tglTransaksi, String statusTransaksi, Set<TbMutasi> tbMutasis) {
+			Date tglTransaksi, String statusTransaksi, int nominal, Set<TbMutasi> tbMutasis) {
 		this.idTransaksi = idTransaksi;
 		this.tbRekening = tbRekening;
 		this.jnsTransaksi = jnsTransaksi;
@@ -55,6 +56,7 @@ public class TbTransaksi implements java.io.Serializable {
 		this.tglTransaksi = tglTransaksi;
 		this.statusTransaksi = statusTransaksi;
 		this.tbMutasis = tbMutasis;
+		this.nominal = nominal;
 	}
 
 	@Id
@@ -124,13 +126,12 @@ public class TbTransaksi implements java.io.Serializable {
 		this.tbMutasis = tbMutasis;
 	}
 
-	@Column(name = "TRANSAKSI_HARIAN", nullable = false, length = 11)
-	public int getTransaksiHarian() {
-		return transaksiHarian;
+	@Column(name = "NOMINAL", nullable = false, precision = 22, scale = 0)
+	public int getNominal() {
+		return this.nominal;
 	}
 
-	public void setTransaksiHarian(int transaksiHarian) {
-		this.transaksiHarian = transaksiHarian;
+	public void setNominal(int nominal) {
+		this.nominal = nominal;
 	}
-
 }

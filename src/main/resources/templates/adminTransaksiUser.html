@@ -1,0 +1,89 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" href="img/icon.png" type="image/png">
+	<title>Daftar Transaksi</title>
+	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<style>
+nav {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #000080;
+}
+nav a {
+  font-family:Arial, Helvetica, sans-serif;
+  text-decoration:none;
+  color:white;
+  padding:5px 15px;
+  display:inline-block;
+}
+nav a:hover {
+  color:#000;
+  background-color:#ddd;
+}
+</style>
+</head>
+<body>
+ <div class="header">
+  </div>
+<nav>
+  	<a href="/adminVerifiedUsers" style="color:blue;">DATA USER</a>
+  	<a href="/adminNewUsers">USER BARU</a>
+  	<a href="/adminBlockedUsers"  >BLOCKED USER</a>
+  	<a href="#">ACC SETOR</a>
+  </nav>
+<div class="content">
+<a class="a" href="/adminVerifiedUsers" >Kembali</a>
+<h2 class="h1">TRANSAKSI</h2>
+	<table cellspacing='0' align="center">
+		<thead>
+			<tr>
+				<th>Status</th>
+				<th>Username</th>
+				<th>No.Rek</th>
+				<th>Nama</th>
+				<th>Jen.Tab</th>
+				<th>Alamat</th>		
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${user.statusUser}"></td>
+				<td th:text="${user.username}"></td>
+				<td th:text="${user.tbRekening.noRek}"></td>
+				<td th:text="${user.nama}"></td>
+				<td th:text="${user.tbRekening.tbJnsTab.namaJnsTab}"></td>
+				<td th:text="${user.alamat}"></td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+<p> </p>
+<table cellspacing='0' align="center">
+		<thead>
+			<tr>
+				<th>Tanggal</th>
+				<th>Transaksi</th>
+				<th>Rek.Tujuan</th>
+				<th>Nominal</th>
+				<th>Status Transaksi</th>	
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="listTrans : ${listTransaksi}">
+				<td th:text="${listTrans.tglTransaksi}"></td>
+				<td th:text="${listTrans.jnsTransaksi}"></td>
+				<td th:text="${listTrans.noRekTujuan}"></td>
+				<td th:text="${listTrans.nominal}"></td>
+				<td th:text="${listTrans.statusTransaksi}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

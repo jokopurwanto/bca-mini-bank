@@ -1,0 +1,104 @@
+﻿<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" href="img/icon.png" type="image/png">
+	<title>New User</title>
+	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<style>
+nav {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #000080;
+}
+nav a {
+  font-family:Arial, Helvetica, sans-serif;
+  text-decoration:none;
+  color:white;
+  padding:5px 15px;
+  display:inline-block;
+}
+nav a:hover {
+  color:#000;
+  background-color:#ddd;
+}
+</style>
+</head>
+<body>
+ <div class="header">
+  </div>
+<nav>
+  	<a href="/adminVerifiedUsers">DATA USER</a>
+  	<a href="/adminNewUsers" style="color:blue;">USER BARU</a>
+  	<a href="/adminBlockedUsers"  >BLOCKED USER</a>
+  	<a href="#">ACC SETOR</a>
+  </nav>
+<div class="content">
+	<form action="/adminNewUsers" method="post">
+		<input name="searchUsername" th:value="${searchUsername}" class="search" type="text" placeholder="Masukkan Username">
+		<button class="button" type="submit">cari</button>
+		<p th:text="${msg}"></p>
+	</form>
+	<table cellspacing='0'>
+		<thead>
+			<tr>
+				<th>Status</th>
+				<th>Username</th>
+				<th>Nama</th>
+				<th>No.Rek</th>
+				<th>Alamat</th>
+				<th>No.HP</th>
+				<th>Email</th>
+				<th>Jen.Tab</th>
+				<th></th>
+				<th></th>
+				
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="users : ${users}">
+				<td th:text="${users.statusUser}"></td>
+				<td th:text="${users.username}"></td>
+				<td th:text="${users.nama}"></td>
+				<td   th:text="${users.tbRekening.noRek}"></td>
+				<td th:text="${users.alamat}"></td>
+				<td th:text="${users.noHp}"></td>
+				<td th:text="${users.email}"></td>
+				<td th:text="${users.tbRekening.tbJnsTab.namaJnsTab}"></td>		
+				<td><button type="button" class="btn btn-secondary">Terima</button></td>
+				<td><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Tolak</button></td>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tambahkan Keterangan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Keterangan Penolakan:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

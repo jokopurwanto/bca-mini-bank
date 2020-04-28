@@ -23,16 +23,16 @@ public class DaoTbLogAdmin {
 	public List<TbLogAdmin> getAll(){
 		return  this.repositoryTbLogAdmin.findAll();
 	}
-	
-	public void add(TbLogAdmin TbLogAdmin) {
-		this.repositoryTbLogAdmin.save(TbLogAdmin);
+
+	public void add(TbLogAdmin tbLogAdmin) {
+		this.repositoryTbLogAdmin.save(tbLogAdmin);
 	}
 	
 	public void delete(int idLog) {
 		this.repositoryTbLogAdmin.deleteById(idLog);
 	}
 	
-	public void update(TbLogAdmin TbLogAdmin) {
-		this.repositoryTbLogAdmin.save(TbLogAdmin);
+	public void update(TbLogAdmin tbLogAdmin) {
+		this.repositoryTbLogAdmin.save(tbLogAdmin);
 	}
 }

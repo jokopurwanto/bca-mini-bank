@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.repository.RepostitoryTbTransaksi;
 
@@ -22,6 +23,10 @@ public class DaoTbTransaksi {
 	
 	public List<TbTransaksi> getAll(){
 		return  this.repostitoryTbTransaksi.findAll();
+	}
+	
+	public List<TbTransaksi> getAllByTbRekening(TbRekening tbRekening){
+		return  this.repostitoryTbTransaksi.findByTbRekening(tbRekening);
 	}
 	
 	public void add(TbTransaksi tbTransaksi) {
