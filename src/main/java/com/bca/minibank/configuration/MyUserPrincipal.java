@@ -56,7 +56,7 @@ public class MyUserPrincipal implements UserDetails{
 	@Override
 	public boolean isAccountNonLocked()
 	{
-		if(TbUsers.getStatusUser().equals("AKTIF"))
+		if(TbUsers.getStatusUser().equals("VERIFIED"))
 		{
 			return true;
 		}
