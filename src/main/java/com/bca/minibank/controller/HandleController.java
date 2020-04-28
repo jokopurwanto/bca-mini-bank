@@ -22,9 +22,17 @@ public class HandleController {
 	}
 	
     @RequestMapping("/default")
-    public String defaultAfterLoginNasabah() {
-
-    	return "redirect:/home";
+    public String defaultAfterLoginNasabah() 
+    {
+    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	if(user.getPin() == null)
+    	{
+    		return "redirect:/konfirmasi";
+    	}
+    	else
+    	{
+    		return "redirect:/home";		
+    	}
     }
 	
 	@GetMapping("/admin")
@@ -36,6 +44,11 @@ public class HandleController {
     	model.addAttribute("idUser", idUser);
     	model.addAttribute("nama", nama);
 		return "admin";
+	}
+	
+	@GetMapping("/konfirmasi")
+	public String konfirmasiPage(Model model) {
+		return "konfirmasi";
 	}
 	
 	@GetMapping("/register")
