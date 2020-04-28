@@ -43,10 +43,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new UrlAuthenticationSuccessHandler();
     }
 	
-    @Bean
-    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
+//    @Bean
+//    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+//        return new CustomAuthenticationFailureHandler();
+//    }
     
 //	@Autowired //conflict with AuthenticationProvider authProvider()
 //	private DataSource dataSource;
