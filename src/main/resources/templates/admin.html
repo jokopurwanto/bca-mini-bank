@@ -5,6 +5,7 @@
 <title>Home</title>
 </head>
 <body>
+	<h1>HALAMAN ADMIN</h1>
 	<h1 th:text="Hello  + ' ' +${nama} + ' ' + ${idUser} + ' ' + admin "></h1>
 	<p th:text="${keterangan}"></p> 
 	<div sec:authorize="hasAnyAuthority('ADMIN')">

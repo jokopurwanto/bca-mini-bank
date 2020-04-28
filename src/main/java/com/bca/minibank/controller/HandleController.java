@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bca.minibank.configuration.MyUserPrincipal;
 import com.bca.minibank.entity.TbUsers;
@@ -21,19 +21,19 @@ public class HandleController {
 		return "login";
 	}
 	
-    @RequestMapping("/default")
-    public String defaultAfterLoginNasabah() 
-    {
-    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	if(user.getPin() == null)
-    	{
-    		return "redirect:/konfirmasi";
-    	}
-    	else
-    	{
-    		return "redirect:/home";		
-    	}
-    }
+//    @RequestMapping("/default")
+//    public String defaultAfterLoginNasabah() 
+//    {
+//    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    	if(user.getPin() == null)
+//    	{
+//    		return "redirect:/konfirmasi";
+//    	}
+//    	else
+//    	{
+//    		return "redirect:/home";		
+//    	}
+//    }
 	
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
@@ -48,6 +48,13 @@ public class HandleController {
 	
 	@GetMapping("/konfirmasi")
 	public String konfirmasiPage(Model model) {
+    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	int idUser = user.getIdUser();
+    	String nama = user.getNama();
+    	String keterangan = user.getKeterangan();
+    	model.addAttribute("idUser", idUser);
+      	model.addAttribute("nama", nama);
+      	model.addAttribute("keterangan", keterangan);
 		return "konfirmasi";
 	}
 	

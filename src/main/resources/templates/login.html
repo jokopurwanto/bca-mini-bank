@@ -12,17 +12,39 @@
 
 <body>
 	<form class="box" name='f'  th:action="@{/login}" method="post">
-		<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;" th:text="'Error: '+ ${keterangan}"></p></div>
-	
-		<input type="text" name="username" placeholder="username">
-		<input type="password" name="password" placeholder="password">
+		<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;" th:text="'Error: ' +  ${msg}"><c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/></p></div>
+    </c:if>
+		<input type="text" name="username" id="username" placeholder="username">
+		<input type="password" name="password" id="password" placeholder="password">
 		<input type="submit" value="Login">
 <!-- 		<a class="a" th:href="@{/recover-password}">Forgot password?</a> -->
 		<a class="a" th:href="@{/register}">Daftar User Baru</a>
 	</form>
 
-<script>
-</script>
+	<script>
+            function validasi(){
+                var username = document.getElementById('username');
+                var password = document.getElementById('password');
+
+                if (harusDiisi(username, "Username tidak boleh kosong")) 
+                {
+                    if (harusDiisi(password, "Password tidak boleh kosong")) {
+                            return true;
+                        };
+                    };
+                return false;
+            }
+
+            function harusDiisi(att, msg){
+                if (att.value.length == 0) {
+                    alert(msg);
+                    att.focus();
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
 
 </body>
 </html>

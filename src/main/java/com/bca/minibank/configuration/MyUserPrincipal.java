@@ -25,9 +25,13 @@ public class MyUserPrincipal implements UserDetails{
     	{
     		return Collections.singleton(new SimpleGrantedAuthority("ADMIN"));
     	}
-    	else
+    	else if(TbUsers.getRole().equals("NASABAH") && TbUsers.getTbRekening().getPin() != null )
     	{
     		return Collections.singleton(new SimpleGrantedAuthority("NASABAH"));
+    	}
+    	else
+    	{
+    		return Collections.singleton(new SimpleGrantedAuthority("AKUNBARU"));
     	}
 	}
 	
