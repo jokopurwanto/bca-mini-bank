@@ -34,6 +34,7 @@ public class DaoTbRekening {
 	
 	public void update(String NoRek, TbRekening newTbRekening) {
 		TbRekening TbRekeningTemp = this.repositoryTbRekening.getOne(NoRek);
+		TbRekeningTemp.setTbJnsTab(newTbRekening.getTbJnsTab());
 		TbRekeningTemp.setPin(newTbRekening.getPin());
 		TbRekeningTemp.setSaldo(newTbRekening.getSaldo());
 	}

@@ -124,6 +124,11 @@ public class MyUserPrincipal implements UserDetails{
 		return TbUsers.getTbRekening().getPin();
 	}
 	
+	public String getNoRek()
+	{
+		return TbUsers.getTbRekening().getNoRek();
+	}
+	
 	public String getRole()
 	{
 		return TbUsers.getRole();

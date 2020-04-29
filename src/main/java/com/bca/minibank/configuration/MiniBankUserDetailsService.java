@@ -30,9 +30,9 @@ public class MiniBankUserDetailsService implements UserDetailsService {
 //    @Override
 //    public User registerNewUserAccount(UserDto accountDto) throws EmailExistsException {
 //      
-//        if (emailExist(accountDto.getEmail())) {
-//            throw new EmailExistsException
-//              ("There is an account with that email address: " + accountDto.getEmail());
+//        if (emailExist(accountDto.getEmail())) 
+//    	  {
+//            throw new EmailExistsException("There is an account with that email address: " + accountDto.getEmail()); 
 //        }
 //        User user = new User();
 //     

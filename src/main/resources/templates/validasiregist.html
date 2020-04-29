@@ -9,36 +9,65 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
         <link rel="icon" type="image/png" href="Images/icon.png">
-        <title>Buat Pin Transaksi</title>
+        <title>Registrasi</title>
         <link rel="stylesheet" href="West-bank.css">
       </head>
 
-<body class="regist-success-body">
+<body class="registbody">
     <nav class="navbar navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="#">
             <img src="Images/WestBank.png" height="30" alt="">
         </a>
     </nav>
-        <div class="container">
-        <h3 >Pembuatan Pin Transaksi</h3>
-        <form class="form-create-pin">
-            <p>Silahkan buat pin transaksi anda.</p>
-            <div class="form-group">
-                <label for="pin">Pin:</label>
-                <input type="password" class="form-control" id="pin" placeholder="masukkan pin" name="pin">
+    <div class="container">
+        <h2>Registrasi Nasabah Baru</h2>
+        <form class="form-validasi">
+            <p>Silahkan periksa kembali data diri anda.</p>
+            <table>
+                <tr>
+                    <td width="150px">Nama</td>
+                    <td> <span>: </span> Tampilkan Nama</td>
+                </tr>
+                <tr>
+                    <td>No KTP</td>
+                    <td> <span>: </span> Tampilkan No KTP</td>
+                </tr>
+                <tr>
+                    <td>Tanggal Lahir</td>
+                    <td> <span>: </span> Tampilkan Tanggal Lahir</td>
+                </tr>
+                <tr>
+                    <td>No Handphone</td>
+                    <td> <span>: </span> Tampilkan No HP</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td> <span>: </span> Tampilkan Alamat</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td> <span>: </span> Tampilkan Email</td>
+                </tr>
+                <tr>
+                    <td>Jenis Tabungan</td>
+                    <td> <span>: </span> Tampilkan Jenis Tabungan</td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td> <span>: </span> Tampilkan Username</td>
+                </tr>
+              </table>
+            <div class="registbutton">
+                <button type="submit" class="btn btn-success btn-lg" >Daftar</button>
             </div>
-            <div class="form-group">
-                <label for="conf-pin">Konfirmasi Pin:</label>
-                <input type="password" class="form-control" id="conf-pin" placeholder="konfirmasi pin" name="conf-pin">
-            </div>
+            <div class="back-button">
+                <a href="Registrasi.html" class="btn btn-outline-dark btn-sm" role="button">Kembali</a>
+                </div>
         </form>
-        <div class="registbutton">
-            <button type="submit" class="btn btn-success btn-lg" >Submit</button>
-        </div>
 
       </div>
 
-<footer class="registsuccess"> Copyright 2020 PT West Bank Indonesia Tbk</footer>
+<footer class="validregist"> Copyright 2020 PT West Bank Indonesia Tbk</footer>
 
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
