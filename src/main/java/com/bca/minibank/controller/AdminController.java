@@ -50,6 +50,11 @@ public class AdminController {
 	private String actionLogAdminChangePassword = "CHANGE PASSWORD";
 	private String actionLogAdminVerifyNewUser = "VERIFY NEW USER";
 	private String actionLogAdminNotVerifyNewUser = "NOT VERIFY NEW USER";
+	private String actionLogAdminBlockUser = "BLOCK USER";
+	private String actionLogAdminUnblockNewUser = "UNBLOCK NEW USER";
+	private String actionLogAdminUnblockUser = "UNBLOCK USER";
+	
+	private int idAdminSession = 1; //sementara nnti diganti ambil dari session
 	
 	@GetMapping("/adminVerifiedUsers")
 	public String adminVerifiedUsers(Model model) {
@@ -139,7 +144,7 @@ public class AdminController {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String hashedPassword = passwordEncoder.encode(password);
 			daoUsers.updatePassword(idUser, hashedPassword);
-			saveLogAdmin(1,actionLogAdminChangePassword,idUser); //<-- 1 nanti diupdate mengambil dari session
+			saveLogAdmin(idAdminSession,actionLogAdminChangePassword,idUser); //<-- idAdminSession nanti diupdate mengambil dari session
 			msg = "Password berhasil diubah.";
 		}else {
 			msg = "Password dan konfirmasi password tidak sama..";
@@ -175,18 +180,38 @@ public class AdminController {
 		return "adminTransaksiUser.html";
 	}
 	
-	@PostMapping("/verifiedNewUser")
-	public String verifiedNewUser(Model model, int idUser) {
+	@PostMapping("/adminVerifiedNewUser")
+	public String adminVerifiedNewUser(Model model, int idUser) {
 		daoUsers.updateStatusUser(idUser, statusUserVerified);
-		saveLogAdmin(1, actionLogAdminVerifyNewUser, idUser);
+		saveLogAdmin(idAdminSession, actionLogAdminVerifyNewUser, idUser);
 		return "redirect:/adminNewUsers";
 	}
 
-	@PostMapping("/notVerifiedNewUser")
-	public String notVerifiedNewUser(Model model, int idUser, String keterangan) {
+	@PostMapping("/adminNotVerifiedNewUser")
+	public String adminNotVerifiedNewUser(Model model, int idUser, String keterangan) {
 		daoUsers.updateStatusUser(idUser, statusUserNotVerified);
 		daoUsers.updateKeterangan(idUser, keterangan);
-		saveLogAdmin(1, actionLogAdminNotVerifyNewUser, idUser);
+		saveLogAdmin(idAdminSession, actionLogAdminNotVerifyNewUser, idUser);
 		return "redirect:/adminNewUsers";
+	}
+	
+	@PostMapping("/adminBlockUser")
+	public String adminBlockUser(Model model, int idUser) {
+		daoUsers.updateStatusUser(idUser, statusUserBlocked);
+		saveLogAdmin(idAdminSession, actionLogAdminBlockUser, idUser);
+		return "redirect:/adminVerifiedUsers";
+	}
+	
+	@PostMapping("/adminUnblockUser")
+	public String adminUnblockUser(Model model, int idUser) {
+		if(daoUsers.getOne(idUser).getTbRekening() == null) {
+			daoUsers.updateStatusUser(idUser, statusUserPending);
+			saveLogAdmin(idAdminSession, actionLogAdminUnblockNewUser, idUser);
+		}else {
+			daoUsers.updateStatusUser(idUser, statusUserVerified);
+			saveLogAdmin(idAdminSession, actionLogAdminUnblockUser, idUser);
+			
+		}
+		return "redirect:/adminBlockedUsers";
 	}
 }

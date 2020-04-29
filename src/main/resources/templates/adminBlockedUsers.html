@@ -66,12 +66,17 @@ nav a:hover {
 				<td th:text="${users.statusUser}"></td>
 				<td th:text="${users.username}"></td>
 				<td th:text="${users.nama}"></td>
-				<td   th:text="${users.tbRekening.noRek}"></td>
+				<td ><span th:text="${users.tbRekening.noRek}" th:if="${users.tbRekening != null}"></span></td>
 				<td th:text="${users.alamat}"></td>
 				<td th:text="${users.noHp}"></td>
 				<td th:text="${users.email}"></td>
-				<td th:text="${users.tbRekening.tbJnsTab.namaJnsTab}"></td>		
-				<td><button type="button" class="btn btn-secondary">Buka Block</button></td>
+				<td ><span th:text="${users.tbRekening.tbJnsTab.namaJnsTab}" th:if="${users.tbRekening != null}"></span></td>		
+				<form action="/adminUnblockUser" method="post">
+				<td>
+					<input type="hidden" name="idUser" th:value="${users.idUser}">
+					<button type="submit" class="btn btn-secondary">Buka Block</button>
+				</td>
+				</form>
 			</tr>
 		</tbody>
 	</table>

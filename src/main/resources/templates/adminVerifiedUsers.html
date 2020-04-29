@@ -76,17 +76,22 @@ nav a:hover {
 				<td th:text="${users.tbRekening.tbJnsTab.namaJnsTab}"></td>	
 				<form action="/adminTransaksiUser" method="post">
 					<td>
-						<input type="hidden" class="btn btn-secondary" name="idUser" th:value="${users.idUser}">
+						<input type="hidden"  name="idUser" th:value="${users.idUser}">
 						<button type="submit" class="btn btn-secondary">Transaksi</button>
 					</td>
 				</form>		
 				<form action="/adminChangesPassword" method="post">
 					<td>
-						<input type="hidden" class="btn btn-secondary" name="idUser" th:value="${users.idUser}">
+						<input type="hidden" name="idUser" th:value="${users.idUser}">
 						<button type="submit" class="btn btn-secondary">Ganti Pass</button>
 					</td>
 				</form>
-				<td><button type="button" class="btn btn-secondary">Block</button></td>
+				<form action="/adminBlockUser" method="post">
+				<td>
+					<input type="hidden" name="idUser" th:value="${users.idUser}">
+					<button type="submit" class="btn btn-secondary">Block</button>
+				</td>
+				</form>
 			</tr>
 <!-- 			<tr>
 				<td>#</td>

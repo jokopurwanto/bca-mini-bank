@@ -50,11 +50,9 @@ nav a:hover {
 				<th>Status</th>
 				<th>Username</th>
 				<th>Nama</th>
-				<th>No.Rek</th>
 				<th>Alamat</th>
 				<th>No.HP</th>
 				<th>Email</th>
-				<th>Jen.Tab</th>
 				<th></th>
 				<th></th>
 				
@@ -66,12 +64,10 @@ nav a:hover {
 				<td th:text="${users.statusUser}"></td>
 				<td th:text="${users.username}"></td>
 				<td th:text="${users.nama}"></td>
-				<td   th:text="${users.tbRekening.noRek}"></td>
 				<td th:text="${users.alamat}"></td>
 				<td th:text="${users.noHp}"></td>
-				<td th:text="${users.email}"></td>
-				<td th:text="${users.tbRekening.tbJnsTab.namaJnsTab}"></td>		
-				<form action="/verifiedNewUser" method="post">
+				<td th:text="${users.email}"></td>	
+				<form action="/adminVerifiedNewUser" method="post">
 				<td>
 					<input type="hidden" name="idUser" th:value="${users.idUser}">
 					<button type="submit" class="btn btn-secondary">Terima</button></td>
@@ -86,7 +82,7 @@ nav a:hover {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/notVerifiedNewUser" method="post">
+      <form action="/adminNotVerifiedNewUser" method="post">
       <div class="modal-body">
           <div class="form-group">
           	<input type="hidden" name="idUser" th:value="${users.idUser}">
