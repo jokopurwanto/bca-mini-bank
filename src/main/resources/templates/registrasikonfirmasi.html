@@ -8,60 +8,64 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
-        <link rel="icon" type="image/png" href="Images/icon.png">
+            <link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
         <title>Registrasi</title>
-        <link rel="stylesheet" href="West-bank.css">
+  		 <link rel="stylesheet" th:href="@{/css/West-bank.css}">
       </head>
 
 <body class="registbody">
     <nav class="navbar navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="#">
-            <img src="Images/WestBank.png" height="30" alt="">
+       <a class="navbar-brand" th:href="@{/login}">
+            <img th:src="@{image/WestBank.png}" height="30" alt="logo west bank">
         </a>
     </nav>
     <div class="container">
         <h2>Registrasi Nasabah Baru</h2>
-        <form class="form-validasi">
+        <form class="form-validasi" th:action="@{/registrasi/sukses}" method="post" th:object="${tbUsers}">
             <p>Silahkan periksa kembali data diri anda.</p>
+            <p th:text="'status :' + ${tbUsers.statusUser}"></p>
+            <p th:text="'role :' + ${tbUsers.role}"></p>
+            <p th:text="'keterangan :' + ${tbUsers.keterangan}"></p>
             <table>
                 <tr>
                     <td width="150px">Nama</td>
-                    <td> <span>: </span> Tampilkan Nama</td>
+                    <td><span th:text="': ' + ${tbUsers.nama}"></span></td>
                 </tr>
                 <tr>
                     <td>No KTP</td>
-                    <td> <span>: </span> Tampilkan No KTP</td>
+                    <td><span th:text="': ' + ${tbUsers.noKtp}"></span></td>
                 </tr>
-                <tr>
+<!--                <tr>
                     <td>Tanggal Lahir</td>
                     <td> <span>: </span> Tampilkan Tanggal Lahir</td>
-                </tr>
+                </tr>-->  
                 <tr>
                     <td>No Handphone</td>
-                    <td> <span>: </span> Tampilkan No HP</td>
+                    <td><span th:text="': ' + ${tbUsers.noHp}"></span></td>
                 </tr>
                 <tr>
                     <td>Alamat</td>
-                    <td> <span>: </span> Tampilkan Alamat</td>
+                    <td><span th:text="': ' + ${tbUsers.alamat}"></span></td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td> <span>: </span> Tampilkan Email</td>
+                    <td><span th:text="': ' + ${tbUsers.email}"></span></td>
                 </tr>
-                <tr>
+<!--             <tr>
                     <td>Jenis Tabungan</td>
                     <td> <span>: </span> Tampilkan Jenis Tabungan</td>
-                </tr>
+                </tr> -->    
                 <tr>
                     <td>Username</td>
-                    <td> <span>: </span> Tampilkan Username</td>
+                    <td><span th:text="': ' + ${tbUsers.username}"></span></td>
                 </tr>
               </table>
+          <!--     <input type="hidden" name="tbUsers" th:value="${tbUsers}"> -->
             <div class="registbutton">
                 <button type="submit" class="btn btn-success btn-lg" >Daftar</button>
             </div>
             <div class="back-button">
-                <a href="Registrasi.html" class="btn btn-outline-dark btn-sm" role="button">Kembali</a>
+                <a th:href="@{/registrasi}" class="btn btn-outline-dark btn-sm" role="button">Kembali</a>
                 </div>
         </form>
 

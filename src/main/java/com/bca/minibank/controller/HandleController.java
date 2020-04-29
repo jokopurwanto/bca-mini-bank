@@ -47,12 +47,7 @@ public class HandleController {
       	model.addAttribute("username", user.getUsername());
       	model.addAttribute("jenisTabungan", TbRekeningTemp.getTbJnsTab().getNamaJnsTab());
 		return "userterverifikasi";
-	}
-	
-	@GetMapping("/register")
-	public String registerPage(TbUsers tbUsers) {
-		return "register";
-	}
+	}	
 	
 	@GetMapping("/home")
 	public String homePage(Model model) {

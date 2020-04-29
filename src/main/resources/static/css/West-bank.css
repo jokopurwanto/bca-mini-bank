@@ -129,7 +129,7 @@ form{
 .regist-success-body{
     margin: 0;
     padding: 0;
-    background: url(Images/background.png); 
+    background: url(background.png); 
     background-size: 100%;
 }
 .carousel-inner{
@@ -139,7 +139,7 @@ form{
 .home-body{
     margin: 0;
     padding: 0;
-    background: url(Images/background.png); 
+    background: url(background.png); 
     background-size: 100%;
 }
 .nav-link{

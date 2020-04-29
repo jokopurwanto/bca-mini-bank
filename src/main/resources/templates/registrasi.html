@@ -7,67 +7,67 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="Images/icon.png">
+     <link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
     <title>Registrasi</title>
-    <link rel="stylesheet" href="West-bank.css">
+    <link rel="stylesheet" th:href="@{/css/West-bank.css}">
 </head>
 
 <body class="registbody">
     <nav class="navbar navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="#">
-            <img src="Images/WestBank.png" height="30" alt="logo west bank">
+        <a class="navbar-brand" th:href="@{/login}">
+            <img th:src="@{image/WestBank.png}" height="30" alt="logo west bank">
         </a>
     </nav>
     <div class="container">
         <h2>Registrasi Nasabah Baru</h2>
-        <form name="form_registrasi" method="post">
+        <form th:action="@{/registrasi/konfirmasi}" name="form_registrasi" method="post" th:object="${tbUsers}">
             <p>Silahkan lengkapi data diri anda.</p>
             <div class="form-group">
                 <label for="nama">Nama:</label>
-                <input type="text" class="form-control" id="nama" name="nama" onchange="validateName()" placeholder="masukkan nama" required>
+                <input type="text" class="form-control" id="nama" th:field="${tbUsers.nama}" onchange="validateName()" placeholder="masukkan nama" required>
             </div>
             <div class="form-group">
                 <label for="ktp">No KTP:</label>
-                <input type="number" class="form-control" id="ktp" name="ktp" onchange="validateKtp()" placeholder="masukkan no KTP" required>
+                <input type="text" class="form-control" id="ktp" th:field="${tbUsers.noKtp}" onchange="validateKtp()" placeholder="masukkan no KTP" maxlength=16 onkeypress='validate(event)' required >
             </div>
-            <div class="form-group">
+<!--            <div class="form-group">
                 <label for="date">Tanggal Lahir:</label>
-                <input type="date" class="form-control" id="date" name="date" placeholder="masukkan tanggal lahir" required>
-            </div>
+                <input type="date" class="form-control" id="date" name="${tbUsers.nama}" placeholder="masukkan tanggal lahir" required>
+            </div> -->
             <div class="form-group">
                 <label for="HP">No Handphone:</label>
-                <input type="number" class="form-control" id="hp" name="hp" onchange="validateNoTelp()" placeholder="masukkan no telepon" required>
+                <input type="number" class="form-control" id="hp" th:field="${tbUsers.noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon" required>
             </div>
 
             <div class="form-group">
                 <label for="alamat">Alamat:</label>
-                <textarea class="form-control" rows="3" id="alamat" placeholder="masukkan alamat" required></textarea>
+                <textarea class="form-control" rows="3" id="alamat" th:field="${tbUsers.alamat}" placeholder="masukkan alamat" required></textarea>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" placeholder="masukkan email" name="email" onchange="validateEmail()" required>
+                <input type="email" class="form-control" id="email" placeholder="masukkan email" th:field="${tbUsers.email}" onchange="validateEmail()" required>
             </div>
-            <div class="form-group">
+<!--             <div class="form-group">
                 <label for="sel1">Pilih Jenis Tabungan:</label>
                 <select class="form-control" id="sel1" >
                     <option>Jenis 1</option>
                     <option>Jenis 2</option>
                     <option>Jenis 3</option>
                 </select>
-            </div>
+            </div>--> 
             <div class="form-group" >
                 <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="masukkan username" onchange="validateUsername()" required>
+                <input type="text" class="form-control" id="username" th:field="${tbUsers.username}" placeholder="masukkan username" onchange="validateUsername()" required>
             </div>
             <div class="form-group">
                 <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="pwd" name="pwd" onchange="validatePwd()" placeholder="masukkan password" required>
+                <input type="password" class="form-control" id="pwd" th:field="${tbUsers.password}" onchange="validatePwd()" placeholder="masukkan password" required>
             </div>
-            <div class="form-group">
+ <!--           <div class="form-group">
                 <label for="confirm-pwd">Konfirmasi Password:</label>
                 <input type="password" class="form-control" id="confirm-pwd" name="confirm-pwd" onchange="checkPassword()" placeholder="konfirmasi password"
-                       name="confirm-pswd" required>
-            </div>
+                       name="confirm-pswd" required> 
+            </div>  --> 
             <div class="nextbutton">
                 <button type="submit" id="btn-submit" onclick="validateForm()" class="btn btn-primary">Lanjut</button>
             </div>
@@ -96,6 +96,6 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 
-<script src="West-bank.js" async></script>
+<script th:src="@{js/West-bank.js}" async></script>
 
 </html>

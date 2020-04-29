@@ -73,7 +73,7 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "USERS_SEQ")
 	@Column(name = "ID_USER", unique = true, nullable = false, precision = 22, scale = 0)
 	public int getIdUser() {
 		return this.idUser;

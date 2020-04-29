@@ -71,7 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 					.antMatchers("/").permitAll()
 					.antMatchers("/login").permitAll()
-					.antMatchers("/register").permitAll()
+					.antMatchers("/registrasi/**").permitAll()
 					.antMatchers("/admin/**").hasAuthority("ADMIN")
 					.antMatchers("/konfirmasi/**").hasAuthority("AKUNBARU")
 					.antMatchers("/home/**").hasAnyAuthority("ADMIN", "NASABAH")
