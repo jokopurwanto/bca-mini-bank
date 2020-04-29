@@ -39,14 +39,17 @@ public class AdminController {
 	private DaoTbTransaksi daoTransaksi;
 	@Autowired
 	private DaoTbMutasi daoMutasi;
-	
+
 	private String statusUserVerified = "VERIFIED";
+	private String statusUserNotVerified = "NOT VERIFIED";
 	private String statusUserPending = "PENDING";
 	private String statusUserBlocked = "BLOCK";
 	private String roleNasabah = "ROLE_NASABAH";
 //	private String jnsMutasiIn = "IN";
 	private String jnsMutasiOut = "OUT";
-	private String actionLogAdminChangePassword = "UBAH PASSWORD";
+	private String actionLogAdminChangePassword = "CHANGE PASSWORD";
+	private String actionLogAdminVerifyNewUser = "VERIFY NEW USER";
+	private String actionLogAdminNotVerifyNewUser = "NOT VERIFY NEW USER";
 	
 	@GetMapping("/adminVerifiedUsers")
 	public String adminVerifiedUsers(Model model) {
@@ -136,21 +139,32 @@ public class AdminController {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String hashedPassword = passwordEncoder.encode(password);
 			daoUsers.updatePassword(idUser, hashedPassword);
-			TbLogAdmin tbLogAdmin = new TbLogAdmin();
-			//tbLogAdmin.setIdLog(0); //<--harusnya autoincrement
-			tbLogAdmin.setTbUsers(daoUsers.getOne(1)); //<--sementara, ntar diupdate jadi ambil idUser dari session
-			tbLogAdmin.setAction(actionLogAdminChangePassword);
-			//tbLogAdmin.setToIdTransaksi(0); // karena change password ini jadi null (bukan menunjuk ke transaksi)
-			tbLogAdmin.setToIdUser(idUser);
-			tbLogAdmin.setTglLog(new Timestamp(System.currentTimeMillis()));
-			daoLogAdmin.add(tbLogAdmin);
-			msg = "Password berhasil diubah." + daoUsers.getOne(1).getUsername();
+			saveLogAdmin(1,actionLogAdminChangePassword,idUser); //<-- 1 nanti diupdate mengambil dari session
+			msg = "Password berhasil diubah.";
 		}else {
 			msg = "Password dan konfirmasi password tidak sama..";
 		}
 		model.addAttribute("user", daoUsers.getOne(idUser));
 		model.addAttribute("msg", msg);
 		return "adminChangesPassword.html";
+	}	
+	
+	public void saveLogAdmin(int idAdmin, String action, int idUser, int idTransaksi) {
+		TbLogAdmin tbLogAdmin = new TbLogAdmin();
+		tbLogAdmin.setTbUsers(daoUsers.getOne(idAdmin)); 
+		tbLogAdmin.setAction(action);
+		tbLogAdmin.setToIdUser(idUser);
+		tbLogAdmin.setToIdTransaksi(idTransaksi);
+		tbLogAdmin.setTglLog(new Timestamp(System.currentTimeMillis()));
+		daoLogAdmin.add(tbLogAdmin);
+	}
+	public void saveLogAdmin(int idAdmin, String action, int idUser) {
+		TbLogAdmin tbLogAdmin = new TbLogAdmin();
+		tbLogAdmin.setTbUsers(daoUsers.getOne(idAdmin)); 
+		tbLogAdmin.setAction(action);
+		tbLogAdmin.setToIdUser(idUser);
+		tbLogAdmin.setTglLog(new Timestamp(System.currentTimeMillis()));
+		daoLogAdmin.add(tbLogAdmin);
 	}
 	
 	@PostMapping("/adminTransaksiUser")
@@ -159,5 +173,20 @@ public class AdminController {
 		model.addAttribute("user", daoUsers.getOne(idUser));
 		model.addAttribute("listTransaksi", daoTransaksi.getAllByTbRekening(tbUsers.getTbRekening()));
 		return "adminTransaksiUser.html";
+	}
+	
+	@PostMapping("/verifiedNewUser")
+	public String verifiedNewUser(Model model, int idUser) {
+		daoUsers.updateStatusUser(idUser, statusUserVerified);
+		saveLogAdmin(1, actionLogAdminVerifyNewUser, idUser);
+		return "redirect:/adminNewUsers";
+	}
+
+	@PostMapping("/notVerifiedNewUser")
+	public String notVerifiedNewUser(Model model, int idUser, String keterangan) {
+		daoUsers.updateStatusUser(idUser, statusUserNotVerified);
+		daoUsers.updateKeterangan(idUser, keterangan);
+		saveLogAdmin(1, actionLogAdminNotVerifyNewUser, idUser);
+		return "redirect:/adminNewUsers";
 	}
 }

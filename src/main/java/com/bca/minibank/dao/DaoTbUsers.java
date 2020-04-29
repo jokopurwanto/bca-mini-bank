@@ -44,9 +44,18 @@ public class DaoTbUsers {
 	public void update(TbUsers tbUsers) {
 		this.repositoryTbUsers.save(tbUsers);
 	}
+	
 	public void updatePassword(int idUser, String newPassword) {
 		TbUsers user = this.repositoryTbUsers.getOne(idUser);
 		user.setPassword(newPassword);
 	}
 
+	public void updateStatusUser(int idUser, String statusUser) {
+		TbUsers user = this.repositoryTbUsers.getOne(idUser);
+		user.setStatusUser(statusUser);
+	}
+	public void updateKeterangan(int idUser, String keterangan) {
+		TbUsers user = this.repositoryTbUsers.getOne(idUser);
+		user.setKeterangan(keterangan);
+	}
 }

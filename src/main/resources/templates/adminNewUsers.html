@@ -71,7 +71,11 @@ nav a:hover {
 				<td th:text="${users.noHp}"></td>
 				<td th:text="${users.email}"></td>
 				<td th:text="${users.tbRekening.tbJnsTab.namaJnsTab}"></td>		
-				<td><button type="button" class="btn btn-secondary">Terima</button></td>
+				<form action="/verifiedNewUser" method="post">
+				<td>
+					<input type="hidden" name="idUser" th:value="${users.idUser}">
+					<button type="submit" class="btn btn-secondary">Terima</button></td>
+				</form>
 				<td><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Tolak</button></td>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -82,17 +86,18 @@ nav a:hover {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form action="/notVerifiedNewUser" method="post">
       <div class="modal-body">
-        <form>
           <div class="form-group">
+          	<input type="hidden" name="idUser" th:value="${users.idUser}">
             <label for="message-text" class="col-form-label">Keterangan Penolakan:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <textarea class="form-control" id="message-text" name="keterangan"></textarea>
           </div>
-        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Send message</button>
+        <button type="submit" class="btn btn-primary">Send message</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
