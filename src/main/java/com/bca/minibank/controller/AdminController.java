@@ -53,6 +53,14 @@ public class AdminController {
 	private String actionLogAdminBlockUser = "BLOCK USER";
 	private String actionLogAdminUnblockNewUser = "UNBLOCK NEW USER";
 	private String actionLogAdminUnblockUser = "UNBLOCK USER";
+	private String actionLogAdminTransaksiSetorAccept = "ACCEPT SETORTUNAI";
+	private String actionLogAdminTransaksiSetorDecline = "DECLINE SETORTUNAI";
+	private String actionLogAdminTransaksiSetorDeclineAuto = "AUTO DECLINE SETOR";
+	
+	private String jnsTransaksiSetorTunai = "SETOR TUNAI";
+	private String statusTransaksiPending = "PENDING";
+	private String statusTransaksiSuccess = "SUCCESS";
+	private String statusTransaksiFailed = "FAILED";
 	
 	private int idAdminSession = 1; //sementara nnti diganti ambil dari session
 	
@@ -214,4 +222,64 @@ public class AdminController {
 		}
 		return "redirect:/adminBlockedUsers";
 	}
+	
+	@GetMapping("/adminTransaksiSetor")
+	public String adminTransaksiSetor(Model model) {
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(jnsTransaksiSetorTunai, statusTransaksiPending));		
+		return "adminTransaksiSetor.html";
+	}
+	
+	@PostMapping("/adminTransaksiSetor")
+	public String adminTransaksiSetor2(Model model, String searchNoRek) {
+		List<TbTransaksi> transaksi = new ArrayList<TbTransaksi>();
+		if(!(searchNoRek == "")) {
+			Boolean foundNoRek = daoRekening.findById(searchNoRek);
+			if(foundNoRek) {
+				TbRekening tbRekening = daoRekening.getOne(searchNoRek);
+				transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiAndTbRekening(jnsTransaksiSetorTunai, statusTransaksiPending, tbRekening);
+				if(transaksi.isEmpty()) {
+					model.addAttribute("msg", "Tidak ada Transaksi dengan No Rekening : "+ searchNoRek);
+					transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(jnsTransaksiSetorTunai, statusTransaksiPending);
+				}
+			}else {
+				model.addAttribute("msg", "No Rekening : "+ searchNoRek +" tidak terdaftar");
+				transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(jnsTransaksiSetorTunai, statusTransaksiPending);
+			}
+		} else {
+			return "redirect:/adminTransaksiSetor";
+		}	
+		model.addAttribute("listTransaksi", transaksi);	
+		model.addAttribute("searchNoRek",searchNoRek);
+		return "adminTransaksiSetor.html";
+	}
+	
+	@PostMapping("/adminTransaksiSetorAccept")
+	public String adminTransaksiSetorAccept(Model model, int idTransaksi) {
+		String msgBox = "";
+		// validasi no rekenin tujuan, bila tidak terdaftar atau bukan no rekening sendiri maka langsung failed //karena setor tunai hanya bisa ke rekening sendiri
+		String noRekTujuan = daoTransaksi.getOne(idTransaksi).getNoRekTujuan();
+		String noRekAsal = daoTransaksi.getOne(idTransaksi).getTbRekening().getNoRek();
+		if(daoRekening.getOne(noRekTujuan).getNoRek().isEmpty() || !(noRekAsal.equals(noRekTujuan))){
+			daoTransaksi.updateStatusTransaksi(idTransaksi, statusTransaksiFailed);
+			saveLogAdmin(idAdminSession, actionLogAdminTransaksiSetorDeclineAuto, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
+			msgBox = "Setor tunai gagal karena no. rekening tujuan tidak sama / tidak terdaftar.";
+		}else {
+			daoTransaksi.updateStatusTransaksi(idTransaksi, statusTransaksiSuccess);
+			saveLogAdmin(idAdminSession, actionLogAdminTransaksiSetorAccept, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
+			msgBox = "Setor tunai berhasil disetujui.";
+		}
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(jnsTransaksiSetorTunai, statusTransaksiPending));		
+		model.addAttribute("msgBox", msgBox);
+		return "adminTransaksiSetor.html";
+	}
+	
+	@PostMapping("/adminTransaksiSetorDecline")
+	public String adminTransaksiSetorDecline(Model model, int idTransaksi) {
+		daoTransaksi.updateStatusTransaksi(idTransaksi, statusTransaksiFailed);
+		saveLogAdmin(idAdminSession, actionLogAdminTransaksiSetorDecline, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(jnsTransaksiSetorTunai, statusTransaksiPending));		
+		model.addAttribute("msgBox", "Setor tunai berhasil ditolak.");
+		return "adminTransaksiSetor.html";
+	}
+	
 }

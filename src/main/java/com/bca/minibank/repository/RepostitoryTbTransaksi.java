@@ -11,4 +11,6 @@ import com.bca.minibank.entity.TbTransaksi;
 @Repository
 public interface RepostitoryTbTransaksi extends JpaRepository<TbTransaksi, Integer> {
 	List<TbTransaksi> findByTbRekening(TbRekening tbRekening);
+	List<TbTransaksi> findByJnsTransaksiAndStatusTransaksi(String jnsTransaksi, String statusTransaksi);
+	List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiAndTbRekening(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening);
 }

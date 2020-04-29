@@ -24,6 +24,10 @@ public class DaoTbRekening {
 		return  this.repositoryTbRekening.findAll();
 	}
 	
+	public Boolean findById(String noRek) {
+		return this.repositoryTbRekening.findById(noRek).isPresent();
+	}
+	
 	public void add(TbRekening tbRekening) {
 		this.repositoryTbRekening.save(tbRekening);
 	}

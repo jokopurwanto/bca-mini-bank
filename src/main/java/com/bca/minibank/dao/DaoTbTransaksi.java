@@ -29,6 +29,14 @@ public class DaoTbTransaksi {
 		return  this.repostitoryTbTransaksi.findByTbRekening(tbRekening);
 	}
 	
+	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksi(String jnsTransaksi, String statusTransaksi){
+		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksi(jnsTransaksi, statusTransaksi);
+	}
+	
+	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksiAndTbRekening(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening){
+		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksiAndTbRekening(jnsTransaksi, statusTransaksi, tbRekening);
+	}
+	
 	public void add(TbTransaksi tbTransaksi) {
 		this.repostitoryTbTransaksi.save(tbTransaksi);
 	}
@@ -39,5 +47,10 @@ public class DaoTbTransaksi {
 	
 	public void update(TbTransaksi tbTransaksi) {
 		this.repostitoryTbTransaksi.save(tbTransaksi);
+	}
+	
+	public void updateStatusTransaksi(int idTransaksi, String statusTransaksi) {
+		TbTransaksi tbTransaksi = this.getOne(idTransaksi);
+		tbTransaksi.setStatusTransaksi(statusTransaksi);
 	}
 }
