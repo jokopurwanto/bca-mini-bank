@@ -56,13 +56,21 @@ public class ControllerNasabah {
 	
 	@PostMapping("/registrasi/konfirmasi")
 	public String registrasiPost(HttpServletRequest request, Model model, @Valid TbUsers tbUsers, BindingResult bindingResult) {
-		tbUsers.setPassword(bCryptPasswordEncoder.encode(tbUsers.getPassword()));
-		tbUsers.setStatusUser("PENDING");
-		tbUsers.setRole("NASABAH");
-		tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
-		request.getSession().setAttribute("tbUsersTemp", tbUsers);
-		model.addAttribute("tbUsers", tbUsers);
-		return "registrasikonfirmasi";
+
+		if(bindingResult.hasErrors())
+		{
+			return "registrasi";
+		}
+		else
+		{
+			tbUsers.setPassword(bCryptPasswordEncoder.encode(tbUsers.getPassword()));
+			tbUsers.setStatusUser("PENDING");
+			tbUsers.setRole("NASABAH");
+			tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
+			request.getSession().setAttribute("tbUsersTemp", tbUsers);
+			model.addAttribute("tbUsers", tbUsers);
+			return "registrasikonfirmasi";
+		}
 	}
 	
 	@PostMapping("/registrasi/sukses")
