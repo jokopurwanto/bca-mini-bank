@@ -21,6 +21,11 @@ public class HandleController {
 	@Autowired
 	DaoTbRekening DaoTbRekening;
 	
+	@GetMapping("/")
+	public String indexdirectPage() {
+		return "redirect:/login";
+	}
+	
 	@GetMapping("/login")
 	public String loginPage() {
 		return "login";
