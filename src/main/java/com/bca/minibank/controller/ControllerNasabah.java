@@ -114,6 +114,9 @@ public class ControllerNasabah {
 			model.addAttribute("flagNoHp", flagNoHp);
 			model.addAttribute("flagNoKtp", flagNoKtp);
 			model.addAttribute("flagCPass", flagCPass);
+			
+			List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
+			model.addAttribute("AllTbJnsTab", AllTbJnsTab);
 			return "registrasi";
 		}
 		else
