@@ -54,17 +54,46 @@ public class ControllerNasabah {
 		return "registrasi";
 	}
 	
+	@GetMapping("/registrasi/tes")
+	public String registrasitesPage(Model model, TbUsers tbUsers) {
+	//	TbUsers TbUsers = DaoTbUsers.findTbUsersByEmail("Block@block.co.id");
+		TbUsers TbUsers = DaoTbUsers.findTbUsersByNoHp("081299990000");
+//		TbUsers.setStatusUser("PENDING");
+//		TbUsers.setRole("NASABAH");
+//		TbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
+		model.addAttribute("tbUsers", TbUsers);
+		return "registrasikonfirmasi";
+	}
+	
 	@PostMapping("/registrasi/konfirmasi")
 	public String registrasiPost(HttpServletRequest request, Model model, @Valid TbUsers tbUsers, BindingResult bindingResult) 
 	{
 		boolean flagU = false;
+		boolean flagE = false;
+		boolean flagNoHp = false;
+		boolean flagNoKtp = false;
 		if(DaoTbUsers.findTbUsersByUsername(tbUsers.getUsername()) != null)
 		{
 			flagU = true;
 		}
-		if(bindingResult.hasErrors() || flagU == true)
+		if(DaoTbUsers.findTbUsersByEmail(tbUsers.getEmail()) != null)
+		{
+			flagE = true;
+		}
+		if(DaoTbUsers.findTbUsersByNoHp(tbUsers.getNoHp()) != null)
+		{
+			flagNoHp = true;
+		}
+		if(DaoTbUsers.findTbUsersByNoKtp(tbUsers.getNoKtp()) != null)
+		{
+			flagNoKtp = true;
+		}
+		if(bindingResult.hasErrors() || flagU == true || flagE == true || flagNoHp == true || flagNoKtp == true)
 		{
 			model.addAttribute("flagU", flagU);
+			model.addAttribute("flagE", flagE);
+			model.addAttribute("flagNoHp", flagNoHp);
+			model.addAttribute("flagNoKtp", flagNoKtp);
 			return "registrasi";
 		}
 		else

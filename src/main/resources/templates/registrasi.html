@@ -25,12 +25,13 @@
             <div class="form-group">
                 <label for="nama">Nama:</label>
                 <input type="text" class="form-control" id="nama" th:field="*{nama}" onchange="validateName()" placeholder="masukkan nama" required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('nama')}" th:errors="*{nama}">Nama tidak valid</span><br>
+                <span  class="text-danger" th:if="${#fields.hasErrors('nama')}" th:errors="*{nama}">Nama tidak valid<br></span>
             </div>
             <div class="form-group">
                 <label for="ktp">No KTP:</label>
                 <input type="text" class="form-control" id="ktp" th:field="*{noKtp}" onchange="validateKtp()" placeholder="masukkan no KTP" maxlength=16 onkeypress='validate(event)' required >
-                <span  class="text-danger" th:if="${#fields.hasErrors('noKtp')}" th:errors="*{noKtp}">No KTP tidak valid</span><br>
+                <span  class="text-danger" th:if="${#fields.hasErrors('noKtp')}" th:errors="*{noKtp}">No KTP tidak valid<br></span>
+                 <span  class="text-danger" th:if="${flagNoKtp}" th:text="'No. KTP telah digunakan!'"><br></span>
             </div>
 <!--            <div class="form-group">
                 <label for="date">Tanggal Lahir:</label>
@@ -39,18 +40,20 @@
             <div class="form-group">
                 <label for="HP">No Handphone:</label>
                 <input type="number" class="form-control" id="hp" th:field="*{noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon" required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('noHp')}" th:errors="*{noHp}">No HP tidak valid</span><br>
+                <span  class="text-danger" th:if="${#fields.hasErrors('noHp')}" th:errors="*{noHp}">No HP tidak valid<br></span>
+                <span  class="text-danger" th:if="${flagNoHp}" th:text="'No. HP telah digunakan!'"><br></span>
             </div>
 
             <div class="form-group">
                 <label for="alamat">Alamat:</label>
                 <textarea class="form-control" rows="3" id="alamat" th:field="*{alamat}" placeholder="masukkan alamat" required maxlength=255 ></textarea>
-                <span  class="text-danger" th:if="${#fields.hasErrors('alamat')}" th:errors="*{alamat}">Alamat tidak valid</span><br>
+                <span  class="text-danger" th:if="${#fields.hasErrors('alamat')}" th:errors="*{alamat}">Alamat tidak valid<br></span>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" placeholder="masukkan email" th:field="*{email}" onchange="validateEmail()" required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email tidak valid</span><br>
+                <span  class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email tidak valid<br></span>
+                <span  class="text-danger" th:if="${flagE}" th:text="'Email telah digunakan!'"><br></span>
             </div>
 <!--             <div class="form-group">
                 <label for="sel1">Pilih Jenis Tabungan:</label>
@@ -68,12 +71,12 @@
             </div>
             <div class="form-group">
                 <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="pwd" th:field="*{password}" onchange="validatePwd()" placeholder="masukkan password" required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password tidak valid</span><br>
+                <input type="text" class="form-control" id="pwd" th:field="*{password}" onchange="validatePwd()" placeholder="masukkan password" required>
+                <span  class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password tidak valid<br></span>
             </div>
  <!--           <div class="form-group">
                 <label for="confirm-pwd">Konfirmasi Password:</label>
-                <input type="password" class="form-control" id="confirm-pwd" name="confirm-pwd" onchange="checkPassword()" placeholder="konfirmasi password"
+                <input type="text" class="form-control" id="confirm-pwd" name="confirm-pwd" onchange="checkPassword()" placeholder="konfirmasi password"
                        name="confirm-pswd" required> 
             </div>  --> 
             <div class="nextbutton">

@@ -23,9 +23,6 @@
         <h2>Registrasi Nasabah Baru</h2>
         <form class="form-validasi" th:action="@{/registrasi/sukses}" method="post" th:object="${tbUsers}">
             <p>Silahkan periksa kembali data diri anda.</p>
-            <p th:text="'status :' + ${tbUsers.statusUser}"></p>
-            <p th:text="'role :' + ${tbUsers.role}"></p>
-            <p th:text="'keterangan :' + ${tbUsers.keterangan}"></p>
             <table>
                 <tr>
                     <td width="150px">Nama</td>

@@ -41,6 +41,12 @@ public class TbUsers implements java.io.Serializable {
 //	private Set<TbRekening> tbRekenings = new HashSet<TbRekening>(0);
 	private Set<TbLogAdmin> tbLogAdmins = new HashSet<TbLogAdmin>(0);
 
+	//Temporary(Gak masuk ke database)
+//	private String confirmPassword;
+//	private String tempPassword;
+//	private String confirmPin;
+//	private String tempPin;
+	
 	public TbUsers() {
 	}
 
@@ -88,7 +94,7 @@ public class TbUsers implements java.io.Serializable {
 		this.idUser = idUser;
 	}
 
-	@Column(name = "USERNAME", unique = true, nullable = false, length = 12)
+	@Column(name = "USERNAME", nullable = false, length = 12)
 	@NotBlank(message = "Butuh username goblok!")
 	@Size(max = 12, message = "Maksimal 12 Karakter")
 	public String getUsername() {
@@ -132,7 +138,7 @@ public class TbUsers implements java.io.Serializable {
 		this.alamat = alamat;
 	}
 
-	@Column(name = "NO_HP", unique = true, nullable = false, length = 12)
+	@Column(name = "NO_HP", nullable = false, length = 12)
 	@NotBlank(message = "No. HP harus diisi")
 	@Pattern(regexp = "^[0-9]{10,12}$", message = "Rentang No. HP 10 sampai 12 digit dan Harus Angka")
 	public String getNoHp() {
@@ -143,7 +149,7 @@ public class TbUsers implements java.io.Serializable {
 		this.noHp = noHp;
 	}
 
-	@Column(name = "NO_KTP", unique = true, nullable = false, length = 16)
+	@Column(name = "NO_KTP", nullable = false, length = 16)
 	@NotBlank(message = "No. KTP harus diisi")
 	@Pattern(regexp = "^[0-9]{16,16}$", message = "No. KTP 16 digit dan Harus Angka")
 	public String getNoKtp() {
@@ -172,7 +178,7 @@ public class TbUsers implements java.io.Serializable {
 		this.statusUser = statusUser;
 	}
 
-	@Column(name = "EMAIL", unique = true, nullable = false, length = 30)
+	@Column(name = "EMAIL", nullable = false, length = 30)
 	@NotBlank(message = "Email harus diisi")
 	public String getEmail() {
 		return this.email;
@@ -218,5 +224,48 @@ public class TbUsers implements java.io.Serializable {
 	public void setTbLogAdmins(Set<TbLogAdmin> tbLogAdmins) {
 		this.tbLogAdmins = tbLogAdmins;
 	}
+
+	//////////////////////////////////////////
+	//Getter Setter untuk Variabel Temporary//
+	//////////////////////////////////////////
+//	@NotBlank(message = "Confirm Password harus diisi")
+////	@Pattern(regexp = "^[0-9]{16,16}$", message = "Confirm Password harus 16 digit dan Harus Angka")
+//	public String getConfirmPassword() {
+//		return confirmPassword;
+//	}
+//
+//	public void setConfirmPassword(String confirmPassword) {
+//		this.confirmPassword = confirmPassword;
+//	}
+//
+//	@NotBlank(message = "Password harus diisi")
+////	@Pattern(regexp = "^[0-9]{8,6}$", message = "Password harus 6 digit dan Harus Angka")
+//	public String getTempPassword() {
+//		return tempPassword;
+//	}
+//
+//	public void setTempPassword(String tempPassword) {
+//		this.tempPassword = tempPassword;
+//	}
+//	
+//	@NotBlank(message = "Confirm PIN harus diisi")
+//	@Pattern(regexp = "^[0-9]{6,6}$", message = "Confirm PIN harus 6 digit dan Harus Angka")
+//	public String getConfirmPin() {
+//		return confirmPin;
+//	}
+//
+//	public void setConfirmPin(String confirmPin) {
+//		this.confirmPin = confirmPin;
+//	}
+//
+//	@NotBlank(message = "PIN harus diisi")
+//	@Pattern(regexp = "^[0-9]{6,6}$", message = "PIN 6 harus digit dan Harus Angka")
+//	public String getTempPin() {
+//		return tempPin;
+//	}
+//
+//	public void setTempPin(String tempPin) {
+//		this.tempPin = tempPin;
+//	}
 
 }
