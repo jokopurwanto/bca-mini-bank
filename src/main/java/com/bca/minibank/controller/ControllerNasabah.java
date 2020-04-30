@@ -55,10 +55,16 @@ public class ControllerNasabah {
 	}
 	
 	@PostMapping("/registrasi/konfirmasi")
-	public String registrasiPost(HttpServletRequest request, Model model, @Valid TbUsers tbUsers, BindingResult bindingResult) {
-
-		if(bindingResult.hasErrors())
+	public String registrasiPost(HttpServletRequest request, Model model, @Valid TbUsers tbUsers, BindingResult bindingResult) 
+	{
+		boolean flagU = false;
+		if(DaoTbUsers.findTbUsersByUsername(tbUsers.getUsername()) != null)
 		{
+			flagU = true;
+		}
+		if(bindingResult.hasErrors() || flagU == true)
+		{
+			model.addAttribute("flagU", flagU);
 			return "registrasi";
 		}
 		else

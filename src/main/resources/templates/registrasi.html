@@ -63,7 +63,8 @@
             <div class="form-group" >
                 <label for="username">Username:</label>
                 <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="masukkan username" onchange="validateUsername()" maxlength=12 required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username tidak valid</span><br>
+                <span  class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username tidak valid<br></span>
+                <span  class="text-danger" th:if="${flagU}" th:text="'Username telah digunakan!'"><br></span>
             </div>
             <div class="form-group">
                 <label for="pwd">Password:</label>

@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
@@ -88,8 +89,8 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "USERNAME", unique = true, nullable = false, length = 12)
-	@NotBlank
-	@Size(max = 12)
+	@NotBlank(message = "Butuh username goblok!")
+	@Size(max = 12, message = "Maksimal 12 Karakter")
 	public String getUsername() {
 		return this.username;
 	}
@@ -99,8 +100,8 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "PASSWORD", nullable = false)
-	@Size(min = 8)
-	@NotBlank
+	@Size(min = 8, message = "Minimal 8 Karakter")
+	@NotBlank(message = "Password harus diisi")
 	public String getPassword() {
 		return this.password;
 	}
@@ -110,8 +111,8 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "NAMA", nullable = false, length = 30)
-	@NotBlank
-	@Size(max = 30)
+	@NotBlank(message = "Nama harus diisi")
+	@Size(max = 30, message = "Maksimal 30 Karakter")
 	public String getNama() {
 		return this.nama;
 	}
@@ -121,8 +122,8 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "ALAMAT", nullable = false)
-	@NotBlank
-	@Size(max = 255)
+	@NotBlank(message = "Alamat harus diisi")
+	@Size(max = 255, message = "Maksimal 255 Karakter")
 	public String getAlamat() {
 		return this.alamat;
 	}
@@ -132,8 +133,8 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "NO_HP", unique = true, nullable = false, length = 12)
-	@NotBlank
-	@Size(min = 10, max = 12)
+	@NotBlank(message = "No. HP harus diisi")
+	@Pattern(regexp = "^[0-9]{10,12}$", message = "Rentang No. HP 10 sampai 12 digit dan Harus Angka")
 	public String getNoHp() {
 		return this.noHp;
 	}
@@ -143,8 +144,8 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "NO_KTP", unique = true, nullable = false, length = 16)
-	@NotBlank
-	@Size(min = 16, max = 16)
+	@NotBlank(message = "No. KTP harus diisi")
+	@Pattern(regexp = "^[0-9]{16,16}$", message = "No. KTP 16 digit dan Harus Angka")
 	public String getNoKtp() {
 		return this.noKtp;
 	}
@@ -172,7 +173,7 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "EMAIL", unique = true, nullable = false, length = 30)
-	@NotBlank
+	@NotBlank(message = "Email harus diisi")
 	public String getEmail() {
 		return this.email;
 	}
