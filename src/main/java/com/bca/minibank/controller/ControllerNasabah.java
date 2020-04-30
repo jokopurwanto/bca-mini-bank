@@ -21,6 +21,7 @@ import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbUserJnsTmp;
 import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.form.FormBikinPin;
+import com.bca.minibank.form.FormMasukanPin;
 import com.bca.minibank.form.FormRegisterUser;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.dao.DaoTbRekening;
@@ -43,6 +44,87 @@ public class ControllerNasabah {
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@GetMapping("/home") //URL Tidak Fix
+	public String homePage(HttpServletRequest request, Model model) {
+    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	request.getSession().setAttribute("pinattempt", 0);
+      	model.addAttribute("nama", user.getNama());
+		return "home";
+	}
+	
+	@GetMapping("/home/ceksaldo") //URL Tidak Fix
+	public String cekSaldoPage(Model model, FormMasukanPin formMasukanPin) 
+	{
+		return "ceksaldopinrequest";
+	}
+	
+	@PostMapping("/home/ceksaldo") //URL Tidak Fix
+	public String cekSaldoPinRequestPost(Model model, @Valid FormMasukanPin formMasukanPin, BindingResult bindingResult, HttpSession session, HttpServletRequest request) 
+	{
+		boolean flagPin = false;
+		boolean flagBlock = false;
+    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	TbRekening tbRekening = DaoTbRekening.getOne(user.getNoRek());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  
+		if(tbRekening.getStatusRek().equals("NOT ACTIVE"))
+		{
+			flagBlock = true;
+		}
+		else if(!encoder.matches(formMasukanPin.getPin(), tbRekening.getPin()))
+		{
+			  
+			int pinattempt = (Integer)session.getAttribute("pinattempt");
+			pinattempt++;
+			request.getSession().setAttribute("pinattempt", pinattempt);
+			flagPin = true;
+			if(pinattempt == 3)
+			{
+				flagBlock = true;
+				tbRekening.setStatusRek("NOT ACTIVE");
+				DaoTbRekening.update(tbRekening.getNoRek(), tbRekening);
+			}
+		}
+		if(bindingResult.hasErrors() || flagPin == true || flagBlock == true)
+		{
+			model.addAttribute("flagPin", flagPin);
+			model.addAttribute("flagBlock", flagBlock);
+			model.addAttribute("pinattempt", session.getAttribute("pinattempt"));
+			return "ceksaldopinrequest";
+		}
+		else
+		{
+			request.getSession().setAttribute("pinattempt", 0);
+	    	model.addAttribute("nama", user.getNama());
+			model.addAttribute("tbRekening", tbRekening);
+			return "ceksaldo";
+		}
+	}
+	
+//	public String cekSaldoPinRequestPage(Model model)
+//	{
+//		if()
+//		{
+//			
+//		}
+//		else
+//		{
+//			
+//		}
+//		return "ceksaldo";
+//	}
+	
+	@GetMapping("/konfirmasi") //fungsi Fix, URL tidak fix
+	public String konfirmasiPage(Model model) {
+    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	TbRekening TbRekeningTemp = DaoTbRekening.getOne(user.getNoRek());
+    	model.addAttribute("noRek", TbRekeningTemp.getNoRek());
+      	model.addAttribute("noKartu", TbRekeningTemp.getNoKartu());
+      	model.addAttribute("nama", user.getNama());
+      	model.addAttribute("username", user.getUsername());
+      	model.addAttribute("jenisTabungan", TbRekeningTemp.getTbJnsTab().getNamaJnsTab());
+		return "userterverifikasi";
+	}		
 	
 	@GetMapping("/konfirmasi/buatpin")
 	public String buatPinPage(FormBikinPin formBikinPin) 

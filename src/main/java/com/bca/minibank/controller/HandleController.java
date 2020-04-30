@@ -35,30 +35,5 @@ public class HandleController {
     	model.addAttribute("idUser", idUser);
     	model.addAttribute("nama", nama);
 		return "admin";
-	}
-	
-	@GetMapping("/konfirmasi") //fungsi Fix, URL tidak fix
-	public String konfirmasiPage(Model model) {
-    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	TbRekening TbRekeningTemp = DaoTbRekening.getOne(user.getNoRek());
-    	model.addAttribute("noRek", TbRekeningTemp.getNoRek());
-      	model.addAttribute("noKartu", TbRekeningTemp.getNoKartu());
-      	model.addAttribute("nama", user.getNama());
-      	model.addAttribute("username", user.getUsername());
-      	model.addAttribute("jenisTabungan", TbRekeningTemp.getTbJnsTab().getNamaJnsTab());
-		return "userterverifikasi";
 	}	
-	
-	@GetMapping("/home")
-	public String homePage(Model model) {
-    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	int idUser = user.getIdUser();
-    	String nama = user.getNama();
-    	String keterangan = user.getKeterangan();
-    	model.addAttribute("idUser", idUser);
-      	model.addAttribute("nama", nama);
-      	model.addAttribute("keterangan", keterangan);
-		return "home";
-	}
-	
 }

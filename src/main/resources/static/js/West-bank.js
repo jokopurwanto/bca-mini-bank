@@ -1,7 +1,16 @@
 
 function validateForm()
 {
-    if (validateEmail() && validateKtp() && validateNoTelp() && validatePwd() && checkPassword()&& validateName() && validateUsername()){
+    if (
+        validateName() &&
+        validateKtp() &&
+        dateValidation() &&
+        validateNoTelp() &&
+        validateEmail() &&
+        validateUsername() &&
+        validatePwd() &&
+        checkPassword()
+    ){
         alert('Terima kasih telah melakukan registrasi');
         return true;
     }
@@ -36,7 +45,7 @@ function validateNoTelp()
     if (telponNumber.value.length >= 10 && telponNumber.value.length <= 14){
         return true;
     }
-    alert("No HP terdiri dari minimum 10 dan maksimum 14 digit")
+    alert("No Handphone terdiri dari minimum 10 dan maksimum 14 digit")
     telponNumber.focus();
     return false;
 }
@@ -62,7 +71,7 @@ function checkPassword()
     if (confirmPwd.value === password){
         return true;
     }
-    alert("Password tidak sama.")
+    alert("Password tidak sama")
     confirmPwd.focus();
     return false;
 }
@@ -73,7 +82,7 @@ function validateName()
     if (name.value.length <= 30 && name.value.match(validasiHuruf)){
         return true;
     }
-    alert("Nama terdiri dari maksimum 30 karakter dan tidak mengandung angka.")
+    alert("Nama terdiri dari maksimum 30 karakter dan tidak mengandung angka")
     name.focus();
     return false;
 }
@@ -84,7 +93,21 @@ function validateUsername()
     if (username.value.length >= 6){
         return true;
     }
-    alert("Username terdiri dari minimum 6 karakter.")
+    alert("Username terdiri dari minimum 6 karakter")
     username.focus();
     return false;
+}
+
+function dateValidation()
+{
+    var dateInput = moment(document.getElementById('date').value, 'YYYY-MM-DD');
+    var dateNow = moment();
+    var calculate = Math.abs(parseInt(dateNow.diff(dateInput, 'years', true)));
+
+    if (calculate < 18){
+        alert("Umur kurang dari 18 tahun");
+        document.getElementById('date').focus();
+        return false;
+    }
+    return true;
 }
