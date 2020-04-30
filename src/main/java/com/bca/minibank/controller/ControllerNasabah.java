@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.bca.minibank.configuration.MyUserPrincipal;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbUsers;
+import com.bca.minibank.form.FormRegisterUser;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.dao.DaoTbRekening;
 import com.bca.minibank.dao.DaoTbJnsTab;
@@ -50,55 +51,68 @@ public class ControllerNasabah {
 	}
 	
 	@GetMapping("/registrasi")
-	public String registrasiPage(TbUsers tbUsers) {
+	public String registrasiPage(FormRegisterUser formRegisterUser) {
 		return "registrasi";
 	}
 	
-	@GetMapping("/registrasi/tes")
-	public String registrasitesPage(Model model, TbUsers tbUsers) {
-	//	TbUsers TbUsers = DaoTbUsers.findTbUsersByEmail("Block@block.co.id");
-		TbUsers TbUsers = DaoTbUsers.findTbUsersByNoHp("081299990000");
-//		TbUsers.setStatusUser("PENDING");
-//		TbUsers.setRole("NASABAH");
-//		TbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
-		model.addAttribute("tbUsers", TbUsers);
-		return "registrasikonfirmasi";
-	}
+//	@GetMapping("/registrasi/tes")
+//	public String registrasitesPage(Model model, TbUsers tbUsers) {
+//	//	TbUsers TbUsers = DaoTbUsers.findTbUsersByEmail("Block@block.co.id");
+//		TbUsers TbUsers = DaoTbUsers.findTbUsersByNoHp("081299990000");
+////		TbUsers.setStatusUser("PENDING");
+////		TbUsers.setRole("NASABAH");
+////		TbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
+//		model.addAttribute("tbUsers", TbUsers);
+//		return "registrasikonfirmasi";
+//	}
 	
 	@PostMapping("/registrasi/konfirmasi")
-	public String registrasiPost(HttpServletRequest request, Model model, @Valid TbUsers tbUsers, BindingResult bindingResult) 
+	public String registrasiPost(HttpServletRequest request, Model model, @Valid FormRegisterUser formRegisterUser, BindingResult bindingResult) 
 	{
 		boolean flagU = false;
 		boolean flagE = false;
 		boolean flagNoHp = false;
 		boolean flagNoKtp = false;
-		if(DaoTbUsers.findTbUsersByUsername(tbUsers.getUsername()) != null)
+		boolean flagCPass = false;
+		if(DaoTbUsers.findTbUsersByUsername(formRegisterUser.getUsername()) != null)
 		{
 			flagU = true;
 		}
-		if(DaoTbUsers.findTbUsersByEmail(tbUsers.getEmail()) != null)
+		if(DaoTbUsers.findTbUsersByEmail(formRegisterUser.getEmail()) != null)
 		{
 			flagE = true;
 		}
-		if(DaoTbUsers.findTbUsersByNoHp(tbUsers.getNoHp()) != null)
+		if(DaoTbUsers.findTbUsersByNoHp(formRegisterUser.getNoHp()) != null)
 		{
 			flagNoHp = true;
 		}
-		if(DaoTbUsers.findTbUsersByNoKtp(tbUsers.getNoKtp()) != null)
+		if(DaoTbUsers.findTbUsersByNoKtp(formRegisterUser.getNoKtp()) != null)
 		{
 			flagNoKtp = true;
 		}
-		if(bindingResult.hasErrors() || flagU == true || flagE == true || flagNoHp == true || flagNoKtp == true)
+		if(!formRegisterUser.getPassword().equals(formRegisterUser.getConfirmPassword()))
+		{
+			flagCPass = true;
+		}
+		if(bindingResult.hasErrors() || flagU == true || flagE == true || flagNoHp == true || flagNoKtp == true || flagCPass == true)
 		{
 			model.addAttribute("flagU", flagU);
 			model.addAttribute("flagE", flagE);
 			model.addAttribute("flagNoHp", flagNoHp);
 			model.addAttribute("flagNoKtp", flagNoKtp);
+			model.addAttribute("flagCPass", flagCPass);
 			return "registrasi";
 		}
 		else
 		{
-			tbUsers.setPassword(bCryptPasswordEncoder.encode(tbUsers.getPassword()));
+			TbUsers tbUsers = new TbUsers();
+			tbUsers.setNama(formRegisterUser.getNama());
+			tbUsers.setNoKtp(formRegisterUser.getNoKtp());
+			tbUsers.setNoHp(formRegisterUser.getNoHp());
+			tbUsers.setAlamat(formRegisterUser.getAlamat());
+			tbUsers.setEmail(formRegisterUser.getEmail());
+			tbUsers.setUsername(formRegisterUser.getUsername());
+			tbUsers.setPassword(bCryptPasswordEncoder.encode(formRegisterUser.getPassword()));
 			tbUsers.setStatusUser("PENDING");
 			tbUsers.setRole("NASABAH");
 			tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
