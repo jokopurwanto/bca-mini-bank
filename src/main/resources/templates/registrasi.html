@@ -55,14 +55,14 @@
                 <span  class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"><br></span>
                 <span  class="text-danger" th:if="${flagE}" th:text="'Email telah digunakan!'"><br></span>
             </div>
-<!--             <div class="form-group">
+         <div class="form-group">
                 <label for="sel1">Pilih Jenis Tabungan:</label>
-                <select class="form-control" id="sel1" >
-                    <option>Jenis 1</option>
-                    <option>Jenis 2</option>
-                    <option>Jenis 3</option>
+                <select class="form-control" id="sel1" th:field="*{idJnsTab}" >
+                	<div th:each="TbJnsTab : ${AllTbJnsTab}">
+	                    <option th:value="${TbJnsTab.idJnsTab}" th:text="${TbJnsTab.namaJnsTab}"></option>
+                    </div>
                 </select>
-            </div>--> 
+            </div>
             <div class="form-group" >
                 <label for="username">Username:</label>
                 <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="masukkan username" onchange="validateUsername()" maxlength=12 required>

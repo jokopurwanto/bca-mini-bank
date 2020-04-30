@@ -1,5 +1,7 @@
 package com.bca.minibank.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -14,12 +16,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bca.minibank.configuration.MyUserPrincipal;
+import com.bca.minibank.entity.TbJnsTab;
 import com.bca.minibank.entity.TbRekening;
+import com.bca.minibank.entity.TbUserJnsTmp;
 import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.form.FormBikinPin;
 import com.bca.minibank.form.FormRegisterUser;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.dao.DaoTbRekening;
+import com.bca.minibank.dao.DaoTbUserJnsTmp;
 import com.bca.minibank.dao.DaoTbJnsTab;
 
 @Controller
@@ -32,6 +37,9 @@ public class ControllerNasabah {
 	
 	@Autowired
 	DaoTbJnsTab DaoTbJnsTab;
+	
+	@Autowired
+	DaoTbUserJnsTmp DaoTbUserJnsTmp;
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -65,7 +73,9 @@ public class ControllerNasabah {
 	}
 	
 	@GetMapping("/registrasi")
-	public String registrasiPage(FormRegisterUser formRegisterUser) {
+	public String registrasiPage(Model model, FormRegisterUser formRegisterUser) {
+		List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
+		model.addAttribute("AllTbJnsTab", AllTbJnsTab);
 		return "registrasi";
 	}
 	
@@ -120,7 +130,15 @@ public class ControllerNasabah {
 			tbUsers.setRole("NASABAH");
 			tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
 			request.getSession().setAttribute("tbUsersTemp", tbUsers);
+			
+			TbJnsTab tbJnsTab = DaoTbJnsTab.getOne(formRegisterUser.getIdJnsTab());
+			TbUserJnsTmp tbUserJnsTmp = new TbUserJnsTmp();
+			tbUserJnsTmp.setTbJnsTab(tbJnsTab);
+			tbUserJnsTmp.setTbUsers(tbUsers);
+			request.getSession().setAttribute("tbUserJnsTmpTemp", tbUserJnsTmp);
+			
 			model.addAttribute("tbUsers", tbUsers);
+			model.addAttribute("tbUserJnsTmp", tbUserJnsTmp);
 			return "registrasikonfirmasi";
 		}
 	}
@@ -129,6 +147,7 @@ public class ControllerNasabah {
 	public String registrasisuksesPost(HttpSession session) 
 	{
 		DaoTbUsers.add((TbUsers)session.getAttribute("tbUsersTemp"));
+		DaoTbUserJnsTmp.add((TbUserJnsTmp)session.getAttribute("tbUserJnsTmpTemp"));
 		session.invalidate(); 
 		return "registrasiberhasil";
 	}

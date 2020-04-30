@@ -9,7 +9,7 @@ public class FormRegisterUser {
 	@Pattern(regexp = "^(?![0-9_.-])[a-z0-9_.-]{5,12}$", message = "Username tidak invalid, silahkan cek ketentuan pengisian username!")
 	private String username;
 	
-	@Size(min = 8, max = 32, message = "Rentang pengisian No. HP harus 8 sampai 32 digit!")
+	@Size(min = 8, max = 32, message = "Rentang pengisian password harus 8 sampai 32 digit!")
 	@Pattern(regexp = "((?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{8,32})", message = "Harus mengandung angka, huruf kapital dan huruf kecil!")
 	@NotBlank(message = "Password harus diisi!")
 	private String password;
@@ -38,7 +38,9 @@ public class FormRegisterUser {
 	@Size(max = 30, message = "Maksimal 30 Karakter!")
 	@Pattern(regexp = "^(.+)@(.+)$", message = "Pengisian email tidak valid!")
 	private String email;
-
+	
+	private int idJnsTab;
+	
 	public FormRegisterUser() {
 
 	}
@@ -105,5 +107,13 @@ public class FormRegisterUser {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getIdJnsTab() {
+		return idJnsTab;
+	}
+
+	public void setIdJnsTab(int idJnsTab) {
+		this.idJnsTab = idJnsTab;
 	}
 }
