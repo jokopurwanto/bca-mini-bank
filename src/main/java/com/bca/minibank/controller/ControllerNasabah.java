@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.bca.minibank.configuration.MyUserPrincipal;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbUsers;
+import com.bca.minibank.form.FormBikinPin;
 import com.bca.minibank.form.FormRegisterUser;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.dao.DaoTbRekening;
@@ -36,35 +37,37 @@ public class ControllerNasabah {
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@GetMapping("/konfirmasi/buatpin")
-	public String buatPinPage(Model model) {
-
+	public String buatPinPage(FormBikinPin formBikinPin) 
+	{
 		return "bikinpin";
 	}
 	
 	@PostMapping("/konfirmasi/buatpin")
-	public String buatPinPost(Model model, String pin) {
-		MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		TbRekening TbRekeningTemp = DaoTbRekening.getOne(user.getNoRek());
-		TbRekeningTemp.setPin(bCryptPasswordEncoder.encode(pin));
-		DaoTbRekening.update(user.getNoRek(), TbRekeningTemp);
-		return "redirect:/logout";
+	public String buatPinPost(Model model, @Valid FormBikinPin formBikinPin, BindingResult bindingResult) {
+		boolean flagPin = false;
+		if(!formBikinPin.getConfirmPin().equals(formBikinPin.getPin()))
+		{
+			flagPin = true;
+		}
+		if(bindingResult.hasErrors() || flagPin == true)
+		{
+			model.addAttribute("flagPin", flagPin);
+			return "bikinpin";
+		}
+		else
+		{
+			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			TbRekening TbRekeningTemp = DaoTbRekening.getOne(user.getNoRek());
+			TbRekeningTemp.setPin(bCryptPasswordEncoder.encode(formBikinPin.getPin()));
+			DaoTbRekening.update(user.getNoRek(), TbRekeningTemp);
+			return "redirect:/logout";
+		}
 	}
 	
 	@GetMapping("/registrasi")
 	public String registrasiPage(FormRegisterUser formRegisterUser) {
 		return "registrasi";
 	}
-	
-//	@GetMapping("/registrasi/tes")
-//	public String registrasitesPage(Model model, TbUsers tbUsers) {
-//	//	TbUsers TbUsers = DaoTbUsers.findTbUsersByEmail("Block@block.co.id");
-//		TbUsers TbUsers = DaoTbUsers.findTbUsersByNoHp("081299990000");
-////		TbUsers.setStatusUser("PENDING");
-////		TbUsers.setRole("NASABAH");
-////		TbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
-//		model.addAttribute("tbUsers", TbUsers);
-//		return "registrasikonfirmasi";
-//	}
 	
 	@PostMapping("/registrasi/konfirmasi")
 	public String registrasiPost(HttpServletRequest request, Model model, @Valid FormRegisterUser formRegisterUser, BindingResult bindingResult) 
@@ -130,3 +133,4 @@ public class ControllerNasabah {
 		return "registrasiberhasil";
 	}
 }
+
