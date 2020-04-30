@@ -12,10 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 /**
@@ -95,8 +93,8 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "USERNAME", nullable = false, length = 12)
-	@NotBlank(message = "Butuh username goblok!")
-	@Size(max = 12, message = "Maksimal 12 Karakter")
+	@NotBlank(message = "Username harus diisi")
+	@Pattern(regexp = "^(?![0-9_.-])[a-z0-9_.-]{5,12}$", message = "Username tidak invalid, silahkan cek ketentuan pengisian username")
 	public String getUsername() {
 		return this.username;
 	}
@@ -106,7 +104,7 @@ public class TbUsers implements java.io.Serializable {
 	}
 
 	@Column(name = "PASSWORD", nullable = false)
-	@Size(min = 8, message = "Minimal 8 Karakter")
+	@Size(min = 8, max = 32, message = "Minimal 8 Karakter dan maksimal 32 karakter")
 	@NotBlank(message = "Password harus diisi")
 	public String getPassword() {
 		return this.password;
@@ -180,6 +178,8 @@ public class TbUsers implements java.io.Serializable {
 
 	@Column(name = "EMAIL", nullable = false, length = 30)
 	@NotBlank(message = "Email harus diisi")
+	@Size(max = 30, message = "Maksimal 30 Karakter")
+	@Pattern(regexp = "^(.+)@(.+)$", message = "Pengisian email tidak valid")
 	public String getEmail() {
 		return this.email;
 	}

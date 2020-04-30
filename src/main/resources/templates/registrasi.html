@@ -39,7 +39,7 @@
             </div> -->
             <div class="form-group">
                 <label for="HP">No Handphone:</label>
-                <input type="number" class="form-control" id="hp" th:field="*{noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon" required>
+                <input type="text" class="form-control" id="hp" th:field="*{noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon" maxlength=12 required>
                 <span  class="text-danger" th:if="${#fields.hasErrors('noHp')}" th:errors="*{noHp}">No HP tidak valid<br></span>
                 <span  class="text-danger" th:if="${flagNoHp}" th:text="'No. HP telah digunakan!'"><br></span>
             </div>
