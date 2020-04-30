@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.repository.RepositoryTbUsers;
-import com.bca.minibank.dao.DaoTbUsers;
+
 
 @Service
 public class MiniBankUserDetailsService implements UserDetailsService {
@@ -26,22 +26,4 @@ public class MiniBankUserDetailsService implements UserDetailsService {
         }
         return new MyUserPrincipal(user);
     }
- 
-//    @Override
-//    public User registerNewUserAccount(UserDto accountDto) throws EmailExistsException {
-//      
-//        if (emailExist(accountDto.getEmail())) 
-//    	  {
-//            throw new EmailExistsException("There is an account with that email address: " + accountDto.getEmail()); 
-//        }
-//        User user = new User();
-//     
-//        user.setFirstName(accountDto.getFirstName());
-//        user.setLastName(accountDto.getLastName());
-//        user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
-//        user.setEmail(accountDto.getEmail());
-//     
-//        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-//        return repository.save(user);
-//    }
 }

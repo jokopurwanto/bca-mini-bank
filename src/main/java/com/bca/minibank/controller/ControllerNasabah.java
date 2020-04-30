@@ -100,20 +100,7 @@ public class ControllerNasabah {
 			return "ceksaldo";
 		}
 	}
-	
-//	public String cekSaldoPinRequestPage(Model model)
-//	{
-//		if()
-//		{
-//			
-//		}
-//		else
-//		{
-//			
-//		}
-//		return "ceksaldo";
-//	}
-	
+		
 	@GetMapping("/konfirmasi") //fungsi Fix, URL tidak fix
 	public String konfirmasiPage(Model model) {
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
