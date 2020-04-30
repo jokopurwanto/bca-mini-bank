@@ -70,7 +70,7 @@ public class TbLogAdmin implements java.io.Serializable {
 		this.tbUsers = tbUsers;
 	}
 
-	@Column(name = "ACTION", nullable = false, length = 7)
+	@Column(name = "ACTION", nullable = false, length = 15)
 	public String getAction() {
 		return this.action;
 	}
