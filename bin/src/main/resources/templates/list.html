@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+</head>
+
+<body>
+<table>
+        <thead>
+            <tr>
+                <th>ID TAB</th>
+                <th>NAMA TAB</th>
+                <th>BIAYA ADMIN</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tab : ${jnsTab}">
+				<td th:text="${tab.idJnsTab}"></td>
+				<td th:text="${tab.namaJnsTab}"></td>
+				<td th:text="${tab.biayaAdmin}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
