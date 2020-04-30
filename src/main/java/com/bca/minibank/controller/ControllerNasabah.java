@@ -50,7 +50,7 @@ public class ControllerNasabah {
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	request.getSession().setAttribute("pinattempt", 0);
       	model.addAttribute("nama", user.getNama());
-		return "home";
+		return "Home";
 	}
 	
 	@GetMapping("/home/ceksaldo") //URL Tidak Fix
