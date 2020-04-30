@@ -24,15 +24,15 @@ public class DaoTbMutasi {
 		return  this.repositoryTbMutasi.findAll();
 	}
 	
-	public void add(TbMutasi TbMutasi) {
-		this.repositoryTbMutasi.save(TbMutasi);
+	public void add(TbMutasi tbMutasi) {
+		this.repositoryTbMutasi.save(tbMutasi);
 	}
 	
 	public void delete(int idMutasi) {
 		this.repositoryTbMutasi.deleteById(idMutasi);
 	}
 	
-	public void update(TbMutasi TbMutasi) {
-		this.repositoryTbMutasi.save(TbMutasi);
+	public void update(TbMutasi tbMutasi) {
+		this.repositoryTbMutasi.save(tbMutasi);
 	}
 }

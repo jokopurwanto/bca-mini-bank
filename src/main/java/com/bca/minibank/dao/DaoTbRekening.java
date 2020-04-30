@@ -40,4 +40,8 @@ public class DaoTbRekening {
 		this.repositoryTbRekening.save(tbRekening);
 	}
 	
+	public void updateSaldo(String noRek, double saldo) {
+		TbRekening tbRekening = this.getOne(noRek);
+		tbRekening.setSaldo(saldo);
+	}	
 }

@@ -31,13 +31,13 @@ public class TbTransaksi implements java.io.Serializable {
 	private Date tglTransaksi;
 	private String statusTransaksi;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
-	private int nominal;
+	private double nominal;
 
 	public TbTransaksi() {
 	}
 
 	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Date tglTransaksi, String statusTransaksi, int nominal) {
+			Date tglTransaksi, String statusTransaksi, double nominal) {
 		this.idTransaksi = idTransaksi;
 		this.tbRekening = tbRekening;
 		this.jnsTransaksi = jnsTransaksi;
@@ -48,7 +48,7 @@ public class TbTransaksi implements java.io.Serializable {
 	}
 
 	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Date tglTransaksi, String statusTransaksi, int nominal, Set<TbMutasi> tbMutasis) {
+			Date tglTransaksi, String statusTransaksi, double nominal, Set<TbMutasi> tbMutasis) {
 		this.idTransaksi = idTransaksi;
 		this.tbRekening = tbRekening;
 		this.jnsTransaksi = jnsTransaksi;
@@ -126,12 +126,12 @@ public class TbTransaksi implements java.io.Serializable {
 		this.tbMutasis = tbMutasis;
 	}
 
-	@Column(name = "NOMINAL", nullable = false, precision = 22, scale = 0)
-	public int getNominal() {
+	@Column(name = "NOMINAL", nullable = false, precision = 126, scale = 0)
+	public double getNominal() {
 		return this.nominal;
 	}
 
-	public void setNominal(int nominal) {
+	public void setNominal(double nominal) {
 		this.nominal = nominal;
 	}
 }

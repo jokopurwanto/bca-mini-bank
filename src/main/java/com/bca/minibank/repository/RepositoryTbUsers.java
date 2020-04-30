@@ -17,5 +17,6 @@ public interface RepositoryTbUsers extends JpaRepository<TbUsers, Integer> {
 	List<TbUsers> findByStatusUserAndRole(String statusUser, String role);
 	List<TbUsers> findByStatusUserAndRoleAndUsernameContainingIgnoreCase(String statusUser, String role, String username);
 	
+	TbUsers findByUsername(String username);
 	
 }

@@ -58,4 +58,8 @@ public class DaoTbUsers {
 		TbUsers user = this.repositoryTbUsers.getOne(idUser);
 		user.setKeterangan(keterangan);
 	}
+	
+	public TbUsers findByUsername(String username) {
+		return  this.repositoryTbUsers.findByUsername(username);
+	}
 }
