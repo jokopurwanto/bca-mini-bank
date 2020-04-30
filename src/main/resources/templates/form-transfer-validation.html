@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+</head>
+
+<body>
+    <form th:action="@{/transferValidation}" th:object="${formTransferValidationPage}" method="post">
+        
+        <div>
+            <label>Jenis Transaksi: </label>
+            <input type="text" th:field="*{jnsTransaksi}" id="jnsTransaksi" placeholder="jnsTransaksi">
+            <span th:if="${#fields.hasErrors('jnsTransaksi')}" th:errors="*{jnsTransaksi}"></span>
+        </div>
+        
+        <div>
+            <label>Tanggal: </label>
+            <input type="text" th:field="*{tglTransaksi}" id="tglTransaksi" placeholder="tglTransaksi">
+            <span th:if="${#fields.hasErrors('tglTransaksi')}" th:errors="*{tglTransaksi}"></span>
+        </div>
+        
+        <div>
+            <label>No Rek: </label>
+            <input type="text" th:field="*{noRek}" id="noRek" placeholder="noRek">
+            <span th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span>
+        </div>
+        
+        <div>
+            <label>No Rek Tujuan: </label>
+            <input type="text" th:field="*{noRekTujuan}" id="noRekTujuan" placeholder="noRekTujuan">
+            <span th:if="${#fields.hasErrors('noRekTujuan')}" th:errors="*{noRekTujuan}"></span>
+        </div>
+        
+        <div>
+            <label>Nama Penerima: </label>
+            <input type="text" th:field="*{namaPenerima}" id="namaPenerima" placeholder="namaPenerima">
+            <span th:if="${#fields.hasErrors('namaPenerima')}" th:errors="*{namaPenerima}"></span>
+        </div>
+        
+        <div>
+            <label>Nominal: </label>
+            <input type="text" th:field="*{nominal}" id="nominal" placeholder="nominal">
+            <span th:if="${#fields.hasErrors('nominal')}" th:errors="*{nominal}"></span>
+        </div>
+        <div>
+            <label>Keterangan: </label>
+            <input type="text" th:field="*{keterangan}" id="keterangan" placeholder="keterangan">
+            <span th:if="${#fields.hasErrors('keterangan')}" th:errors="*{keterangan}"></span>
+        </div>
+        
+        <div>
+            <label>PIN: </label>
+            <input type="text" th:field="*{pin}" id="pin" placeholder="pin">
+            <span th:if="${#fields.hasErrors('pin')}" th:errors="*{pin}"></span>
+        </div>
+        <div>
+        
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+    
+    <a th:href="@{/transfer}">
+    	<span>Edit Transfer</span>
+    </a>
+
+    <p>page validation transfer</p>
+</body>
+
+</html>
