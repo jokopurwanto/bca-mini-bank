@@ -77,7 +77,7 @@ public class ControllerNasabah {
 			pinattempt++;
 			request.getSession().setAttribute("pinattempt", pinattempt);
 			flagPin = true;
-			if(pinattempt == 3)
+			if(pinattempt >= 3)
 			{
 				flagBlock = true;
 				tbRekening.setStatusRek("NOT ACTIVE");

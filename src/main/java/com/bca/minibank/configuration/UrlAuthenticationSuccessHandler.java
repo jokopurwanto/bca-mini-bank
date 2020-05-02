@@ -66,6 +66,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         throw new IllegalStateException();
     }
     
+    //Ngebersihin atau clear session
     protected void clearAuthenticationAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
