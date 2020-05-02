@@ -1,5 +1,6 @@
 package com.bca.minibank.configuration;
 
+
 //import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 					.logout()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-					.logoutSuccessUrl("/login").and()
+					.logoutSuccessUrl("/login")
+				.and()
 					.exceptionHandling()
 					.accessDeniedPage("/access-denied");
 	}

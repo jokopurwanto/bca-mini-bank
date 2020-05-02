@@ -52,6 +52,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         roleTargetUrlMap.put("NASABAH", "/home");
         roleTargetUrlMap.put("AKUNBARU", "/konfirmasi");
         
+        //ngecek autoritas
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) 
         {
