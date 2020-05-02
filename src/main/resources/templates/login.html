@@ -12,7 +12,7 @@
 
 <body>
 	<form class="box" name='f'  th:action="@{/login}" method="post">
-		<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;" th:text="'Error: ' +  'Invalid Username and Password'"></p></div>
+		<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;" th:text="${error}"></p></div>
 		<input type="text" name="username" id="username" placeholder="username">
 		<input type="password" name="password" id="password" placeholder="password">
 		<input type="submit" value="Login">

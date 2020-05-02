@@ -48,7 +48,6 @@ public class ControllerNasabah {
 	@GetMapping("/home") //URL Tidak Fix
 	public String homePage(HttpServletRequest request, Model model) {
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	request.getSession().setAttribute("pinattempt", 0);
       	model.addAttribute("nama", user.getNama());
 		return "Home";
 	}

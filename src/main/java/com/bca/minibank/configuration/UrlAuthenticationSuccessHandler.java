@@ -27,6 +27,7 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request,HttpServletResponse response, Authentication authentication) throws IOException 
     {
     			handle(request, response, authentication);
+    			request.getSession().setAttribute("pinattempt", 0);
         		clearAuthenticationAttributes(request);
     }
     

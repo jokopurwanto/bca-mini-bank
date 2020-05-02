@@ -1,5 +1,8 @@
 package com.bca.minibank.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,7 +29,12 @@ public class HandleController {
 	}
 	
 	@GetMapping("/login")
-	public String loginPage() {
+	public String loginPage(Model model, HttpSession session) {
+		String error = (String)session.getAttribute("error");
+		if(error!= null)
+		{
+			model.addAttribute("error", error);
+		}
 		return "login";
 	}
 	
