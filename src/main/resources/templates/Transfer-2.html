@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/5c4f979ba0.js"
+	crossorigin="anonymous"></script>
+<title>Transfer</title>
+<link rel="stylesheet" href="css/West-bank.css">
+</head>
+<body class="home-body">
+	<div class="all">
+		<div class="header">
+			<img src="images/WestBank.png" alt="logo" class="home-logo">
+			<div class="menu">
+				<div class="container mt-4">
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a class="nav-link" href="#">Beranda</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" href="#">Cek
+								Saldo</a></li>
+						<li class="nav-item"><a class="nav-link active" href="#">Transfer</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" href="#">Setor
+								Tunai</a></li>
+						<li class="nav-item"><a class="nav-link" href="#">Cek
+								Mutasi</a></li>
+						<li class="nav-item"><a class="nav-link" href="#">Pengaturan</a>
+						</li>
+						<li class="nav-item">
+							<div class="logout">
+								<a class="navbar-brand" href="#"> <i
+									class="fas fa-sign-out-alt"></i> Logout
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="content">
+			<form th:action="@{/transferValidation}"
+				th:object="${formTransferValidationPage}" method="post">
+				<div class="sub-content-transaksi2">
+					<div class="row">
+						<div class="col-sm">
+							Jenis Transaksi<br>
+							Tanggal<br> 
+							No Rekening Pengirim<br>
+							No Rekening Penerima<br> 
+							Nama Penerima<br> 
+							Keterangan<br>
+							Nominal<br> 
+							PIN Transaksi
+						</div>
+						<div class="col-sm">
+							<label th:value="${formTransferValidationPage.jnsTransaksi}"
+								th:text="${formTransferValidationPage.jnsTransaksi}"></label> <input
+								type="hidden" th:field="*{jnsTransaksi}" id="jnsTransaksi"
+								placeholder="jnsTransaksi"> <span
+								th:if="${#fields.hasErrors('jnsTransaksi')}"
+								th:errors="*{jnsTransaksi}"></span><br> <label
+								th:value="${formTransferValidationPage.tglTransaksi}"
+								th:text="${formTransferValidationPage.tglTransaksi}"></label> <input
+								type="hidden" th:field="*{tglTransaksi}" id="tglTransaksi"
+								placeholder="tglTransaksi"> <span
+								th:if="${#fields.hasErrors('tglTransaksi')}"
+								th:errors="*{tglTransaksi}"></span><br> <label
+								th:value="${formTransferValidationPage.noRek}"
+								th:text="${formTransferValidationPage.noRek}"></label> <input
+								type="hidden" th:field="*{noRek}" id="noRek" placeholder="noRek">
+							<span th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span><br>
+							<label th:value="${formTransferValidationPage.noRekTujuan}"
+								th:text="${formTransferValidationPage.noRekTujuan}"></label> <input
+								type="hidden" th:field="*{noRekTujuan}" id="noRekTujuan"
+								placeholder="noRekTujuan"> <span
+								th:if="${#fields.hasErrors('noRekTujuan')}"
+								th:errors="*{noRekTujuan}"></span><br> <label
+								th:value="${formTransferValidationPage.namaPenerima}"
+								th:text="${formTransferValidationPage.namaPenerima}"></label> <input
+								type="hidden" th:field="*{namaPenerima}" id="namaPenerima"
+								placeholder="namaPenerima"> <span
+								th:if="${#fields.hasErrors('namaPenerima')}"
+								th:errors="*{namaPenerima}"></span><br> <label
+								th:value="${formTransferValidationPage.keterangan}"
+								th:text="${formTransferValidationPage.keterangan}"></label> <input
+								type="hidden" th:field="*{keterangan}" id="keterangan"
+								placeholder="keterangan"> <span
+								th:if="${#fields.hasErrors('keterangan')}"
+								th:errors="*{keterangan}"></span><br> <label
+								th:value="${formTransferValidationPage.nominal}"
+								th:text="${formTransferValidationPage.nominal}"></label> <input
+								type="hidden" th:field="*{nominal}" id="nominal"
+								placeholder="nominal"> <span
+								th:if="${#fields.hasErrors('nominal')}" th:errors="*{nominal}"></span><br>
+							<input type="password" pattern="[0-9]*" inputmode="numeric" th:field="*{pin}" id="pin" class="form-control" placeholder="pin">
+            				<span th:if="${#fields.hasErrors('pin')}" th:errors="*{pin}" style="color: red"></span>
+						</div>
+					</div>
+				</div>
+				<div class="next-button">
+					<input type="submit" class="btn btn-primary" value="Lanjut"></a>
+				</div>
+			</form>
+			<div class="back-button">
+				<a th:href="@{/transfer}"><i
+					class="fas fa-chevron-circle-left fa-lg"></i>Back</a>
+			</div>
+		</div>
+		<div class="footer">
+			<br>
+			<p>Copyright 2020 PT West Bank Indonesia Tbk</p>
+		</div>
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+</body>
+</html>

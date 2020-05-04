@@ -1,0 +1,263 @@
+.all{
+    width: 1000px;
+    height:650px ;
+    margin: 35px auto;
+    font-family: 'Open Sans', sans-serif;
+}
+.back-button{
+    margin-left: 85%;
+    margin-top: 20px;
+}
+.back-button a{
+    color: green;
+    font-size: 16px;
+}
+.carousel-inner{
+    margin-left: 10%;
+}
+.container h2{
+    font-family: 'Roboto', sans-serif;
+    margin-top: 80px;
+    color: rgba(0, 0, 0, 0.911);
+}
+.container h3{
+    font-family: 'Roboto', sans-serif;
+    margin-top: 80px;
+    color:black;
+}
+.container h4{
+    font-family: 'Roboto', sans-serif;
+    margin-top: 20px;
+    color:black;
+}
+.container input{
+    background-color:white;
+}
+.content{
+    background-color:white;
+    height: 80%;
+    border: 4px solid white;
+    border-radius: 0 0 20px 20px;
+}
+.content h2{
+    margin-top: 2%;
+}
+.footer{
+    background-color:rgba(11, 18, 124, 0.945);
+    height: 8%;
+    text-align: center;
+    color: white;
+    border: 4px solid rgba(11, 18, 124, 0.945);
+    border-radius: 20px;
+    font-size: 12px;
+}
+footer.regist{
+    font-size: 14px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.911);
+    margin-bottom: 10px;
+}
+footer.registsuccess{
+    color: black;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 50px;
+}
+footer.validregist{
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    margin-top: 120px;
+}
+form{
+    background-color:white;
+    width: 700px;
+    padding: 20px;
+    margin: 20px auto;
+}
+.form-create-pin{
+    background-color:rgba(75, 72, 72, 0.952);
+    width: 500px;
+    padding: 30px;
+    margin: 50px auto;
+    color: white;
+    border-radius: 7px;
+}
+.form-validasi{
+    background-color:whitesmoke;
+    width: 700px;
+    padding: 50px;
+    margin: 20px auto;
+    border-radius: 7px;
+}
+.form-regist-success{
+    background-color:rgba(83, 78, 78, 0.89);
+    width: 600px;
+    padding: 50px;
+    margin: 20px auto;
+    color: white;
+    border-radius: 7px;
+}
+h1, h2, h3, h4{
+    text-align: center;
+}
+.header{
+    background-color:white;
+    height: 22%;
+    border: 4px solid white;
+    border-radius: 20px 20px 0 0;
+}
+.home-body{
+    margin: 0;
+    padding: 0;
+    background: url(../images/background.png); 
+    background-size: 100%;
+}
+.home-logo{
+    margin: 20px 10px;
+    height:25px;
+    position: absolute;
+}
+.home-name{
+    margin-top: 20px;
+    margin-left: 50px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+}
+.loginbody{
+    background-color: rgba(11, 18, 124, 0.945);
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+.loginbody h1{
+    margin-top: 6%;
+}
+.loginframe{
+    width: 400px;
+    padding: 4% 0 0;
+    margin: auto;
+}
+.loginframe button {
+    outline: 0;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 30px;
+  }
+.loginframe input {
+    outline: 0;
+    background: #f2f2f2fa;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+.logout a{
+    color: white;
+    font-size: 16px;
+    margin-left: 80%;
+}
+.menu{
+    margin-top: 6%;
+    background-color:rgba(11, 18, 124, 0.945);
+}
+.navbar-brand:hover{
+    color: red;
+    }
+.nav-link{
+    color: white;
+}
+.nav-link:hover{
+    color: rgb(64, 231, 64);
+    }
+.active{
+    background-color:whitesmoke;
+    color: black;
+    border: 1px solid rgba(11, 18, 124, 0.945);
+}
+.next-button{
+    margin-left: 70%;
+  }
+.nextbutton{
+      margin-left: 85%;
+  }
+.nextbutton2{
+    margin-left: 45%;
+    margin-top: 30px;
+}
+.ok-button a{
+    margin-top: 10px;
+    margin-left: 45%;
+  }
+.registbody{
+    margin: 0;
+    padding: 0;
+    background: url(Images/background.png); 
+    background-size: 100%;
+}
+.registbutton{
+    margin-left: 45%;
+    margin-top: 40px;
+    }
+.regist-success-body{
+    margin: 0;
+    padding: 0;
+    background: url(Images/background.png); 
+    background-size: 100%;
+}
+.sub-content-transaksi{
+    width: 500px;
+    background-color: rgb(207, 205, 205);
+    margin: 20px auto;
+    padding : 20px;
+    font-size: 14px;
+    color: black;
+    border-radius: 7px;
+}
+.sub-content-transaksi input{
+    font-size: 14px;
+    width: 300px;
+    height: 25px;
+}
+.sub-content-transaksi textarea{
+    font-size: 14px;
+}
+.sub-content-transaksi2{
+    width: 500px;
+    background-color: rgb(207, 205, 205);
+    margin: 20px auto;
+    padding : 10px;
+    font-size: 14px;
+    color: black;
+    border-radius: 7px;
+}
+.sub-content-transaksi2 input{
+    font-size: 12px;
+    width: 200px;
+    height: 25px;
+}
+.success{
+    height: 150px;
+    margin-left: 45%;
+    margin-top: 5%;
+}
+.success-transfer{
+    height: 70px;
+    margin-left: 45%;
+    margin-top: 1%;
+}
+
+
+
+
+
+
+
+
+
+
+

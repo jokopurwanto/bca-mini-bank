@@ -11,49 +11,42 @@
         
         <div>
             <label>Jenis Transaksi: </label>
-             <label th:value="${formTransferValidationPage.jnsTransaksi}"  th:text="${formTransferValidationPage.jnsTransaksi}"></label>
-            <input type="hidden" th:field="*{jnsTransaksi}" id="jnsTransaksi" placeholder="jnsTransaksi">
+            <input type="text" th:field="*{jnsTransaksi}" id="jnsTransaksi" placeholder="jnsTransaksi">
             <span th:if="${#fields.hasErrors('jnsTransaksi')}" th:errors="*{jnsTransaksi}"></span>
         </div>
         
         <div>
             <label>Tanggal: </label>
-            <label th:value="${formTransferValidationPage.tglTransaksi}"  th:text="${formTransferValidationPage.tglTransaksi}"></label>
-            <input type="hidden" th:field="*{tglTransaksi}" id="tglTransaksi" placeholder="tglTransaksi">
+            <input type="text" th:field="*{tglTransaksi}" id="tglTransaksi" placeholder="tglTransaksi">
             <span th:if="${#fields.hasErrors('tglTransaksi')}" th:errors="*{tglTransaksi}"></span>
         </div>
         
         <div>
             <label>No Rek: </label>
-             <label th:value="${formTransferValidationPage.noRek}"  th:text="${formTransferValidationPage.noRek}"></label>
-            <input type="hidden" th:field="*{noRek}" id="noRek" placeholder="noRek">
+            <input type="text" th:field="*{noRek}" id="noRek" placeholder="noRek">
             <span th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span>
         </div>
         
         <div>
             <label>No Rek Tujuan: </label>
-            <label th:value="${formTransferValidationPage.noRekTujuan}"  th:text="${formTransferValidationPage.noRekTujuan}"></label>
-            <input type="hidden" th:field="*{noRekTujuan}" id="noRekTujuan" placeholder="noRekTujuan">
+            <input type="text" th:field="*{noRekTujuan}" id="noRekTujuan" placeholder="noRekTujuan">
             <span th:if="${#fields.hasErrors('noRekTujuan')}" th:errors="*{noRekTujuan}"></span>
         </div>
         
         <div>
             <label>Nama Penerima: </label>
-             <label th:value="${formTransferValidationPage.namaPenerima}"  th:text="${formTransferValidationPage.namaPenerima}"></label>
-            <input type="hidden" th:field="*{namaPenerima}" id="namaPenerima" placeholder="namaPenerima">
+            <input type="text" th:field="*{namaPenerima}" id="namaPenerima" placeholder="namaPenerima">
             <span th:if="${#fields.hasErrors('namaPenerima')}" th:errors="*{namaPenerima}"></span>
         </div>
         
         <div>
             <label>Nominal: </label>
-             <label th:value="${formTransferValidationPage.nominal}"  th:text="${formTransferValidationPage.nominal}"></label>
-            <input type="hidden" th:field="*{nominal}" id="nominal" placeholder="nominal">
+            <input type="text" th:field="*{nominal}" id="nominal" placeholder="nominal">
             <span th:if="${#fields.hasErrors('nominal')}" th:errors="*{nominal}"></span>
         </div>
         <div>
             <label>Keterangan: </label>
-           <label th:value="${formTransferValidationPage.keterangan}"  th:text="${formTransferValidationPage.keterangan}"></label>            
-           <input type="hidden" th:field="*{keterangan}" id="keterangan" placeholder="keterangan">
+            <input type="text" th:field="*{keterangan}" id="keterangan" placeholder="keterangan">
             <span th:if="${#fields.hasErrors('keterangan')}" th:errors="*{keterangan}"></span>
         </div>
         

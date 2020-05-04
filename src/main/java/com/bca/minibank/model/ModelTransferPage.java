@@ -6,7 +6,7 @@ public class ModelTransferPage {
 	
 	private String noRek;
 	private String noRekTujuan;
-	private int nominal;
+	private String nominal;
 	private String keterangan;
 	
 	public ModelTransferPage(FormTransferPage formTransferPage) {
@@ -28,10 +28,10 @@ public class ModelTransferPage {
 	public void setNoRekTujuan(String noRekTujuan) {
 		this.noRekTujuan = noRekTujuan;
 	}
-	public int getNominal() {
+	public String getNominal() {
 		return nominal;
 	}
-	public void setNominal(int nominal) {
+	public void setNominal(String nominal) {
 		this.nominal = nominal;
 	}
 	public String getKeterangan() {

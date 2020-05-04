@@ -2,6 +2,8 @@ package com.bca.minibank.form;
 
 import java.util.Date;
 
+import javax.validation.constraints.Pattern;
+
 public class FormTransferValidationPage {
 
 	private String jnsTransaksi;
@@ -10,7 +12,9 @@ public class FormTransferValidationPage {
 	private String noRekTujuan;
 	private String namaPenerima;
 	private String keterangan;
-	private int nominal;
+	private String nominal;
+	
+	@Pattern(regexp="(^[0-9]{6})", message = "PIN harus berupa angka dan 6 digit")
 	private String pin;
 	
 	public String getJnsTransaksi() {
@@ -49,10 +53,10 @@ public class FormTransferValidationPage {
 	public void setKeterangan(String keterangan) {
 		this.keterangan = keterangan;
 	}
-	public int getNominal() {
+	public String getNominal() {
 		return nominal;
 	}
-	public void setNominal(int nominal) {
+	public void setNominal(String nominal) {
 		this.nominal = nominal;
 	}
 	public String getPin() {
