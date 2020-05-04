@@ -37,6 +37,7 @@ nav a:hover {
   	<a href="/adminNewUsers">USER BARU</a>
   	<a href="/adminBlockedUsers"  >BLOCKED USER</a>
   	<a href="/adminTransaksiSetor">ACC SETOR</a>
+    <a href="/adminListRekening">NON-ACTIVE REKENING</a> 
   </nav>
 <div class="content">
 	<form action="/adminVerifiedUsers" method="post">
@@ -51,14 +52,13 @@ nav a:hover {
 	<table cellspacing='0'>
 		<thead>
 			<tr>
-				<th>Status</th>
+				<th>Status User</th>
 				<th>Username</th>
 				<th>Nama</th>
-				<th>No.Rek</th>
 				<th>Alamat</th>
 				<th>No.HP</th>
 				<th>Email</th>
-				<th>Jen.Tab</th>
+				<th>No.Rek</th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -69,11 +69,15 @@ nav a:hover {
 				<td th:text="${users.statusUser}"></td>
 				<td th:text="${users.username}"></td>
 				<td th:text="${users.nama}"></td>
-				<td   th:text="${users.tbRekening.noRek}"></td>
 				<td th:text="${users.alamat}"></td>
 				<td th:text="${users.noHp}"></td>
 				<td th:text="${users.email}"></td>
-				<td th:text="${users.tbRekening.tbJnsTab.namaJnsTab}"></td>	
+				<form action="/adminDetailRekening" method="post">
+				<td>
+					<input type="hidden"  name="noRek" th:value="${users.tbRekening.noRek}">
+					<button type="submit"  class="btn" style="color:#000080;"><span th:text="${users.tbRekening.noRek}"></span></button>
+				</td>
+				</form>
 				<form action="/adminTransaksiUser" method="post">
 					<td>
 						<input type="hidden"  name="idUser" th:value="${users.idUser}">

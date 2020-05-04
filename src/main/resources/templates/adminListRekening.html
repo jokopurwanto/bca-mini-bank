@@ -1,9 +1,9 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<link rel="icon" href="img/icon.png" type="image/png">
-	<title>Blocked User</title>
+	<link rel="icon" type="img/png" href="/img/icon.png">
+	<title>Non-Aktif Rekening</title>
 	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -35,49 +35,42 @@ nav a:hover {
 <nav>
   	<a href="/adminVerifiedUsers">DATA USER</a>
   	<a href="/adminNewUsers">USER BARU</a>
-  	<a href="/adminBlockedUsers" style="color:blue;" >BLOCKED USER</a>
+  	<a href="/adminBlockedUsers"  >BLOCKED USER</a>
   	<a href="/adminTransaksiSetor">ACC SETOR</a>
-    <a href="/adminListRekening">NON-ACTIVE REKENING</a> 
+    <a style="color:blue;">NON_ACTIVE REKENING</a>  
   </nav>
 <div class="content">
-	<form action="/adminBlockedUsers" method="post">
-		<input name="searchUsername" th:value="${searchUsername}" class="search" type="text" placeholder="Masukkan Username">
+	<form action="/adminNonActiveRekening" method="post">
+		<input name="searchNoRek" th:value="${searchNoRek}" class="search" type="text" placeholder="Masukkan No. Rekening" >
 		<button class="button" type="submit">cari</button>
 		<p th:text="${msg}"></p>
-	</form>
+	</form> 
 	<table cellspacing='0'>
 		<thead>
 			<tr>
-				<th>Status</th>
-				<th>Username</th>
+                <th>Status</th>
+				<th>No. Rek</th>
 				<th>Nama</th>
-				<th>No.Rek</th>
-				<th>Alamat</th>
-				<th>No.HP</th>
-				<th>Email</th>
+				<th>No.Kartu</th>
 				<th>Jen.Tab</th>
+				<th>Transaksi Harian</th>
 				<th></th>
-				
-				
-
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="users : ${users}">
-				<td th:text="${users.statusUser}"></td>
-				<td th:text="${users.username}"></td>
-				<td th:text="${users.nama}"></td>
-				<td ><span th:text="${users.tbRekening.noRek}" th:if="${users.tbRekening != null}"></span></td>
-				<td th:text="${users.alamat}"></td>
-				<td th:text="${users.noHp}"></td>
-				<td th:text="${users.email}"></td>
-				<td ><span th:text="${users.tbRekening.tbJnsTab.namaJnsTab}" th:if="${users.tbRekening != null}"></span></td>		
-				<form action="/adminUnblockUser" method="post">
+			<tr th:each="rek : ${listRekening}">
+				<td th:text="${rek.statusRek}"></td>
+				<td th:text="${rek.noRek}"></td>
+				<td th:text="${rek.tbUsers.nama}"></td>
+				<td th:text="${rek.noKartu}"></td>
+				<td th:text="${rek.tbJnsTab.namaJnsTab}"></td>
+				<td th:text="${rek.transaksiHarian}"></td>
+				<form action="/adminSetActiveRekening" method="post">
 				<td>
-					<input type="hidden" name="idUser" th:value="${users.idUser}">
-					<button type="submit" class="btn btn-secondary">Buka Block</button>
+					<input type="hidden" name="noRek" th:value="${rek.noRek}">
+					<button type="submit" class="btn btn-secondary">Aktifkan</button>
 				</td>
-				</form>
+                </form>
 			</tr>
 		</tbody>
 	</table>

@@ -24,6 +24,10 @@ public class DaoTbRekening {
 		return  this.repositoryTbRekening.findAll();
 	}
 	
+	public List<TbRekening> getAllByStatusRek(String statusRek){
+		return  this.repositoryTbRekening.findByStatusRek(statusRek);
+	}
+	
 	public Boolean findById(String noRek) {
 		return this.repositoryTbRekening.findById(noRek).isPresent();
 	}
@@ -43,5 +47,9 @@ public class DaoTbRekening {
 	public void updateSaldo(String noRek, double saldo) {
 		TbRekening tbRekening = this.getOne(noRek);
 		tbRekening.setSaldo(saldo);
+	}	
+	public void updateStatusRek(String noRek, String statusRek) {
+		TbRekening tbRekening = this.getOne(noRek);
+		tbRekening.setStatusRek(statusRek);
 	}	
 }

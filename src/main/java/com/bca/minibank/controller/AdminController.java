@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.bca.minibank.dao.DaoTbLogAdmin;
 import com.bca.minibank.dao.DaoTbMutasi;
 import com.bca.minibank.dao.DaoTbRekening;
+import com.bca.minibank.dao.DaoTbSetting;
 import com.bca.minibank.dao.DaoTbTransaksi;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.entity.TbLogAdmin;
@@ -27,7 +28,6 @@ import com.bca.minibank.entity.TbMutasi;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.mail.AccountEmailWestBankPKWT;
 import com.bca.minibank.mail.ContentEmailWestBankPKWT;
 import com.bca.minibank.mail.SendEmailSMTP;
 
@@ -44,7 +44,11 @@ public class AdminController {
 	private DaoTbTransaksi daoTransaksi;
 	@Autowired
 	private DaoTbMutasi daoMutasi;
-	
+	@Autowired
+	private DaoTbSetting daoSetting;
+
+	private static final String STATUSREK_ACTIVE = "ACTIVE";
+	private static final String STATUSREK_NON_ACTIVE = "NON ACTIVE";
 	private static final String STATUSUSER_VERIFIED = "VERIFIED";
 	private static final String STATUSUSER_NOT_VERIFIED = "NOT VERIFIED";
 	private static final String STATUSUSER_PENDING = "PENDING";
@@ -60,6 +64,8 @@ public class AdminController {
 	private static final String ACTION_ACCEPT_SETOR_TUNAI = "ACCEPT SETORTUNAI";
 	private static final String ACTION_DECLINE_SETOR_TUNAI = "DECLINE SETORTUNAI";
 	private static final String ACTION_AUTO_DECLINE_SETOR_TUNAI = "AUTO DECLINE SETOR";
+	private static final String ACTION_NON_ACTIVE_REKENING = "NON ACTIVE REKENING";
+	private static final String ACTION_ACTIVE_REKENING = "ACTIVE REKENING";
 	
 	private static final String JNSTRANSAKSI_SETOR_TUNAI = "SETOR TUNAI";
 	private static final String STATUSTRANSAKSI_PENDING = "PENDING";
@@ -198,14 +204,14 @@ public class AdminController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoUsers.updateStatusUser(idUser, STATUSUSER_VERIFIED);
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_VERIFY_NEW_USER, idUser);
-		AccountEmailWestBankPKWT accEmailAdmin = new AccountEmailWestBankPKWT();
+		//AccountEmailWestBankPKWT accEmailAdmin = new AccountEmailWestBankPKWT();
 		ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
 		contentEmail.getContentVerifyNewUser(daoUsers.getOne(idUser).getUsername(), daoUsers.findByUsername(auth.getName()).getNama());
-		SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(accEmailAdmin.getSmtpServer(),
-														accEmailAdmin.getPort(),
-														accEmailAdmin.getUsername(),
-														accEmailAdmin.getPassword(),
-														accEmailAdmin.getEmail(),
+		SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
+														daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
+														daoSetting.getValue("USERNAME"), //accEmailAdmin.getUsername(),
+														daoSetting.getValue("PASSWORD"), //accEmailAdmin.getPassword(),
+														daoSetting.getValue("EMAIL"), //accEmailAdmin.getEmail(),
 														daoUsers.getOne(idUser).getEmail(),
 														"", // cc kosong
 														contentEmail.getContentSubject(),
@@ -221,14 +227,14 @@ public class AdminController {
 		daoUsers.updateStatusUser(idUser, STATUSUSER_NOT_VERIFIED);
 		daoUsers.updateKeterangan(idUser, keterangan);
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_NOT_VERIFY_NEW_USER, idUser);
-		AccountEmailWestBankPKWT accEmailAdmin = new AccountEmailWestBankPKWT();
+		//AccountEmailWestBankPKWT accEmailAdmin = new AccountEmailWestBankPKWT();
 		ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
 		contentEmail.getContentNotVerifyNewUser(daoUsers.getOne(idUser).getUsername(), daoUsers.findByUsername(auth.getName()).getNama(), keterangan);
-		SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(accEmailAdmin.getSmtpServer(),
-														accEmailAdmin.getPort(),
-														accEmailAdmin.getUsername(),
-														accEmailAdmin.getPassword(),
-														accEmailAdmin.getEmail(),
+		SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
+														daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
+														daoSetting.getValue("USERNAME"), //accEmailAdmin.getUsername(),
+														daoSetting.getValue("PASSWORD"), //accEmailAdmin.getPassword(),
+														daoSetting.getValue("EMAIL"), //accEmailAdmin.getEmail(),
 														daoUsers.getOne(idUser).getEmail(),
 														"", // cc kosong
 														contentEmail.getContentSubject(),
@@ -331,9 +337,73 @@ public class AdminController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoTransaksi.updateStatusTransaksi(idTransaksi, STATUSTRANSAKSI_FAILED);
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_DECLINE_SETOR_TUNAI, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
-		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
+		model.addAttribute("lisatTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
 		model.addAttribute("msgBox", "Setor tunai berhasil ditolak.");
 		return "adminTransaksiSetor.html";
 	}
 	
+	@PostMapping("/adminDetailRekening")
+	public String adminDetailRekening(Model model, String noRek) {
+		TbRekening rekening = daoRekening.getOne(noRek);
+		String formURL = "/adminSetActiveRekening";
+		String btnText = "Aktifkan";
+		if(rekening.getStatusRek().equals(STATUSREK_ACTIVE)) {
+			formURL = "/adminSetNonActiveRekening";
+			btnText = "Non-Aktifkan";
+		}
+		model.addAttribute("rekening", rekening);
+		model.addAttribute("formURL", formURL);
+		model.addAttribute("btnText", btnText);
+		return "adminDetailRekening.html";
+	}
+	
+	@PostMapping("/adminSetNonActiveRekening")
+	public String adminSetNonActiveRekening(Model model, String noRek) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		daoRekening.updateStatusRek(noRek, STATUSREK_NON_ACTIVE);
+		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_NON_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
+		return "redirect:/adminListRekening";
+	}
+	
+	@PostMapping("/adminSetActiveRekening")
+	public String adminSetActiveRekening(Model model, String noRek) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		daoRekening.updateStatusRek(noRek, STATUSREK_ACTIVE);
+		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
+		return "redirect:/adminListRekening";
+//		model.addAttribute("rekening", daoRekening.getOne(noRek));
+//		return "adminDetailRekening.html";
+	}
+	
+	@GetMapping("/adminListRekening")
+	public String adminListRekening(Model model) {
+		model.addAttribute("listRekening", daoRekening.getAllByStatusRek( STATUSREK_NON_ACTIVE));		
+		return "adminListRekening.html";
+	}
+	
+	@PostMapping("/adminListRekening")
+	public String adminListRekening2(Model model, String searchNoRek) {
+		List<TbRekening> rekening = new ArrayList<TbRekening>();
+		if(!(searchNoRek == "")) {
+			Boolean foundNoRek = daoRekening.findById(searchNoRek);
+			if(foundNoRek) {
+				//transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiAndTbRekening(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING, tbRekening);
+				if(!(daoRekening.getOne(searchNoRek).getStatusRek().equals(STATUSREK_NON_ACTIVE))) {
+					model.addAttribute("msg", "No Rekening : "+ searchNoRek + " berstatus aktif");
+					rekening = daoRekening.getAllByStatusRek(STATUSREK_NON_ACTIVE);
+				}else {
+					rekening.clear();
+					rekening.add(daoRekening.getOne(searchNoRek));
+				}
+			}else {
+				model.addAttribute("msg", "No Rekening : "+ searchNoRek +" tidak terdaftar");
+				rekening = daoRekening.getAllByStatusRek(STATUSREK_NON_ACTIVE);
+			}
+		} else {
+			return "redirect:/adminListRekening";
+		}	
+		model.addAttribute("listRekening", rekening);	
+		model.addAttribute("searchNoRek",searchNoRek);
+		return "adminListRekening.html";
+	}
 }

@@ -68,7 +68,7 @@ public class ContentEmailWestBankPKWT {
 		contentBody = "<p> Account yang telah anda buat dengan username : <Strong>"+
 				username +
 				"</Strong> gagal terverifikasi, dikarenakan : "+ keterangan +"</p>\r\n" + 
-				"<p>silahkan memperbaiki data tersebut melalui website kami dengan menekan tombol berikut dan login dengan username dan password sesuai data registrasi awal:\r\n" + 
+				"<p>Silahkan memperbaiki data tersebut melalui website kami dengan menekan tombol berikut dan login dengan username dan password sesuai data registrasi awal:\r\n" + 
 				" </p>\r\n" + 
 				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 

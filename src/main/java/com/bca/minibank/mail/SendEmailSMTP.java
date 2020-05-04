@@ -51,15 +51,15 @@ public class SendEmailSMTP {
         prop.put("mail.smtp.port", port); 		
         prop.put("mail.smtp.starttls.enable", "true");
         
- //       Session session = Session.getInstance(prop, null);
+        Session session = Session.getInstance(prop, null);
 
-        // Get the Session object.
-        Session session = Session.getInstance(prop,
-           new javax.mail.Authenticator() {
-              protected PasswordAuthentication getPasswordAuthentication() {
-                 return new PasswordAuthentication(usernameEmail, passwordEmail);
-              }
-  	});
+//        // Get the Session object.
+//        Session session = Session.getInstance(prop,
+//           new javax.mail.Authenticator() {
+//              protected PasswordAuthentication getPasswordAuthentication() {
+//                 return new PasswordAuthentication(usernameEmail, passwordEmail);
+//              }
+//  	});
         try {
             Message msg = new MimeMessage(session);
             
