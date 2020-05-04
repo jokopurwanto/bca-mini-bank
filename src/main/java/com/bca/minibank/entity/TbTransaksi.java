@@ -98,8 +98,10 @@ public class TbTransaksi implements java.io.Serializable {
 		this.noRekTujuan = noRekTujuan;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 7)
+//	@Temporal(TemporalType.DATE)
+//	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 7)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 11)
 	public Date getTglTransaksi() {
 		return this.tglTransaksi;
 	}

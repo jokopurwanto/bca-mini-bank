@@ -307,6 +307,19 @@ public class AdminController {
 		double nominal = tbTransaksi.getNominal();
 		if(daoRekening.getOne(noRekTujuan).getNoRek().isEmpty() || !(noRekAsal.equals(noRekTujuan))){
 			daoTransaksi.updateStatusTransaksi(idTransaksi, STATUSTRANSAKSI_FAILED);
+			ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
+			contentEmail.getContentFailedSetorTunai(idTransaksi, tbTransaksi.getTglTransaksi(), tbTransaksi.getJnsTransaksi(), noRekAsal, noRekTujuan, nominal, daoUsers.findByUsername(auth.getName()).getNama(), " karena no. rekening tujuan tidak sama / tidak terdaftar.");
+			SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
+															daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
+															daoSetting.getValue("USERNAME"), //accEmailAdmin.getUsername(),
+															daoSetting.getValue("PASSWORD"), //accEmailAdmin.getPassword(),
+															daoSetting.getValue("EMAIL"), //accEmailAdmin.getEmail(),
+															daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getEmail(), 
+															"", // cc kosong
+															contentEmail.getContentSubject(),
+															contentEmail.getContentFull(), 
+															contentEmail.getContentType());
+			sendEmailSMTP.sendEmail();
 			saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_AUTO_DECLINE_SETOR_TUNAI, tbTransaksi.getTbRekening().getTbUsers().getIdUser(), idTransaksi);
 			msgBox = "Setor tunai gagal karena no. rekening tujuan tidak sama / tidak terdaftar.";
 		}else {
@@ -323,7 +336,21 @@ public class AdminController {
 			tbMutasi.setSaldoAkhir(saldoAkhir);
 			tbMutasi.setTbTransaksi(daoTransaksi.getOne(idTransaksi));
 			tbMutasi.setTglMutasi(new Date());
+			tbMutasi.setNote("-");
 			daoMutasi.add(tbMutasi);
+			ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
+			contentEmail.getContentSuccessSetorTunai(idTransaksi, tbTransaksi.getTglTransaksi(), tbTransaksi.getJnsTransaksi(), noRekAsal, noRekTujuan, nominal, daoUsers.findByUsername(auth.getName()).getNama());
+			SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
+															daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
+															daoSetting.getValue("USERNAME"), //accEmailAdmin.getUsername(),
+															daoSetting.getValue("PASSWORD"), //accEmailAdmin.getPassword(),
+															daoSetting.getValue("EMAIL"), //accEmailAdmin.getEmail(),
+															daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getEmail(), 
+															"", // cc kosong
+															contentEmail.getContentSubject(),
+															contentEmail.getContentFull(), 
+															contentEmail.getContentType());
+			sendEmailSMTP.sendEmail();
 			saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_ACCEPT_SETOR_TUNAI, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
 			msgBox = "Setor tunai berhasil disetujui.";
 		}
@@ -336,6 +363,20 @@ public class AdminController {
 	public String adminTransaksiSetorDecline(Model model, int idTransaksi) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoTransaksi.updateStatusTransaksi(idTransaksi, STATUSTRANSAKSI_FAILED);
+		TbTransaksi tbTransaksi = daoTransaksi.getOne(idTransaksi);
+		ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
+		contentEmail.getContentFailedSetorTunai(idTransaksi, tbTransaksi.getTglTransaksi(), tbTransaksi.getJnsTransaksi(), tbTransaksi.getTbRekening().getNoRek(), tbTransaksi.getNoRekTujuan(), tbTransaksi.getNominal(), daoUsers.findByUsername(auth.getName()).getNama(), ".");
+		SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
+														daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
+														daoSetting.getValue("USERNAME"), //accEmailAdmin.getUsername(),
+														daoSetting.getValue("PASSWORD"), //accEmailAdmin.getPassword(),
+														daoSetting.getValue("EMAIL"), //accEmailAdmin.getEmail(),
+														daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getEmail(), 
+														"", // cc kosong
+														contentEmail.getContentSubject(),
+														contentEmail.getContentFull(), 
+														contentEmail.getContentType());
+		sendEmailSMTP.sendEmail();
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_DECLINE_SETOR_TUNAI, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
 		model.addAttribute("lisatTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
 		model.addAttribute("msgBox", "Setor tunai berhasil ditolak.");

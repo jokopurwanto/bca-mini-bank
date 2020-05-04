@@ -100,8 +100,10 @@ public class TbMutasi implements java.io.Serializable {
 		this.note = note;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "TGL_MUTASI", nullable = false, length = 7)
+//	@Temporal(TemporalType.DATE)
+//	@Column(name = "TGL_MUTASI", nullable = false, length = 7)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "TGL_MUTASI", nullable = false, length = 11)
 	public Date getTglMutasi() {
 		return this.tglMutasi;
 	}
