@@ -8,4 +8,6 @@ import com.bca.minibank.entity.TbUsers;
 @Repository
 public interface RepositoryTbUsers extends JpaRepository<TbUsers, Integer> {
 
+	
+	TbUsers findByUsername(String username);
 }
