@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Membuat Button Bootstrap</title>
+  
+    <!-- dibawah sini CSS Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- dibawah sini CSS kamu, contoh <link href="MyStyle.css" rel="stylesheet">-->
+      
+    <!-- JS untuk IE -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+ 
+ 
+  <!-- Content START -->
+<h1>Tab Mudah dengan Bootstrap</h1>
+<!-- Nav tabs, ini tombol tab di atas -->
+<ul class="nav nav-tabs">
+<!-- Untuk Semua Tab.. pastikan a href=”#nama_id” sama dengan nama id di “Tap Pane” dibawah-->
+  <li class="active"><a href="#jangkawaktu" data-toggle="tab">Jangka Waktu</a></li> <!-- Untuk Tab pertama berikan li class=”active” agar pertama kali halaman di load tab langsung active-->
+  <li><a href="#periode" data-toggle="tab">Periode</a></li>
+</ul>
+<!-- Tab panes, ini content dari tab di atas -->
+<div class="tab-content">
+  <div class="tab-pane active" id="jangkawaktu">Selamat datang</div>
+  <div class="tab-pane" id="periode">Profil saya</div>
+</div>
+ 
+ <!-- Content END -->
+ 
+ 
+ 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>

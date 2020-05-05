@@ -16,6 +16,7 @@
                 <th>NOMINAL</th>
                 <th>TGL MUTASI</th>
                 <th>TGL MUTASI FORMAT</th>
+                <th>KETERANGAN</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
 				<td th:text="${tab.tbTransaksi.nominal}"></td>
 				<td th:text="${tab.tglMutasi}"></td>
 				<td th:text="${#dates.format(tab.tglMutasi,'dd-MM-yyyy HH:mm:ss')}"></td>				
+				<td th:text="${tab.tbTransaksi.note}"></td>				
             </tr>
         </tbody>
     </table>

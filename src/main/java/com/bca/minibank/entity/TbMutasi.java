@@ -84,8 +84,6 @@ public class TbMutasi implements java.io.Serializable {
 		this.saldoAkhir = saldoAkhir;
 	}
 
-	@DateTimeFormat(pattern = "dd-MMM-yyyy")
-	@JsonFormat(pattern = "dd-MMM-yyy",shape = JsonFormat.Shape.STRING)
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "TGL_MUTASI", nullable = false, length = 7)
 	public Date getTglMutasi() {

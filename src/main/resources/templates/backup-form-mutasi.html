@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+</head>
+
+<body>
+    <form th:action="@{/mutasi}" th:object="${formMutasi}" method="post">
+        <div>
+            <label>No Rek: </label>
+            <input type="text" th:field="*{noRek}" id="noRek" placeholder="noRek"  readonly>
+            <span th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span>
+        </div>  
+        <div>
+        <label>Jenis Transaksi: </label>
+        <select id="jnsMutasi" th:field="*{jnsMutasi}">
+		  <option value="SEMUA">SEMUA</option>
+		  <option value="UANG MASUK">UANG MASUK</option>
+		  <option value="UANG KELUAR">UANG KELUAR</option>
+		</select>
+        </div>
+        <div>
+         <label>Periode: </label>
+          <input type="radio" id="satu" name="periode" th:field="*{periode}" value="sehari">
+		  <label for="male">Hari ini</label><br>
+		  <input type="radio" id="tujuh" name="periode" th:field="*{periode}" value="seminggu">
+		  <label for="female">Satu minggu terakhir</label><br>
+		    <input type="radio" id="sebulan" name="periode" th:field="*{periode}" value="sebulan">
+		  <label for="female">Satu bulan terakhir</label><br>
+		  <span style="color: red" th:if="${#fields.hasErrors('periode')}" th:errors="*{periode}"></span>
+        </div>
+        <div>
+            <input type="submit" value="Next">
+        </div>
+    </form>
+
+    <p>page mutasi</p>
+</body>
+
+</html>

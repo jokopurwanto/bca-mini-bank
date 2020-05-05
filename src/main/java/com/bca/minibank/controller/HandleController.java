@@ -64,7 +64,8 @@ public class HandleController {
 		String date = simpleDateFormat.format(cal.getTime());
 		System.out.println(date);
 		
-		return "home";
+//		return "home";
+		return "joko";
 	}
 	
 }
