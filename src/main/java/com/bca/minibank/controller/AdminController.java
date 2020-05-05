@@ -8,12 +8,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -28,6 +31,8 @@ import com.bca.minibank.entity.TbMutasi;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.entity.TbUsers;
+import com.bca.minibank.form.FormAdminChangesPassword;
+import com.bca.minibank.form.FormUbahPassword;
 import com.bca.minibank.mail.ContentEmailWestBankPKWT;
 import com.bca.minibank.mail.SendEmailSMTP;
 
@@ -72,13 +77,13 @@ public class AdminController {
 	private static final String STATUSTRANSAKSI_SUCCESS = "SUCCESS";
 	private static final String STATUSTRANSAKSI_FAILED = "FAILED";
 	
-	@GetMapping("/adminVerifiedUsers")
+	@GetMapping("/admin/VerifiedUsers")
 	public String adminVerifiedUsers(Model model) {
 		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_VERIFIED,ROLE_NASABAH));		
 		return "adminVerifiedUsers.html";
 	}
 	
-	@PostMapping("/adminVerifiedUsers")
+	@PostMapping("/admin/VerifiedUsers")
 	public String adminVerifiedUsersFilter(Model model, String searchUsername) {
 		List<TbUsers> users = new ArrayList<TbUsers>();
 		if(!(searchUsername == "")) {
@@ -97,13 +102,13 @@ public class AdminController {
 		return "adminVerifiedUsers.html";
 	}
 	
-	@GetMapping("/adminNewUsers")
+	@GetMapping("/admin/NewUsers")
 	public String adminNewUsers(Model model) {
 		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_PENDING,ROLE_NASABAH));		
 		return "adminNewUsers.html";
 	}
 	
-	@PostMapping("/adminNewUsers")
+	@PostMapping("/admin/NewUsers")
 	public String adminNewUsersFilter(Model model, String searchUsername) {
 		List<TbUsers> users = new ArrayList<TbUsers>();
 		if(!(searchUsername == "")) {
@@ -122,13 +127,13 @@ public class AdminController {
 		return "adminNewUsers.html";
 	}
 
-	@GetMapping("/adminBlockedUsers")
+	@GetMapping("/admin/BlockedUsers")
 	public String adminBlockedUsers(Model model) {
 		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_BLOCKED,ROLE_NASABAH));		
 		return "adminBlockedUsers.html";
 	}
 	
-	@PostMapping("/adminBlockedUsers")
+	@PostMapping("/admin/BlockedUsers")
 	public String adminBlockedUsersFilter(Model model, String searchUsername) {
 		List<TbUsers> users = new ArrayList<TbUsers>();
 		if(!(searchUsername == "")) {
@@ -147,29 +152,50 @@ public class AdminController {
 		return "adminBlockedUsers.html";
 	}
 	
-	@PostMapping("/adminChangesPassword")
-	public String adminUbahPassword(Model model, int idUser) {
+	@PostMapping("/admin/ChangesPassword")
+	public String adminUbahPassword(Model model, int idUser, FormAdminChangesPassword formAdminChangesPassword) {
 		model.addAttribute("user", daoUsers.getOne(idUser));
 		return "adminChangesPassword.html";
 	}
-	
-	@PostMapping("/adminChangesPasswordEnd")
-	public String adminUbahPasswordEnd(Model model, int idUser, String password, String confirmedPassword) {
+
+	@PostMapping("/admin/ChangesPasswordEnd")
+	public String adminUbahPasswordEnd(Model model, int idUser, @Valid FormAdminChangesPassword formAdminChangesPassword , BindingResult rs) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String msg = "";
-		if(password.equals(confirmedPassword)) {
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String hashedPassword = passwordEncoder.encode(password);
-			daoUsers.updatePassword(idUser, hashedPassword);
-			saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(),ACTION_CHANGE_PASSWORD,idUser); //<-- daoUsers.findByUsername(auth.getName()) nanti diupdate mengambil dari session
-			msg = "Password berhasil diubah.";
-		}else {
-			msg = "Password dan konfirmasi password tidak sama..";
+		if(!(rs.hasErrors()))
+		{
+			if(formAdminChangesPassword.getPassword().equals(formAdminChangesPassword.getConfirmedPassword())) {
+				String hashedPassword = passwordEncoder.encode(formAdminChangesPassword.getPassword());
+				daoUsers.updatePassword(idUser, hashedPassword);
+				saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(),ACTION_CHANGE_PASSWORD,idUser); //<-- daoUsers.findByUsername(auth.getName()) nanti diupdate mengambil dari session
+				msg = "Password berhasil diubah.";
+			}else {
+				msg = "Password dan konfirmasi password tidak sama..";
+			}
 		}
 		model.addAttribute("user", daoUsers.getOne(idUser));
 		model.addAttribute("msg", msg);
 		return "adminChangesPassword.html";
-	}	
+	}		
+	
+//	@PostMapping("/admin/ChangesPasswordEnd")
+//	public String adminUbahPasswordEnd(Model model, int idUser, String password, String confirmedPassword) {
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		String msg = "";
+//		if(password.equals(confirmedPassword)) {
+//			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//			String hashedPassword = passwordEncoder.encode(password);
+//			daoUsers.updatePassword(idUser, hashedPassword);
+//			saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(),ACTION_CHANGE_PASSWORD,idUser); //<-- daoUsers.findByUsername(auth.getName()) nanti diupdate mengambil dari session
+//			msg = "Password berhasil diubah.";
+//		}else {
+//			msg = "Password dan konfirmasi password tidak sama..";
+//		}
+//		model.addAttribute("user", daoUsers.getOne(idUser));
+//		model.addAttribute("msg", msg);
+//		return "adminChangesPassword.html";
+//	}	
 	
 	public void saveLogAdmin(int idAdmin, String action, int idUser, int idTransaksi) {
 		TbLogAdmin tbLogAdmin = new TbLogAdmin();
@@ -191,7 +217,7 @@ public class AdminController {
 		daoLogAdmin.add(tbLogAdmin);
 	}
 	
-	@PostMapping("/adminTransaksiUser")
+	@PostMapping("/admin/TransaksiUser")
 	public String adminTransaksiUser(Model model, int idUser) {
 		TbUsers tbUsers = daoUsers.getOne(idUser);
 		model.addAttribute("user", daoUsers.getOne(idUser));
@@ -199,7 +225,7 @@ public class AdminController {
 		return "adminTransaksiUser.html";
 	}
 	
-	@PostMapping("/adminVerifiedNewUser")
+	@PostMapping("/admin/VerifiedNewUser")
 	public String adminVerifiedNewUser(Model model, int idUser) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoUsers.updateStatusUser(idUser, STATUSUSER_VERIFIED);
@@ -218,10 +244,10 @@ public class AdminController {
 														contentEmail.getContentFull(), 
 														contentEmail.getContentType());
 		sendEmailSMTP.sendEmail();
-		return "redirect:/adminNewUsers";
+		return "redirect:/admin/NewUsers";
 	}
 
-	@PostMapping("/adminNotVerifiedNewUser")
+	@PostMapping("/admin/NotVerifiedNewUser")
 	public String adminNotVerifiedNewUser(Model model, int idUser, String keterangan) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoUsers.updateStatusUser(idUser, STATUSUSER_NOT_VERIFIED);
@@ -241,18 +267,18 @@ public class AdminController {
 														contentEmail.getContentFull(), 
 														contentEmail.getContentType());
 		sendEmailSMTP.sendEmail();
-		return "redirect:/adminNewUsers";
+		return "redirect:/admin/NewUsers";
 	}
 	
-	@PostMapping("/adminBlockUser")
+	@PostMapping("/admin/BlockUser")
 	public String adminBlockUser(Model model, int idUser) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoUsers.updateStatusUser(idUser, STATUSUSER_BLOCKED);
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_BLOCK_USER, idUser);
-		return "redirect:/adminVerifiedUsers";
+		return "redirect:/admin/VerifiedUsers";
 	}
 	
-	@PostMapping("/adminUnblockUser")
+	@PostMapping("/admin/UnblockUser")
 	public String adminUnblockUser(Model model, int idUser) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(daoUsers.getOne(idUser).getTbRekening() == null) {
@@ -263,16 +289,16 @@ public class AdminController {
 			saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_UNBLOCK_USER, idUser);
 			
 		}
-		return "redirect:/adminBlockedUsers";
+		return "redirect:/admin/BlockedUsers";
 	}
 	
-	@GetMapping("/adminTransaksiSetor")
+	@GetMapping("/admin/TransaksiSetor")
 	public String adminTransaksiSetor(Model model) {
 		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
 		return "adminTransaksiSetor.html";
 	}
 	
-	@PostMapping("/adminTransaksiSetor")
+	@PostMapping("/admin/TransaksiSetor")
 	public String adminTransaksiSetor2(Model model, String searchNoRek) {
 		List<TbTransaksi> transaksi = new ArrayList<TbTransaksi>();
 		if(!(searchNoRek == "")) {
@@ -289,14 +315,14 @@ public class AdminController {
 				transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING);
 			}
 		} else {
-			return "redirect:/adminTransaksiSetor";
+			return "redirect:/admin/TransaksiSetor";
 		}	
 		model.addAttribute("listTransaksi", transaksi);	
 		model.addAttribute("searchNoRek",searchNoRek);
 		return "adminTransaksiSetor.html";
 	}
 	
-	@PostMapping("/adminTransaksiSetorAccept")
+	@PostMapping("/admin/TransaksiSetorAccept")
 	public String adminTransaksiSetorAccept(Model model, int idTransaksi) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String msgBox = "";
@@ -359,7 +385,7 @@ public class AdminController {
 		return "adminTransaksiSetor.html";
 	}
 	
-	@PostMapping("/adminTransaksiSetorDecline")
+	@PostMapping("/admin/TransaksiSetorDecline")
 	public String adminTransaksiSetorDecline(Model model, int idTransaksi) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoTransaksi.updateStatusTransaksi(idTransaksi, STATUSTRANSAKSI_FAILED);
@@ -378,18 +404,18 @@ public class AdminController {
 														contentEmail.getContentType());
 		sendEmailSMTP.sendEmail();
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_DECLINE_SETOR_TUNAI, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
-		model.addAttribute("lisatTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
 		model.addAttribute("msgBox", "Setor tunai berhasil ditolak.");
 		return "adminTransaksiSetor.html";
 	}
 	
-	@PostMapping("/adminDetailRekening")
+	@PostMapping("/admin/DetailRekening")
 	public String adminDetailRekening(Model model, String noRek) {
 		TbRekening rekening = daoRekening.getOne(noRek);
-		String formURL = "/adminSetActiveRekening";
+		String formURL = "/admin/SetActiveRekening";
 		String btnText = "Aktifkan";
 		if(rekening.getStatusRek().equals(STATUSREK_ACTIVE)) {
-			formURL = "/adminSetNonActiveRekening";
+			formURL = "/admin/SetNonActiveRekening";
 			btnText = "Non-Aktifkan";
 		}
 		model.addAttribute("rekening", rekening);
@@ -398,31 +424,31 @@ public class AdminController {
 		return "adminDetailRekening.html";
 	}
 	
-	@PostMapping("/adminSetNonActiveRekening")
+	@PostMapping("/admin/SetNonActiveRekening")
 	public String adminSetNonActiveRekening(Model model, String noRek) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoRekening.updateStatusRek(noRek, STATUSREK_NON_ACTIVE);
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_NON_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
-		return "redirect:/adminListRekening";
+		return "redirect:/admin/ListRekening";
 	}
 	
-	@PostMapping("/adminSetActiveRekening")
+	@PostMapping("/admin/SetActiveRekening")
 	public String adminSetActiveRekening(Model model, String noRek) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoRekening.updateStatusRek(noRek, STATUSREK_ACTIVE);
 		saveLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
-		return "redirect:/adminListRekening";
+		return "redirect:/admin/ListRekening";
 //		model.addAttribute("rekening", daoRekening.getOne(noRek));
 //		return "adminDetailRekening.html";
 	}
 	
-	@GetMapping("/adminListRekening")
+	@GetMapping("/admin/ListRekening")
 	public String adminListRekening(Model model) {
 		model.addAttribute("listRekening", daoRekening.getAllByStatusRek( STATUSREK_NON_ACTIVE));		
 		return "adminListRekening.html";
 	}
 	
-	@PostMapping("/adminListRekening")
+	@PostMapping("/admin/ListRekening")
 	public String adminListRekening2(Model model, String searchNoRek) {
 		List<TbRekening> rekening = new ArrayList<TbRekening>();
 		if(!(searchNoRek == "")) {

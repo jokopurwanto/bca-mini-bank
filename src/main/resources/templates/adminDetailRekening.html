@@ -33,14 +33,14 @@ nav a:hover {
  <div class="header">
   </div>
 <nav>
-  	<a href="/adminVerifiedUsers" style="color:blue;">DATA USER</a>
-  	<a href="/adminNewUsers">USER BARU</a>
-  	<a href="/adminBlockedUsers"  >BLOCKED USER</a>
-  	<a href="/adminTransaksiSetor">ACC SETOR</a>
-    <a href="/adminListRekening">NON-ACTIVE REKENING</a> 
+  	<a href="/admin/VerifiedUsers" style="color:blue;">DATA USER</a>
+  	<a href="/admin/NewUsers">USER BARU</a>
+  	<a href="/admin/BlockedUsers"  >BLOCKED USER</a>
+  	<a href="/admin/TransaksiSetor">ACC SETOR</a>
+    <a href="/admin/ListRekening">NON-ACTIVE REKENING</a> 
   </nav>
   <div>
-    <a class="a" href="/adminVerifiedUsers" >Kembali</a>
+    <a class="a" href="/admin/VerifiedUsers" >Kembali</a>
     <h2 class="h1">DETAIL REKENING</h2>
     <table align="center" border="0" >
         <tr align="left">
@@ -75,7 +75,7 @@ nav a:hover {
           		<button type="submit" class="btn btn-secondary" th:text="${btnText}"></button>
           	</td>
         </form>
-<!--         <form action="/adminSetActiveRekening" method="post" th:if="${rekening.statusRek == 'NON ACTIVE'}">
+<!--         <form action="/admin/SetActiveRekening" method="post" th:if="${rekening.statusRek == 'NON ACTIVE'}">
           	<td>
 				<input type="hidden" name="noRek" th:value="${rekening.noRek}">
           		<button type="submit" class="btn btn-secondary">Aktifkan Rekening</button>
