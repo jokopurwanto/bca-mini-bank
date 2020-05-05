@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.bca.minibank.entity.TbTransaksi;
 
 @Repository
-public interface RepostitoryTbTransaksi extends JpaRepository<TbTransaksi, Integer> {
+public interface RepositoryTbTransaksi extends JpaRepository<TbTransaksi, Integer> {
 
 	@Query("Select a from TbTransaksi a WHERE a.noRekTujuan=?1")
 	 List<TbTransaksi> findByNoRekTujuan(String noRekTujuan);

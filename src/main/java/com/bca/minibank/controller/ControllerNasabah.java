@@ -1,5 +1,6 @@
 package com.bca.minibank.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,14 +17,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.bca.minibank.Model.ModelTransaksi;
 import com.bca.minibank.configuration.MyUserPrincipal;
 import com.bca.minibank.entity.TbJnsTab;
 import com.bca.minibank.entity.TbRekening;
+import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.entity.TbUserJnsTmp;
 import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.form.FormBikinPin;
 import com.bca.minibank.form.FormMasukanPin;
 import com.bca.minibank.form.FormRegisterUser;
+import com.bca.minibank.form.FormTransaksi;
+import com.bca.minibank.form.Password;
+import com.bca.minibank.form.Pin;
+import com.bca.minibank.repository.RepositoryTbRekening;
+import com.bca.minibank.repository.RepositoryTbTransaksi;
+import com.bca.minibank.repository.RepositoryTbUsers;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.dao.DaoTbRekening;
 import com.bca.minibank.dao.DaoTbUserJnsTmp;
@@ -44,6 +54,17 @@ public class ControllerNasabah {
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	RepositoryTbUsers repositoryTbUsers;
+	
+	@Autowired
+	RepositoryTbRekening repositoryTbRekening;
+	
+	@Autowired
+	RepositoryTbTransaksi repositoryTbTransaksi;
+	
+	ModelTransaksi modelTransaksi;
 	
 	@GetMapping("/home") //URL Tidak Fix
 	public String homePage(HttpServletRequest request, Model model) {
@@ -222,5 +243,139 @@ public class ControllerNasabah {
 		session.invalidate(); 
 		return "registrasiberhasil";
 	}
+	
+	// --- UBAH PASSWORD
+		@GetMapping("/home/Ubahpassword")
+		public String changePasswordpage(Model model,Password password) {
+		
+			return "UbahPassword";
+		}
+		
+		// --- UPDATE PASSWORD
+		@PostMapping("/home/Updatepassword")
+		public String updatePasswordpage(Model model, @Valid Password password , BindingResult rs, HttpServletRequest request) {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
+			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			TbUsers tbUsers = this.repositoryTbUsers.getOne(user.getIdUser());
+			if(encoder.matches(password.getOldpassword(), tbUsers.getPassword())) {
+					tbUsers.setPassword(encoder.encode(password.getNewpassword()));
+						System.out.println(password.getNewpassword());
+					repositoryTbUsers.save(tbUsers);
+					return "UbahPassword";
+			}
+			return "UbahPassword";
+		}
+
+		// --- UBAH PIN
+		@GetMapping("/home/Ubahpin")
+		public String changePinpage(Model model,Pin pin) {
+		
+			return "UbahPin";
+		}
+		
+		// --- UPDATE PIN
+		@PostMapping("/home/Updatepin")
+		public String updatePinpage(Model model, @Valid Pin pin , BindingResult rs, HttpServletRequest request) {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
+			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			TbRekening tbRekening = this.repositoryTbRekening.getOne(user.getNoRek());
+				if(encoder.matches(pin.getOldPin(), tbRekening.getPin())) {
+					tbRekening.setPin(encoder.encode(pin.getNewPin()));
+						System.out.println(pin.getNewPin());
+					repositoryTbRekening.save(tbRekening);
+					return "UbahPin";		
+			}
+			return "UbahPin";
+		}
+		
+		// SETOR TUNAI
+		
+//		@GetMapping("/home/SetorHome")
+//		public String SetorHome(Model model, FormTransaksi formTransaksi) {
+//			
+//			
+//			return "SetorTunai-2";
+//		}
+		
+		@GetMapping("/home/setorForm")
+		public String setorForm(Model model) {
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			TbUsers tbUsers = this.repositoryTbUsers.findByUsername(auth.getName());
+			System.out.println(tbUsers.getEmail());
+		
+			FormTransaksi formTransaksi = new FormTransaksi();
+			formTransaksi.setNoRek(tbUsers.getTbRekening().getNoRek());
+			model.addAttribute("formTransaksi", formTransaksi);
+			
+			return "setor";
+		}
+		
+		@PostMapping("/home/setor")
+		public String setor(Model model, @Valid FormTransaksi formTransaksi ,BindingResult rs) {
+			//setorValidator.validate(formTransaksi, rs);
+			if(rs.hasErrors()) {
+				
+				return"setor.html";
+			}
+	
+			 	modelTransaksi = new ModelTransaksi(formTransaksi);
+				System.out.println(modelTransaksi.getNominal());
+				System.out.println(modelTransaksi.getNoRek());
+				
+				return "SetorTunai-2";
+		}
+	
+		@GetMapping("/home/validate")
+		public String validateSetor(Model model) {
+			
+				FormTransaksi formTransaksi= new FormTransaksi();
+				
+				formTransaksi.setNominal(modelTransaksi.getNominal());
+				formTransaksi.setNoRek(modelTransaksi.getNoRek());
+				
+				model.addAttribute("formTransaksi", formTransaksi);
+			
+				return "SetorTunai-2";
+		
+		}
+		
+		@PostMapping("/home/save")
+		public String save(Model model,@Valid FormTransaksi formTransaksi) {
+			
+			TbTransaksi tbTransaksi = new TbTransaksi();
+			
+			tbTransaksi.setTglTransaksi(new Date());
+			tbTransaksi.setJnsTransaksi("Setor Tunai");
+			tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
+			tbTransaksi.setStatusTransaksi("PENDING");
+			tbTransaksi.setNominal(formTransaksi.getNominal());
+			
+			TbRekening tbRekening = this.repositoryTbRekening.findByNoRek(formTransaksi.getNoRek());
+			
+			tbTransaksi.setTbRekening(tbRekening);
+		
+			this.repositoryTbTransaksi.save(tbTransaksi);
+			model.addAttribute("formTransaksi",tbTransaksi);
+			
+			return"Success";
+		
+		}
+		
+		@GetMapping("/home/statusSetor")
+		public  String statusSetor(Model model){
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			TbUsers tbUsers = this.repositoryTbUsers.findByUsername(auth.getName());	
+			TbTransaksi tbTransaksi = new TbTransaksi();
+			FormTransaksi formTransaksi = new FormTransaksi();
+			formTransaksi.setNoRek(tbUsers.getTbRekening().getNoRek());
+			tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
+			tbTransaksi.setJnsTransaksi("Setor Tunai");
+			//model.addAttribute("status", this.daoTbTransaksi.findByNoRekTujuan(tbTransaksi.getNoRekTujuan()));
+			model.addAttribute("status", this.repositoryTbTransaksi.findByNoRekTujuanANDJnsTransaksi(tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
+			return "SetorTunai-3";
+			
+		  }			
 }
 
