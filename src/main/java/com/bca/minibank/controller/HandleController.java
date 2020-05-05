@@ -14,11 +14,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+
 
 import com.bca.minibank.Form.FormTransaksi;
 import com.bca.minibank.Model.ModelTransaksi;
@@ -29,6 +39,12 @@ import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.repository.RepositoryTbRekening;
 import com.bca.minibank.repository.RepositoryTbUsers;
 import com.bca.minibank.repository.RepostitoryTbTransaksi;
+
+import com.bca.minibank.configuration.MyUserPrincipal;
+import com.bca.minibank.entity.TbRekening;
+import com.bca.minibank.entity.TbUsers;
+import com.bca.minibank.dao.DaoTbUsers;
+import com.bca.minibank.dao.DaoTbRekening;
 
 
 	@Controller
@@ -44,8 +60,12 @@ import com.bca.minibank.repository.RepostitoryTbTransaksi;
 		
 		@Autowired
 		private RepositoryTbRekening daoTbRekening;
+	  
+    @Autowired
+	  DaoTbUsers DaoTbUsers;
 	
-
+	  @Autowired
+	  DaoTbRekening DaoTbRekening;
 
 		
 		ModelTransaksi modelTransaksi;
@@ -156,9 +176,33 @@ import com.bca.minibank.repository.RepostitoryTbTransaksi;
 			model.addAttribute("status", this.daoTbTransaksi.findByNoRekTujuanANDJnsTransaksi(tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
 			return "SetorTunai-3";
 			
-		}
-		
-		
-		
+		  }	
+	}
+
+	@GetMapping("/")
+	public String indexdirectPage() {
+		return "redirect:/login";
 	}
 	
+	@GetMapping("/login")
+	public String loginPage(Model model, HttpSession session) {
+		String error = (String)session.getAttribute("error");
+		if(error!= null)
+		{
+			model.addAttribute("error", error);
+		}
+		return "login";
+	}
+	
+	@GetMapping("/admin")
+	public String adminPage(Model model) {
+    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	int idUser = user.getIdUser();
+    	String nama = user.getNama();
+    	String keterangan = user.getKeterangan();
+    	model.addAttribute("idUser", idUser);
+    	model.addAttribute("nama", nama);
+		return "admin";
+	}	
+}
+
