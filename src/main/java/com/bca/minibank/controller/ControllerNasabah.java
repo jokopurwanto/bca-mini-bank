@@ -3,6 +3,8 @@ package com.bca.minibank.controller;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,11 +99,20 @@ public class ControllerNasabah {
 		}
 		else
 		{
+			//Reset jumlah pinattempt
 			request.getSession().setAttribute("pinattempt", 0);
+			
+			//Mengubah saldo menjadi format currency
 			DecimalFormat formatter = (DecimalFormat)NumberFormat.getCurrencyInstance(Locale.ROOT);
             DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.ITALY);
             symbol.setCurrencySymbol("Rp.");
             formatter.setDecimalFormatSymbols(symbol);
+            
+            //Tanggal saat ini
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMMM yyyy");  
+            LocalDateTime now = LocalDateTime.now();  
+            
+            model.addAttribute("tanggal", dtf.format(now));
             model.addAttribute("saldo", formatter.format(tbRekening.getSaldo()));
 	    	model.addAttribute("nama", user.getNama());
 			model.addAttribute("tbRekening", tbRekening);
