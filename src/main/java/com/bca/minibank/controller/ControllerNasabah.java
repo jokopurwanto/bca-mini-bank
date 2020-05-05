@@ -1,6 +1,10 @@
 package com.bca.minibank.controller;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -94,6 +98,11 @@ public class ControllerNasabah {
 		else
 		{
 			request.getSession().setAttribute("pinattempt", 0);
+			DecimalFormat formatter = (DecimalFormat)NumberFormat.getCurrencyInstance(Locale.ROOT);
+            DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.ITALY);
+            symbol.setCurrencySymbol("Rp.");
+            formatter.setDecimalFormatSymbols(symbol);
+            model.addAttribute("saldo", formatter.format(tbRekening.getSaldo()));
 	    	model.addAttribute("nama", user.getNama());
 			model.addAttribute("tbRekening", tbRekening);
 			return "ceksaldo";
