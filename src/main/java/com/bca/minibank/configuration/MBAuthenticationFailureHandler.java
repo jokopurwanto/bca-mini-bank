@@ -16,7 +16,7 @@ import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.dao.DaoTbUsers;
 
 
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class MBAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
 	@Autowired
 	DaoTbUsers DaoTbUsers;

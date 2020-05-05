@@ -40,7 +40,7 @@ import com.bca.minibank.repository.RepositoryTbRekening;
 import com.bca.minibank.repository.RepositoryTbUsers;
 import com.bca.minibank.repository.RepositoryTbTransaksi;
 
-import com.bca.minibank.configuration.MyUserPrincipal;
+import com.bca.minibank.configuration.MBUserPrincipal;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.dao.DaoTbUsers;
@@ -77,7 +77,7 @@ import com.bca.minibank.dao.DaoTbRekening;
 		
 		@GetMapping("/admin")
 		public String adminPage(Model model) {
-	    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    	MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    	int idUser = user.getIdUser();
 	    	String nama = user.getNama();
 	    	String keterangan = user.getKeterangan();

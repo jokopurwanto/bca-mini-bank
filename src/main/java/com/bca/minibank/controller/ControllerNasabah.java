@@ -1,7 +1,13 @@
 package com.bca.minibank.controller;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bca.minibank.Model.ModelTransaksi;
-import com.bca.minibank.configuration.MyUserPrincipal;
+import com.bca.minibank.configuration.MBUserPrincipal;
 import com.bca.minibank.entity.TbJnsTab;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
@@ -68,7 +74,7 @@ public class ControllerNasabah {
 	
 	@GetMapping("/home") //URL Tidak Fix
 	public String homePage(HttpServletRequest request, Model model) {
-    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       	model.addAttribute("nama", user.getNama());
 		return "Home";
 	}
@@ -84,7 +90,7 @@ public class ControllerNasabah {
 	{
 		boolean flagPin = false;
 		boolean flagBlock = false;
-    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	TbRekening tbRekening = DaoTbRekening.getOne(user.getNoRek());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  
 		if(tbRekening.getStatusRek().equals("NOT ACTIVE"))
@@ -114,7 +120,21 @@ public class ControllerNasabah {
 		}
 		else
 		{
+			//Reset jumlah pinattempt
 			request.getSession().setAttribute("pinattempt", 0);
+			
+			//Mengubah saldo menjadi format currency
+			DecimalFormat formatter = (DecimalFormat)NumberFormat.getCurrencyInstance(Locale.ROOT);
+            DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.ITALY);
+            symbol.setCurrencySymbol("Rp.");
+            formatter.setDecimalFormatSymbols(symbol);
+            
+            //Tanggal saat ini
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM yyyy");  
+            LocalDateTime now = LocalDateTime.now();  
+            
+            model.addAttribute("tanggal", dtf.format(now));
+            model.addAttribute("saldo", formatter.format(tbRekening.getSaldo()));
 	    	model.addAttribute("nama", user.getNama());
 			model.addAttribute("tbRekening", tbRekening);
 			return "ceksaldo";
@@ -123,7 +143,7 @@ public class ControllerNasabah {
 		
 	@GetMapping("/konfirmasi") //fungsi Fix, URL tidak fix
 	public String konfirmasiPage(Model model) {
-    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	TbRekening TbRekeningTemp = DaoTbRekening.getOne(user.getNoRek());
     	model.addAttribute("noRek", TbRekeningTemp.getNoRek());
       	model.addAttribute("noKartu", TbRekeningTemp.getNoKartu());
@@ -153,11 +173,11 @@ public class ControllerNasabah {
 		}
 		else
 		{
-			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			TbRekening TbRekeningTemp = DaoTbRekening.getOne(user.getNoRek());
 			TbRekeningTemp.setPin(bCryptPasswordEncoder.encode(formBikinPin.getPin()));
 			DaoTbRekening.update(user.getNoRek(), TbRekeningTemp);
-			return "redirect:/logout";
+			return "bikinpinberhasil";
 		}
 	}
 	
@@ -255,7 +275,7 @@ public class ControllerNasabah {
 		@PostMapping("/home/Updatepassword")
 		public String updatePasswordpage(Model model, @Valid Password password , BindingResult rs, HttpServletRequest request) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
-			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			TbUsers tbUsers = this.repositoryTbUsers.getOne(user.getIdUser());
 			if(encoder.matches(password.getOldpassword(), tbUsers.getPassword())) {
 					tbUsers.setPassword(encoder.encode(password.getNewpassword()));
@@ -277,7 +297,7 @@ public class ControllerNasabah {
 		@PostMapping("/home/Updatepin")
 		public String updatePinpage(Model model, @Valid Pin pin , BindingResult rs, HttpServletRequest request) {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
-			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			TbRekening tbRekening = this.repositoryTbRekening.getOne(user.getNoRek());
 				if(encoder.matches(pin.getOldPin(), tbRekening.getPin())) {
 					tbRekening.setPin(encoder.encode(pin.getNewPin()));

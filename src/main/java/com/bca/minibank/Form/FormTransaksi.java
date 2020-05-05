@@ -1,4 +1,4 @@
-package com.bca.minibank.Form;
+package com.bca.minibank.form;
 
 import java.util.Date;
 
