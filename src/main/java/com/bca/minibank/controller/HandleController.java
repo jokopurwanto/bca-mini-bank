@@ -86,21 +86,5 @@ import com.bca.minibank.dao.DaoTbRekening;
 			return "admin";
 		}	
 		
-//		@GetMapping("/login")
-//		public String loginPage() {
-//			return "login";
-//		}
-		
-//		@GetMapping("/register")
-//		public String registerPage(TbUsers tbUsers) {
-//			return "register";
-//		}
-//		@GetMapping("/home")
-//		public String homePage(Model model) {
-//			
-//			
-//			return "home";
-//		}
-		
 }
 

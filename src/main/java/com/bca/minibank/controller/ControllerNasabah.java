@@ -244,7 +244,7 @@ public class ControllerNasabah {
 		return "registrasiberhasil";
 	}
 	
-	// --- UBAH PASSWORD
+		// --- UBAH PASSWORD
 		@GetMapping("/home/Ubahpassword")
 		public String changePasswordpage(Model model,Password password) {
 		
@@ -288,14 +288,6 @@ public class ControllerNasabah {
 			return "UbahPin";
 		}
 		
-		// SETOR TUNAI
-		
-//		@GetMapping("/home/SetorHome")
-//		public String SetorHome(Model model, FormTransaksi formTransaksi) {
-//			
-//			
-//			return "SetorTunai-2";
-//		}
 		
 		@GetMapping("/home/setorForm")
 		public String setorForm(Model model) {
