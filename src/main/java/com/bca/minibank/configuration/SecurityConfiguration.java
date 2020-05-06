@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 //import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -50,6 +51,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new MBLogoutSuccessHandler();
     }
 	 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new MBAccessDeniedHandler();
+    }
+    
     @Bean 
     public AuthenticationProvider authProvider()
     {
@@ -68,7 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.antMatchers("/registrasi/**").anonymous()
 					.antMatchers("/admin/**").hasAuthority("ADMIN")
 					.antMatchers("/verifikasi/**").hasAuthority("AKUNBARU")
-					.antMatchers("/beranda").hasAnyAuthority("ADMIN", "NASABAH")
+					.antMatchers("/beranda").hasAuthority("NASABAH")
 					.antMatchers("/nasabah/**").hasAuthority("NASABAH")
 					.anyRequest().authenticated()
 				.and()
@@ -84,7 +90,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.logoutSuccessHandler(logoutSuccessHandler())
 				.and()
 					.exceptionHandling()
-					.accessDeniedPage("/access-denied");
+					.accessDeniedHandler(accessDeniedHandler());
 	}
 
 	@Override
