@@ -18,33 +18,33 @@
              <div class="container mt-4">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link " th:href="@{/beranda}">Beranda</a>
+                        <a class="nav-link" th:href="@{/beranda}">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/nasabah/ceksaldo}">Cek Saldo</a>
+                        <a class="nav-link" th:href="@{/nasabah/ceksaldo}">Cek Saldo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Transfer</a>
+                        <a class="nav-link" th:href="@{/nasabah/transfer}">Transfer</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link  dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                          Setor Tunai
                         </a>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" th:href="@{/home/setorForm}">Transaksi Setor Tunai</a>
-                          <a class="dropdown-item" th:href="@{/home/statusSetor}">Status Setor Tunai</a>
+                          <a class="dropdown-item" th:href="@{/nasabah/setor}">Transaksi Setor Tunai</a>
+                          <a class="dropdown-item" th:href="@{/nasabah/setor/status}">Status Setor Tunai</a>
                         </div>
                       </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Cek Mutasi</a>
+                        <a class="nav-link" th:href="@{/nasabah/mutasi}">Cek Mutasi</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link active dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                          Pengaturan
                         </a>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" th:href="@{/home/Ubahpassword}">Ubah Password</a>
-                          <a class="dropdown-item" th:href="@{/home/Ubahpin}">Ubah PIN</a>
+                          <a class="dropdown-item" th:href="@{/nasabah/ubahpassword}">Ubah Password</a>
+                          <a class="dropdown-item" th:href="@{/nasabah/ubahpin}">Ubah PIN</a>
                         </div>
                       </li>
                     <li class="nav-item">
