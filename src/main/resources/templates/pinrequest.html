@@ -21,7 +21,7 @@
                         <a class="nav-link " th:href="@{/home}">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/home/ceksaldo}">Cek Saldo</a>
+                        <a class="nav-link active" th:href="@{/nasabah/ceksaldo}">Cek Saldo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="#">Transfer</a>
@@ -49,7 +49,7 @@
     </div>
     <div class="content">
         <h6>Silahkan Masukkan PIN Transaksi Anda.</h6>
-        <form th:action="@{/home/ceksaldo}" name="form_registrasi" method="post" th:object="${formMasukanPin}">
+        <form th:action="@{/nasabah/pin}" name="form_registrasi" method="post" th:object="${formMasukanPin}">
         <div class="sub-content-ceksaldo">
             <div class="row">
                 <div class="col-md-5">

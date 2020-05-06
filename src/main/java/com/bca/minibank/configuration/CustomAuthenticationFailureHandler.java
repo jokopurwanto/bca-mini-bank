@@ -45,7 +45,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 					if(loginattempt > 3)
 					{
 						user.setStatusUser("BLOCK");
-						user.setKeterangan("Akun anda terblokir dikarenakan salah password 3x berturut-turut");
+						user.setKeterangan("Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut");
 						DaoTbUsers.update(user.getIdUser(), user);
 					}
 				}

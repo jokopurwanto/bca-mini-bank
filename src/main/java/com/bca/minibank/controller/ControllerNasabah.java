@@ -58,18 +58,19 @@ public class ControllerNasabah {
 		return "Home";
 	}
 	
-	@GetMapping("/home/ceksaldo") //URL Tidak Fix
-	public String cekSaldoPage(Model model, FormMasukanPin formMasukanPin) 
+	@GetMapping("/nasabah/pin") 
+	public String pinRequestPage(Model model, FormMasukanPin formMasukanPin) 
 	{
-		return "ceksaldopinrequest";
+		return "pinrequest";
 	}
 	
-	@PostMapping("/home/ceksaldo") //URL Tidak Fix
+	@PostMapping("/nasabah/pin") 
 	public String cekSaldoPinRequestPost(Model model, @Valid FormMasukanPin formMasukanPin, BindingResult bindingResult, HttpSession session, HttpServletRequest request) 
 	{
 		boolean flagPin = false;
 		boolean flagBlock = false;
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	TbUsers tbUsers = DaoTbUsers.getOne(user.getIdUser());
     	TbRekening tbRekening = DaoTbRekening.getOne(user.getNoRek());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  
 		if(tbRekening.getStatusRek().equals("NOT ACTIVE"))
@@ -86,8 +87,15 @@ public class ControllerNasabah {
 			if(pinattempt >= 3)
 			{
 				flagBlock = true;
-				tbRekening.setStatusRek("NOT ACTIVE");
-				DaoTbRekening.update(tbRekening.getNoRek(), tbRekening);
+//				tbRekening.setStatusRek("NOT ACTIVE");
+//				tbUsers.setStatusUser("BLOCK");
+//				tbUsers.setKeterangan("Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut");
+//				DaoTbRekening.update(tbRekening.getNoRek(), tbRekening);
+//				DaoTbUsers.update(tbUsers.getIdUser(), tbUsers);
+//				request.getSession().setAttribute("error", "Rekening dan users anda terblokir dikarenakan salah pin sebanyak 3x berturut-turut");
+				return "redirect:/logout";
+//				return "redirect:/login";
+//				return "redirect:/login?error=true";
 			}
 		}
 		if(bindingResult.hasErrors() || flagPin == true || flagBlock == true)
@@ -95,33 +103,55 @@ public class ControllerNasabah {
 			model.addAttribute("flagPin", flagPin);
 			model.addAttribute("flagBlock", flagBlock);
 			model.addAttribute("pinattempt", session.getAttribute("pinattempt"));
-			return "ceksaldopinrequest";
+			return "pinrequest";
 		}
 		else
 		{
+			request.getSession().setAttribute("pintervalidasi", true);
+			return (String)session.getAttribute("url");
+		}
+	}
+		
+	@GetMapping("/nasabah/ceksaldo") 
+	public String cekSaldo(Model model, HttpSession session, HttpServletRequest request) 
+	{
+		if((Boolean)session.getAttribute("pintervalidasi") == null || (Boolean)session.getAttribute("pintervalidasi") == false)
+		{
+			request.getSession().setAttribute("url", "redirect:/nasabah/ceksaldo");
+			return "redirect:/nasabah/pin";
+		}
+		else
+		{
+			request.getSession().setAttribute("pintervalidasi", false);
+			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			TbRekening tbRekening = DaoTbRekening.getOne(user.getNoRek());
+			
 			//Reset jumlah pinattempt
 			request.getSession().setAttribute("pinattempt", 0);
 			
 			//Mengubah saldo menjadi format currency
 			DecimalFormat formatter = (DecimalFormat)NumberFormat.getCurrencyInstance(Locale.ROOT);
-            DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.ITALY);
-            symbol.setCurrencySymbol("Rp.");
-            formatter.setDecimalFormatSymbols(symbol);
-            
-            //Tanggal saat ini
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMMM yyyy");  
-            LocalDateTime now = LocalDateTime.now();  
-            
-            model.addAttribute("tanggal", dtf.format(now));
-            model.addAttribute("saldo", formatter.format(tbRekening.getSaldo()));
+	        DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.ITALY);
+	        symbol.setCurrencySymbol("Rp.");
+	        formatter.setDecimalFormatSymbols(symbol);
+	        
+	        //Tanggal saat ini
+	        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM yyyy");  
+	        LocalDateTime now = LocalDateTime.now();  
+	        
+	        model.addAttribute("tanggal", dtf.format(now));
+	        model.addAttribute("saldo", formatter.format(tbRekening.getSaldo()));
 	    	model.addAttribute("nama", user.getNama());
 			model.addAttribute("tbRekening", tbRekening);
+			
 			return "ceksaldo";
 		}
-	}
-		
-	@GetMapping("/konfirmasi") //fungsi Fix, URL tidak fix
-	public String konfirmasiPage(Model model) {
+	}	
+	
+	
+	
+	@GetMapping("/verifikasi") //fungsi Fix, URL tidak fix
+	public String verifikasiPage(Model model) {
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	TbRekening TbRekeningTemp = DaoTbRekening.getOne(user.getNoRek());
     	model.addAttribute("noRek", TbRekeningTemp.getNoRek());
@@ -132,13 +162,13 @@ public class ControllerNasabah {
 		return "userterverifikasi";
 	}		
 	
-	@GetMapping("/konfirmasi/buatpin")
+	@GetMapping("/verifikasi/buatpin")
 	public String buatPinPage(FormBikinPin formBikinPin) 
 	{
 		return "bikinpin";
 	}
 	
-	@PostMapping("/konfirmasi/buatpin")
+	@PostMapping("/verifikasi/buatpin")
 	public String buatPinPost(Model model, @Valid FormBikinPin formBikinPin, BindingResult bindingResult) {
 		boolean flagPin = false;
 		if(!formBikinPin.getConfirmPin().equals(formBikinPin.getPin()))
