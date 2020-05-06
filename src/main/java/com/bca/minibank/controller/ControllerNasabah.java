@@ -5,15 +5,26 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +35,7 @@ import com.bca.minibank.entity.TbMutasi;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.entity.TbUsers;
+import com.bca.minibank.form.FormMasukanPin;
 import com.bca.minibank.form.FormMutasi;
 import com.bca.minibank.form.FormTransferPage;
 import com.bca.minibank.form.FormTransferValidationPage;
@@ -290,6 +302,34 @@ public class ControllerNasabah {
 		this.repoTbRekening.save(rekPenerima);
 		
 		
+		 try {   
+	            Properties properties=new Properties();
+	            properties.put("mail.smtps.host","smtp.gmail.com");
+	            properties.put("mail.smtps.auth","true");
+	            properties.put("mail.smtps.ssl.enable","true");
+	            properties.put("mail.smtps.port", "465");//default port dari smptp
+	             
+	            Session session=Session.getInstance(properties);
+	            session.setDebug(true);
+	             
+	            MimeMessage pesan=new MimeMessage(session);
+	            pesan.setFrom("westbankPKWT@gmail.com");//isi dengan gmail kalian sendiri, biasanya sama nanti dengan username
+	            pesan.setRecipient(Message.RecipientType.TO, new InternetAddress("jokopurwanto1996@gmail.com"));//isi dengan tujuan email
+	            pesan.setSubject("Transfer Transaction Journal");
+	            pesan.setText("Transfer success");
+	             
+	            String username="westbankPKWT@gmail.com";//isi dengan gmail kalian sendiri
+	            String password="westbankPKWT03";//isi dengan password sendiri
+	             
+	            Transport transport = session.getTransport("smtps");
+	            transport.connect(username, password);
+	            transport.sendMessage(pesan, pesan.getAllRecipients());
+	            transport.close();
+	        } catch (MessagingException ex) {
+	            ex.printStackTrace();
+	        }
+		
+		
 		
 		return "redirect:/transferSuccess";
 	}
@@ -499,16 +539,16 @@ public class ControllerNasabah {
 	}
 	
 	
-	@GetMapping("/mutasi1")
-	public String getMutasi1(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
-		
-		FormMutasi formMutasi = new FormMutasi();
-		formMutasi.setNoRek(tbUsers.getTbRekening().getNoRek());
-		model.addAttribute("formMutasi", formMutasi);
-		return "form-mutasi1";
-	}
+//	@GetMapping("/mutasi1")
+//	public String getMutasi1(Model model) {
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+//		
+//		FormMutasi formMutasi = new FormMutasi();
+//		formMutasi.setNoRek(tbUsers.getTbRekening().getNoRek());
+//		model.addAttribute("formMutasi", formMutasi);
+//		return "form-mutasi1";
+//	}
 	
 	
 	
@@ -556,7 +596,243 @@ public class ControllerNasabah {
 	}
 	
 	
+	@GetMapping("/transaksi")
+	public String getMutasi1(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+		
+		FormMutasi formMutasi = new FormMutasi();
+		formMutasi.setNoRek(tbUsers.getTbRekening().getNoRek());
+		model.addAttribute("formMutasi", formMutasi);
+		return "form-transaksi";
+	}
 	
+	@PostMapping("/transaksi")
+	public String postTransaksi(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
+		
+		
+		
+		
+		if(result.hasErrors()) {
+			return "form-transaksi";
+		}
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+		
+		System.out.println(formMutasi.getNoRek());
+		System.out.println(formMutasi.getPeriode());
+		System.out.println(formMutasi.getJnsMutasi());
+		System.out.println(formMutasi.getStartDate());
+		System.out.println(formMutasi.getEndDate());
+		
+		
+//		SET CELENDER
+		Calendar cal = Calendar.getInstance(); 
+//      Timestamp a = new Timestamp(cal.getTimeInMillis());
+      
+		String pattern = "dd-MMM-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);		
+		String startDateUI = simpleDateFormat.format(formMutasi.getStartDate());
+		String endDateUI = simpleDateFormat.format(formMutasi.getEndDate());	
+		System.out.println("startDateUI - "+startDateUI);
+		System.out.println("endDateUI - "+endDateUI);		
+		
+		List queryOut =  this.repoTbMutasi.findByFilterTransaksiOut(tbUsers.getTbRekening().getNoRek(), startDateUI, endDateUI);
+		List queryIn =  this.repoTbMutasi.findByFilterTransaksiIn(tbUsers.getTbRekening().getNoRek(), startDateUI, endDateUI);
+		queryOut.addAll(queryIn);
+		System.out.println(queryOut);
+		
+		if(formMutasi.getJnsMutasi().equalsIgnoreCase("Semua")) {
+			System.out.println("if semua");
+	        model.addAttribute("mutasi", queryOut);
+		}else if(formMutasi.getJnsMutasi().equalsIgnoreCase("uang masuk")) {
+			System.out.println("if uang masuk");
+	        model.addAttribute("mutasi", this.repoTbMutasi.findByFilterTransaksiIn(tbUsers.getTbRekening().getNoRek(), startDateUI, endDateUI));
+		}else if(formMutasi.getJnsMutasi().equalsIgnoreCase("uang keluar")) {
+			System.out.println("if uang keluar");
+			model.addAttribute("mutasi", this.repoTbMutasi.findByFilterTransaksiOut(tbUsers.getTbRekening().getNoRek(), startDateUI, endDateUI));
+		}else {
+			System.out.println("reject value");
+		}
+		
+		return "CekMutasi3";
+		
+	}
+	
+	@PostMapping("/transaksi1")
+	public String postMutasiPeriode(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return "form-transaksi";
+		}
+		
+		if(null == formMutasi.getPeriode()) {
+			return "form-transaksi";
+		}
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+		
+		System.out.println(formMutasi.getNoRek());
+		System.out.println(formMutasi.getPeriode());
+		System.out.println(formMutasi.getJnsMutasi());
+		System.out.println(formMutasi.getStartDate());
+		System.out.println(formMutasi.getEndDate());
+		
+//		SET CELENDER
+		Calendar cal = Calendar.getInstance(); 
+      
+		String pattern = "dd-MMM-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String endDate = simpleDateFormat.format(new Date());
+		String startDate = null;
+		System.out.println("coba - "+endDate);
+		System.out.println(new Date());
+		
+		
+		
+		if(formMutasi.getJnsMutasi().equalsIgnoreCase("Semua")) {
+			System.out.println("jns semua");
+	        if(formMutasi.getPeriode().equalsIgnoreCase("sehari")) {
+	        	cal.add(Calendar.DAY_OF_MONTH, 0);
+	        	startDate = simpleDateFormat.format(cal.getTime());
+	        	System.out.println("masuk sehari");
+	        	System.out.println("start date = "+startDate);
+	            System.out.println("end date = "+endDate);
+	        }else if(formMutasi.getPeriode().equalsIgnoreCase("seminggu")) {
+	        	cal.add(Calendar.DAY_OF_MONTH, -7);
+	            startDate = simpleDateFormat.format(cal.getTime());
+	        	System.out.println("masuk seminggu");
+	            System.out.println("start date = "+startDate);
+	            System.out.println("end date = "+endDate);
+	        }else if(formMutasi.getPeriode().equalsIgnoreCase("sebulan")) {
+	        	cal.add(Calendar.DAY_OF_MONTH, -30);
+	            startDate = simpleDateFormat.format(cal.getTime());
+	        	System.out.println("masuk sebulan");
+	            System.out.println("start date = "+startDate);
+	            System.out.println("end date = "+endDate);
+	        }else {
+	        	result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
+	        	return "form-transaksi";
+	        }
+    		List queryOut =  this.repoTbMutasi.findByFilterTransaksiOut(tbUsers.getTbRekening().getNoRek(), startDate, endDate);
+    		List queryIn =  this.repoTbMutasi.findByFilterTransaksiIn(tbUsers.getTbRekening().getNoRek(), startDate, endDate);
+    		queryOut.addAll(queryIn);
+            model.addAttribute("mutasi", this.repoTbMutasi.findByAllTransaksi(tbUsers.getTbRekening().getNoRek(), startDate, endDate));
+		}else if(formMutasi.getJnsMutasi().equalsIgnoreCase("uang masuk")) {
+			 System.out.println("jns masuk");
+			 if(formMutasi.getPeriode().equalsIgnoreCase("sehari")) {
+		        	cal.add(Calendar.DAY_OF_MONTH, 0);
+		        	startDate = simpleDateFormat.format(cal.getTime());
+		        	System.out.println("masuk sehari");
+		        	System.out.println("start date = "+startDate);
+		            System.out.println("end date = "+endDate);
+		        }else if(formMutasi.getPeriode().equalsIgnoreCase("seminggu")) {
+		        	cal.add(Calendar.DAY_OF_MONTH, -7);
+		            startDate = simpleDateFormat.format(cal.getTime());
+		        	System.out.println("masuk seminggu");
+		            System.out.println("start date = "+startDate);
+		            System.out.println("end date = "+endDate);
+		        }else if(formMutasi.getPeriode().equalsIgnoreCase("sebulan")) {
+		        	cal.add(Calendar.DAY_OF_MONTH, -30);
+		            startDate = simpleDateFormat.format(cal.getTime());
+		        	System.out.println("masuk sebulan");
+		            System.out.println("start date = "+startDate);
+		            System.out.println("end date = "+endDate);
+		        }else {
+		        	result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
+		        	return "form-transaksi";
+		        }	
+		        model.addAttribute("mutasi", this.repoTbMutasi.findByFilterTransaksiIn(tbUsers.getTbRekening().getNoRek(), startDate, endDate));
+		}else if(formMutasi.getJnsMutasi().equalsIgnoreCase("uang keluar")) {
+			 System.out.println("jns keluar");
+			 if(formMutasi.getPeriode().equalsIgnoreCase("sehari")) {
+		        	cal.add(Calendar.DAY_OF_MONTH, 0);
+		        	startDate = simpleDateFormat.format(cal.getTime());
+		        	System.out.println("masuk sehari");
+		        	System.out.println("start date = "+startDate);
+		            System.out.println("end date = "+endDate);
+		        }else if(formMutasi.getPeriode().equalsIgnoreCase("seminggu")) {
+		        	cal.add(Calendar.DAY_OF_MONTH, -7);
+		            startDate = simpleDateFormat.format(cal.getTime());
+		        	System.out.println("masuk seminggu");
+		            System.out.println("start date = "+startDate);
+		            System.out.println("end date = "+endDate);
+		        }else if(formMutasi.getPeriode().equalsIgnoreCase("sebulan")) {
+		        	cal.add(Calendar.DAY_OF_MONTH, -30);
+		            startDate = simpleDateFormat.format(cal.getTime());
+		        	System.out.println("masuk sebulan");
+		            System.out.println("start date = "+startDate);
+		            System.out.println("end date = "+endDate);
+		        }else {
+		        	result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
+		        	return "form-transaksi";
+		        }	
+		        model.addAttribute("mutasi", this.repoTbMutasi.findByFilterTransaksiOut(tbUsers.getTbRekening().getNoRek(), startDate, endDate));
+		}else {
+			System.out.println("reject value");
+		}
+		
+		return "CekMutasi3";
+	}
+	
+	
+	@GetMapping("/nasabah/pin") 
+	public String pinRequestPage(Model model, FormMasukanPin formMasukanPin) 
+	{
+		return "pinrequest";
+	}
+	
+	
+	@PostMapping("/nasabah/pin") 
+	public String cekSaldoPinRequestPost(Model model, @Valid FormMasukanPin formMasukanPin, BindingResult bindingResult, HttpSession session, HttpServletRequest request) 
+	{
+		boolean flagPin = false;
+		boolean flagBlock = false;
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  
+		if(tbUsers.getTbRekening().getStatusRek().equals("NOT ACTIVE"))
+		{
+			flagBlock = true;
+		}
+		else if(!encoder.matches(formMasukanPin.getPin(), tbUsers.getTbRekening().getPin()))
+		{
+			  
+			int pinattempt = (Integer)session.getAttribute("pinattempt");
+			pinattempt++;
+			request.getSession().setAttribute("pinattempt", pinattempt);
+			flagPin = true;
+			if(pinattempt >= 3)
+			{
+				flagBlock = true;
+//				tbRekening.setStatusRek("NOT ACTIVE");
+//				tbUsers.setStatusUser("BLOCK");
+//				tbUsers.setKeterangan("Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut");
+//				DaoTbRekening.update(tbRekening.getNoRek(), tbRekening);
+//				DaoTbUsers.update(tbUsers.getIdUser(), tbUsers);
+//				request.getSession().setAttribute("error", "Rekening dan users anda terblokir dikarenakan salah pin sebanyak 3x berturut-turut");
+				return "redirect:/logout";
+//				return "redirect:/login";
+//				return "redirect:/login?error=true";
+			}
+		}
+		if(bindingResult.hasErrors() || flagPin == true || flagBlock == true)
+		{
+			model.addAttribute("flagPin", flagPin);
+			model.addAttribute("flagBlock", flagBlock);
+			model.addAttribute("pinattempt", session.getAttribute("pinattempt"));
+			return "pinrequest";
+		}
+		else
+		{
+			request.getSession().setAttribute("pintervalidasi", true);
+			return (String)session.getAttribute("url");
+		}
+	}
+
 	
 	
 	

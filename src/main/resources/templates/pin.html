@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+</head>
+
+<body>
+    <form th:action="@{/transfer1}" th:object="${formTransferPage}" method="post">
+        <div>
+            <label>No Rek: </label>
+            <input type="text" th:field="*{noRek}" id="noRek" placeholder="noRek"  readonly>
+            <span th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span>
+        </div>
+        <div>
+            <input type="submit" value="Next">
+        </div>
+    </form>
+
+    <p>page transfer</p>
+</body>
+
+</html>

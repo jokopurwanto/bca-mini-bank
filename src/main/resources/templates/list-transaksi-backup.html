@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+</head>
+
+<body>
+<table>
+        <thead>
+            <tr>
+                <th>JENIS TRANSAKSI</th>
+                <th>NOTE</th>
+                <th>TANGGAL TRANSAKSI</th>
+                <th>NOMINAL</th>
+                <th>JENIS MUTASI</th>
+                <th>SALDO AKHIR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tab : ${mutasi}">
+            	<td th:text="${tab.tbTransaksi.jnsTransaksi}"></td>
+            	<td th:text="${tab.tbTransaksi.note}"></td>
+				<td th:text="${tab.tbTransaksi.tglTransaksi}"></td>
+				<td th:text="${tab.tbTransaksi.nominal}"></td>
+				<td th:text="${tab.jnsMutasi}"></td>
+				<td th:text="${tab.saldoAkhir}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

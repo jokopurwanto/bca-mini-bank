@@ -100,7 +100,7 @@ public class TbRekening implements java.io.Serializable {
 		this.noKartu = noKartu;
 	}
 
-	@Column(name = "PIN", length = 6)
+	@Column(name = "PIN", length = 255)
 	public String getPin() {
 		return this.pin;
 	}
