@@ -51,8 +51,8 @@ public class ControllerNasabah {
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	@GetMapping("/home") //URL Tidak Fix
-	public String homePage(HttpServletRequest request, Model model) {
+	@GetMapping("/beranda") //URL Tidak Fix
+	public String berandaPage(HttpServletRequest request, Model model) {
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       	model.addAttribute("nama", user.getNama());
 		return "Home";
@@ -87,15 +87,12 @@ public class ControllerNasabah {
 			if(pinattempt >= 3)
 			{
 				flagBlock = true;
-//				tbRekening.setStatusRek("NOT ACTIVE");
-//				tbUsers.setStatusUser("BLOCK");
-//				tbUsers.setKeterangan("Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut");
-//				DaoTbRekening.update(tbRekening.getNoRek(), tbRekening);
-//				DaoTbUsers.update(tbUsers.getIdUser(), tbUsers);
-//				request.getSession().setAttribute("error", "Rekening dan users anda terblokir dikarenakan salah pin sebanyak 3x berturut-turut");
+				tbRekening.setStatusRek("NOT ACTIVE");
+				tbUsers.setStatusUser("BLOCK");
+				tbUsers.setKeterangan("Akun anda terblokir dikarenakan salah pin sebanyak 3x berturut-turut");
+				DaoTbRekening.update(tbRekening.getNoRek(), tbRekening);
+				DaoTbUsers.update(tbUsers.getIdUser(), tbUsers);
 				return "redirect:/logout";
-//				return "redirect:/login";
-//				return "redirect:/login?error=true";
 			}
 		}
 		if(bindingResult.hasErrors() || flagPin == true || flagBlock == true)
@@ -147,9 +144,7 @@ public class ControllerNasabah {
 			return "ceksaldo";
 		}
 	}	
-	
-	
-	
+
 	@GetMapping("/verifikasi") //fungsi Fix, URL tidak fix
 	public String verifikasiPage(Model model) {
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

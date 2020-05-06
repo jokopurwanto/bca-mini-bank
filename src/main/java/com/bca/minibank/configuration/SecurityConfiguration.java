@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 //import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -42,6 +43,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationFailureHandler myAuthenticationFailureHandler(){
         return new CustomAuthenticationFailureHandler();
     }
+    
+    //Tambahan untuk di merge ke branch hany
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new MBLogoutSuccessHandler();
+    }
 	 
     @Bean 
     public AuthenticationProvider authProvider()
@@ -61,7 +68,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.antMatchers("/registrasi/**").permitAll()
 					.antMatchers("/admin/**").hasAuthority("ADMIN")
 					.antMatchers("/verifikasi/**").hasAuthority("AKUNBARU")
-					.antMatchers("/home/**").hasAnyAuthority("ADMIN", "NASABAH")
+					.antMatchers("/beranda").hasAnyAuthority("ADMIN", "NASABAH")
+					.antMatchers("/nasabah/**").hasAuthority("NASABAH")
 					.anyRequest().authenticated()
 				.and()
 					.csrf().disable().formLogin()
@@ -74,7 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 					.logout()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-					.logoutSuccessUrl("/login")
+					.logoutSuccessHandler(logoutSuccessHandler())
 				.and()
 					.exceptionHandling()
 					.accessDeniedPage("/access-denied");

@@ -31,9 +31,14 @@ public class HandleController {
 	@GetMapping("/login")
 	public String loginPage(Model model, HttpSession session) {
 		String error = (String)session.getAttribute("error");
+		String message = (String)session.getAttribute("message");
 		if(error!= null)
 		{
 			model.addAttribute("error", error);
+		}
+		else if(message!=null)
+		{
+			model.addAttribute("message", message);
 		}
 		return "login";
 	}
