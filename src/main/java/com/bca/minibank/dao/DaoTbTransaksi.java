@@ -1,5 +1,6 @@
 package com.bca.minibank.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,9 @@ public class DaoTbTransaksi {
 		this.repostitoryTbTransaksi.save(tbTransaksi);
 	}
 	
-	public void updateStatusTransaksi(int idTransaksi, String statusTransaksi) {
+	public void updateStatusTransaksiAndTglTransaksi(int idTransaksi, String statusTransaksi, Date tglTransaksi) {
 		TbTransaksi tbTransaksi = this.getOne(idTransaksi);
 		tbTransaksi.setStatusTransaksi(statusTransaksi);
+		tbTransaksi.setTglTransaksi(tglTransaksi);
 	}
 }

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="icon" href="img/icon.png" type="image/png">
-	<title>New User</title>
+	<title>Blocked User</title>
 	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -33,14 +33,14 @@ nav a:hover {
  <div class="header">
   </div>
 <nav>
-  	<a href="/admin/VerifiedUsers">DATA USER</a>
-  	<a href="/admin/NewUsers" style="color:blue;">USER BARU</a>
-  	<a href="/admin/BlockedUsers"  >BLOCKED USER</a>
-  	<a href="/admin/TransaksiSetor">ACC SETOR</a>
-    <a href="/admin/ListRekening">NON-ACTIVE REKENING</a> 
+  	<a href="/admin/listusers/terverifikasi">DATA USER</a>
+  	<a href="/admin/listusers/baru">USER BARU</a>
+  	<a href="/admin/listusers/terblokir" style="color:blue;" >BLOCKED USER</a>
+  	<a href="/admin/listtransaksi/setortunai">ACC SETOR</a>
+    <a href="/admin/listrekening/nonaktif">NON-ACTIVE REKENING</a> 
   </nav>
 <div class="content">
-	<form action="/admin/NewUsers" method="post">
+	<form action="/admin/listusers/terblokir" method="post">
 		<input name="searchUsername" th:value="${searchUsername}" class="search" type="text" placeholder="Masukkan Username">
 		<button class="button" type="submit">cari</button>
 		<p th:text="${msg}"></p>
@@ -51,11 +51,13 @@ nav a:hover {
 				<th>Status</th>
 				<th>Username</th>
 				<th>Nama</th>
+				<th>No.Rek</th>
 				<th>Alamat</th>
 				<th>No.HP</th>
 				<th>Email</th>
+				<th>Jen.Tab</th>
 				<th></th>
-				<th></th>
+				
 				
 
 			</tr>
@@ -65,39 +67,17 @@ nav a:hover {
 				<td th:text="${users.statusUser}"></td>
 				<td th:text="${users.username}"></td>
 				<td th:text="${users.nama}"></td>
+				<td ><span th:text="${users.tbRekening.noRek}" th:if="${users.tbRekening != null}"></span></td>
 				<td th:text="${users.alamat}"></td>
 				<td th:text="${users.noHp}"></td>
-				<td th:text="${users.email}"></td>	
-				<form action="/admin/VerifiedNewUser" method="post">
+				<td th:text="${users.email}"></td>
+				<td ><span th:text="${users.tbRekening.tbJnsTab.namaJnsTab}" th:if="${users.tbRekening != null}"></span></td>		
+				<form action="/admin/listusers/terblokir/unblock" method="post">
 				<td>
 					<input type="hidden" name="idUser" th:value="${users.idUser}">
-					<button type="submit" class="btn btn-secondary">Terima</button></td>
+					<button type="submit" class="btn btn-secondary">Buka Block</button>
+				</td>
 				</form>
-				<td><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Tolak</button></td>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambahkan Keterangan</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="/admin/NotVerifiedNewUser" method="post">
-      <div class="modal-body">
-          <div class="form-group">
-          	<input type="hidden" name="idUser" th:value="${users.idUser}">
-            <label for="message-text" class="col-form-label">Keterangan Penolakan:</label>
-            <textarea class="form-control" id="message-text" name="keterangan"></textarea>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Send message</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
 			</tr>
 		</tbody>
 	</table>

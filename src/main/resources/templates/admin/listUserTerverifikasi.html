@@ -33,14 +33,14 @@ nav a:hover {
  <div class="header">
   </div>
 <nav>
-  	<a href="/admin/VerifiedUsers" style="color:blue;">DATA USER</a>
-  	<a href="/admin/NewUsers">USER BARU</a>
-  	<a href="/admin/BlockedUsers"  >BLOCKED USER</a>
-  	<a href="/admin/TransaksiSetor">ACC SETOR</a>
-    <a href="/admin/ListRekening">NON-ACTIVE REKENING</a> 
+  	<a href="/admin/listusers/terverifikasi" style="color:blue;">DATA USER</a>
+  	<a href="/admin/listusers/baru"  >USER BARU</a>
+  	<a href="/admin/listusers/terblokir" >BLOCKED USER</a>
+  	<a href="/admin/listtransaksi/setortunai" >ACC SETOR</a>
+    <a href="/admin/listrekening/nonaktif">NON-ACTIVE REKENING</a> 
   </nav>
 <div class="content">
-	<form action="/admin/VerifiedUsers" method="post">
+	<form action="/admin/listusers/terverifikasi" method="post">
 		<input name="searchUsername" th:value="${searchUsername}" class="search" type="text" placeholder="Masukkan Username" >
 		<button class="button" type="submit">cari</button>
 		<p th:text="${msg}"></p>
@@ -72,25 +72,25 @@ nav a:hover {
 				<td th:text="${users.alamat}"></td>
 				<td th:text="${users.noHp}"></td>
 				<td th:text="${users.email}"></td>
-				<form action="/admin/DetailRekening" method="post">
+				<form action="/admin/listuser/terverifikasi/detailrekening" method="post">
 				<td>
 					<input type="hidden"  name="noRek" th:value="${users.tbRekening.noRek}">
 					<button type="submit"  class="btn" style="color:#000080;"><span th:text="${users.tbRekening.noRek}"></span></button>
 				</td>
 				</form>
-				<form action="/admin/TransaksiUser" method="post">
+				<form action=/admin/listuser/terverifikasi/listtransaksi method="post">
 					<td>
 						<input type="hidden"  name="idUser" th:value="${users.idUser}">
 						<button type="submit" class="btn btn-secondary">Transaksi</button>
 					</td>
 				</form>		
-				<form action="/admin/ChangesPassword" method="post">
+				<form action="/admin/listuser/terverifikasi/ubahpassword" method="post">
 					<td>
 						<input type="hidden" name="idUser" th:value="${users.idUser}">
 						<button type="submit" class="btn btn-secondary">Ganti Pass</button>
 					</td>
 				</form>
-				<form action="/admin/BlockUser" method="post">
+				<form action="/admin/listusers/terverifikasi/block" method="post">
 				<td>
 					<input type="hidden" name="idUser" th:value="${users.idUser}">
 					<button type="submit" class="btn btn-secondary">Block</button>

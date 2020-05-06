@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="icon" href="img/icon.png" type="image/png">
-	<title>Acc Setor</title>
+	<title>Daftar Transaksi</title>
 	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -33,55 +33,58 @@ nav a:hover {
  <div class="header">
   </div>
 <nav>
-  	<a href="/admin/VerifiedUsers">DATA USER</a>
-  	<a href="/admin/NewUsers">USER BARU</a>
-  	<a href="/admin/BlockedUsers">BLOCKED USER</a>
-  	<a href="/admin/TransaksiSetor" style="color:blue;" >ACC SETOR</a>
-    <a href="/admin/ListRekening">NON-ACTIVE REKENING</a> 
+  	<a href="/admin/listusers/terverifikasi" style="color:blue;">DATA USER</a>
+  	<a href="/admin/listusers/baru"  >USER BARU</a>
+  	<a href="/admin/listusers/terblokir" >BLOCKED USER</a>
+  	<a href="/admin/listtransaksi/setortunai" >ACC SETOR</a>
+    <a href="/admin/listrekening/nonaktif">NON-ACTIVE REKENING</a> 
   </nav>
 <div class="content">
-	<p th:text="${msgBox}"></p>
-	<form action="/admin/TransaksiSetor" method="post">
-		<input name="searchNoRek" th:value="${searchNoRek}" class="search" type="text" placeholder="Masukkan No. Rekening">
-		<button class="button" type="submit">cari</button>
-		<p th:text="${msg}"></p>
-	</form>
-	<table cellspacing='0'>
+<a class="a" href="/admin/listusers/terverifikasi" >Kembali</a>
+<h2 class="h1">TRANSAKSI</h2>
+	<table cellspacing='0' align="center">
+		<thead>
+			<tr>
+				<th>Status</th>
+				<th>Username</th>
+				<th>No.Rek</th>
+				<th>Nama</th>
+				<th>Jen.Tab</th>
+				<th>Alamat</th>		
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${user.statusUser}"></td>
+				<td th:text="${user.username}"></td>
+				<td th:text="${user.tbRekening.noRek}"></td>
+				<td th:text="${user.nama}"></td>
+				<td th:text="${user.tbRekening.tbJnsTab.namaJnsTab}"></td>
+				<td th:text="${user.alamat}"></td>	
+			</tr>
+		</tbody>
+	</table>
+</div>
+<p> </p>
+<table cellspacing='0' align="center">
 		<thead>
 			<tr>
 				<th>Tanggal</th>
-				<th>No.Rek</th>
-				<th>Jenis Transaksi</th>
-				<th>No. Rek Tujuan</th>
+				<th>Transaksi</th>
+				<th>Rek.Tujuan</th>
 				<th>Nominal</th>
-				<th>Status Transaksi</th>
-				<th></th>
-				<th></th>
+				<th>Status Transaksi</th>	
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="listTrans : ${listTransaksi}">
 				<td th:text="${listTrans.tglTransaksi}"></td>
-				<td th:text="${listTrans.tbRekening.noRek}"></td>
 				<td th:text="${listTrans.jnsTransaksi}"></td>
 				<td th:text="${listTrans.noRekTujuan}"></td>
 				<td th:text="${listTrans.nominal}"></td>
 				<td th:text="${listTrans.statusTransaksi}"></td>
-				<form action="/admin/TransaksiSetorAccept" method="post">
-				<td>
-					<input type="hidden" name="idTransaksi" th:value="${listTrans.idTransaksi}">
-					<button type="submit" class="btn btn-secondary">Setujui</button>
-				</td>
-				</form>
-				<form action="/admin/TransaksiSetorDecline" method="post">
-				<td>
-					<input type="hidden" name="idTransaksi" th:value="${listTrans.idTransaksi}">
-					<button type="submit" class="btn btn-secondary">Tolak</button>
-				</td>
-				</form>
 			</tr>
 		</tbody>
 	</table>
-</div>
 </body>
 </html>

@@ -33,14 +33,14 @@ nav a:hover {
  <div class="header">
   </div>
 <nav>
-  	<a href="/admin/VerifiedUsers">DATA USER</a>
-  	<a href="/admin/NewUsers">USER BARU</a>
-  	<a href="/admin/BlockedUsers"  >BLOCKED USER</a>
-  	<a href="/admin/TransaksiSetor">ACC SETOR</a>
-    <a style="color:blue;">NON_ACTIVE REKENING</a>  
+  	<a href="/admin/listusers/terverifikasi"  style="color:blue;">DATA USER</a>
+  	<a href="/admin/listusers/baru">USER BARU</a>
+  	<a href="/admin/listusers/terblokir" >BLOCKED USER</a>
+  	<a href="/admin/listtransaksi/setortunai">ACC SETOR</a>
+    <a href="/admin/listrekening/nonaktif" style="color:blue;">NON-ACTIVE REKENING</a>
   </nav>
 <div class="content">
-	<form action="/admin/ListRekening" method="post">
+	<form action="/admin/listrekening/nonaktif" method="post">
 		<input name="searchNoRek" th:value="${searchNoRek}" class="search" type="text" placeholder="Masukkan No. Rekening" >
 		<button class="button" type="submit">cari</button>
 		<p th:text="${msg}"></p>
@@ -65,7 +65,7 @@ nav a:hover {
 				<td th:text="${rek.noKartu}"></td>
 				<td th:text="${rek.tbJnsTab.namaJnsTab}"></td>
 				<td th:text="${rek.transaksiHarian}"></td>
-				<form action="/admin/SetActiveRekening" method="post">
+				<form action="/admin/listrekening/nonaktif/aktif" method="post">
 				<td>
 					<input type="hidden" name="noRek" th:value="${rek.noRek}">
 					<button type="submit" class="btn btn-secondary">Aktifkan</button>

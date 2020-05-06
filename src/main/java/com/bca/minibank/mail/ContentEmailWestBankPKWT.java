@@ -104,7 +104,7 @@ public class ContentEmailWestBankPKWT {
 		return kursIndonesia.format(nominal);
 	}
 
-	public void getContentSuccessSetorTunai(int idTransaksi, Date tglTransaksi, String jnsTransaksi, String noRekAsal, String noRekTujuan, Double nominal, String adminName) {
+	public void getContentSuccessSetorTunai(int idTransaksi, Date tglPengajuan, String jnsTransaksi, String noRekAsal, String noRekTujuan, Double nominal, String adminName) {
 		contentSubject = "Transaksi Setor Tunai Anda Berhasil";
 		contentType = "text/html";
 		contentHeader = "<h1>Website West Bank</h1>\r\n" + 
@@ -117,9 +117,9 @@ public class ContentEmailWestBankPKWT {
 				"	  <td> "+ idTransaksi +" </td>\r\n" + 
 				"	</tr>\r\n" + 
 				"	<tr>\r\n" + 
-				"	  <td>Tanggal, waktu Transaksi</td>\r\n" + 
+				"	  <td>Tanggal, waktu Pengajuan Transaksi</td>\r\n" + 
 				"	  <td> : </td>\r\n" + 
-				"	  <td> "+ tglTransaksi +" </td>\r\n" + 
+				"	  <td> "+ tglPengajuan +" </td>\r\n" + 
 				"	</tr>\r\n" + 
 				"	<tr>\r\n" + 
 				"	  <td>Jenis Transaksi</td>\r\n" + 
@@ -162,7 +162,7 @@ public class ContentEmailWestBankPKWT {
 				"<p>Jl. Slipi Jaya No. 1 Jakarta Barat</p>\r\n" + 
 				"<p>   Telp : (021) 08123456789 </p>";
 	}
-	public void getContentFailedSetorTunai(int idTransaksi, Date tglTransaksi, String jnsTransaksi, String noRekAsal, String noRekTujuan, Double nominal, String adminName, String msg) {
+	public void getContentFailedSetorTunai(int idTransaksi, Date tglPengajuan, String jnsTransaksi, String noRekAsal, String noRekTujuan, Double nominal, String adminName, String msg) {
 		contentSubject = "Transaksi Setor Tunai Anda Gagal";
 		contentType = "text/html";
 		contentHeader = "<h1>Website West Bank</h1>\r\n" + 
@@ -175,9 +175,9 @@ public class ContentEmailWestBankPKWT {
 				"	  <td> "+ idTransaksi +" </td>\r\n" + 
 				"	</tr>\r\n" + 
 				"	<tr>\r\n" + 
-				"	  <td>Tanggal, waktu Transaksi</td>\r\n" + 
+				"	  <td>Tanggal, waktu Pengajuan Transaksi</td>\r\n" + 
 				"	  <td> : </td>\r\n" + 
-				"	  <td> "+ tglTransaksi +" </td>\r\n" + 
+				"	  <td> "+ tglPengajuan +" </td>\r\n" + 
 				"	</tr>\r\n" + 
 				"	<tr>\r\n" + 
 				"	  <td>Jenis Transaksi</td>\r\n" + 
