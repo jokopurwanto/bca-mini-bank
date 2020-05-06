@@ -9,46 +9,24 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
         <link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
-        <title>User Terverifikasi</title>
+        <title>Buat PIN Berhasil</title>
         <link rel="stylesheet" th:href="@{/css/West-bank.css}">
       </head>
 
 <body class="regist-success-body">
     <nav class="navbar navbar-light bg-light fixed-top">
         <a class="navbar-brand" th:href="@{/logout}">
-            <img th:src="@{/image/WestBank.png}" height="30" alt="">
+            <img src="https://i.imgur.com/AkVFWPz.png" height="30" alt="">
         </a>
     </nav>
-        <img th:src="@{/image/success-icon.png}" alt="success-icon"  class="success">
+        <img src="https://i.imgur.com/sWSvoUn.png" alt="success-icon"  class="success">
     <div class="container">
-        <h4>Proses Pembukaan Rekening Berhasil</h4>
-        <form class="form-regist-success">
-            <table>
-                <tr>
-                    <td width="170px">No Rekening</td>
-                    <td> <span th:text="': ' + ${noRek}"></span></span></td>
-                </tr>
-                <tr>
-                    <td>No Kartu</td>
-                    <td> <span th:text="': ' + ${noKartu}"></span></td>
-                </tr>
-                <tr>
-                    <td>Nama</td>
-                    <td> <span th:text="': ' + ${nama}"></span></td>
-                </tr>
-                <tr>
-                    <td>Username</td>
-                    <td> <span th:text="': ' + ${username}"></span></td>
-                </tr>
-                <tr>
-                    <td>Jenis Tabungan</td>
-                    <td> <span th:text="': ' + ${jenisTabungan}"></span></td>
-                </tr>
-            </table>
-
-        </form>
+        <h4>PIN telah berhasil dibuat</h4>
+        <div class="form-regist-success text-center">
+   				<p>PIN anda telah berhasil dibuat. Silahkan login kembali!</p>
+        </div>
             <div class="nextbutton2">
-            <a th:href="@{/verifikasi/buatpin/}" class="btn btn-primary btn-lg" role="button">Lanjut</a>
+            <a th:href="@{/logout}" class="btn btn-primary btn-lg" role="button">Menu Login</a>
           </div>
 
       </div>

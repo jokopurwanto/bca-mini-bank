@@ -55,3 +55,4 @@ public class HandleController {
 		return "admin";
 	}	
 }
+

@@ -18,7 +18,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class MBAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	protected Log logger = LogFactory.getLog(this.getClass());
    
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
