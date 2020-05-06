@@ -40,6 +40,7 @@ public class HandleController {
 		{
 			model.addAttribute("message", message);
 		}
+		session.invalidate();
 		return "login";
 	}
 	

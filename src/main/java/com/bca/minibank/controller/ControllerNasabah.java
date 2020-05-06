@@ -55,7 +55,7 @@ public class ControllerNasabah {
 	public String berandaPage(HttpServletRequest request, Model model) {
     	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       	model.addAttribute("nama", user.getNama());
-		return "Home";
+		return "beranda";
 	}
 	
 	@GetMapping("/nasabah/pin") 
@@ -78,8 +78,7 @@ public class ControllerNasabah {
 			flagBlock = true;
 		}
 		else if(!encoder.matches(formMasukanPin.getPin(), tbRekening.getPin()))
-		{
-			  
+		{  
 			int pinattempt = (Integer)session.getAttribute("pinattempt");
 			pinattempt++;
 			request.getSession().setAttribute("pinattempt", pinattempt);
@@ -104,6 +103,7 @@ public class ControllerNasabah {
 		}
 		else
 		{
+			request.getSession().setAttribute("pinattempt", 0);
 			request.getSession().setAttribute("pintervalidasi", true);
 			return (String)session.getAttribute("url");
 		}
@@ -122,9 +122,6 @@ public class ControllerNasabah {
 			request.getSession().setAttribute("pintervalidasi", false);
 			MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			TbRekening tbRekening = DaoTbRekening.getOne(user.getNoRek());
-			
-			//Reset jumlah pinattempt
-			request.getSession().setAttribute("pinattempt", 0);
 			
 			//Mengubah saldo menjadi format currency
 			DecimalFormat formatter = (DecimalFormat)NumberFormat.getCurrencyInstance(Locale.ROOT);

@@ -63,9 +63,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-					.antMatchers("/").permitAll()
-					.antMatchers("/login").permitAll()
-					.antMatchers("/registrasi/**").permitAll()
+					.antMatchers("/").anonymous()
+					.antMatchers("/login").anonymous()
+					.antMatchers("/registrasi/**").anonymous()
 					.antMatchers("/admin/**").hasAuthority("ADMIN")
 					.antMatchers("/verifikasi/**").hasAuthority("AKUNBARU")
 					.antMatchers("/beranda").hasAnyAuthority("ADMIN", "NASABAH")
@@ -75,7 +75,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.csrf().disable().formLogin()
 					.loginPage("/login")
 					.failureHandler(myAuthenticationFailureHandler())
-//					.failureUrl("/login?error=true")
 					.successHandler(myAuthenticationSuccessHandler())
 					.usernameParameter("username")
 					.passwordParameter("password")
