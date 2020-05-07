@@ -6,14 +6,24 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5c4f979ba0.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" type="image/png" th:href="@{/Images/icon.png}">
+    <title>Setor Tunai</title>
+    <link rel="stylesheet" th:href="@{/css/West-bank.css}">
+
     <link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
     <title>Setor Tunai</title>    
 <link rel="stylesheet" th:href="@{/css/West-bank.css}">
+
   </head>
   <body class="home-body">
     <div class="all">
         <div class="header">
+
+            <img th:src="@{/Images/WestBank.png}" alt="logo"  class="home-logo" >
+
             <img src="https://i.imgur.com/AkVFWPz.png" alt="logo"  class="home-logo" >
+
             <div class="menu">
             <div class="container mt-4">
                 <ul class="nav nav-tabs">
@@ -31,8 +41,13 @@
                          Setor Tunai
                         </a>
                         <div class="dropdown-menu">
+
+                          <a class="dropdown-item" th:href="@{/nasabah/setor}">Transaksi Setor Tunai</a>
+                          <a class="dropdown-item" th:href="@{/nasabah/setor/status}">Status Setor Tunai</a>
+
                           <a class="dropdown-item" th:href="@{/home/setorForm}">Transaksi Setor Tunai</a>
                           <a class="dropdown-item" th:href="@{/home/statusSetor}">Status Setor Tunai</a>
+
                         </div>
                       </li>
                     <li class="nav-item">
@@ -74,7 +89,7 @@
 					</tr>
 					<tr>	
 						<td>Tanggal Transaksi : </td>
-						<td th:text="${formTransaksi.tglTransaksi}"></td>
+						<td th:text="${formTransaksi.tglPengajuan}"></td>
 					</tr>
 					<tr>	
 						<td>Status : </td>
