@@ -18,7 +18,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class MBAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	protected Log logger = LogFactory.getLog(this.getClass());
    
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -49,8 +49,8 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         Map<String, String> roleTargetUrlMap = new HashMap<>();
 //        roleTargetUrlMap.put("NASABAH", "/default");
         roleTargetUrlMap.put("ADMIN", "/admin");
-        roleTargetUrlMap.put("NASABAH", "/home");
-        roleTargetUrlMap.put("AKUNBARU", "/konfirmasi");
+        roleTargetUrlMap.put("NASABAH", "/beranda");
+        roleTargetUrlMap.put("AKUNBARU", "/verifikasi");
         
         //ngecek autoritas
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
