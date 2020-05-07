@@ -12,6 +12,8 @@ public class FormMutasi {
 
 	private String noRek;
 	private String jnsMutasi;
+	private String statusPeriode;
+	private String statusJangkaWaktu;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
@@ -28,6 +30,7 @@ public class FormMutasi {
 	public String getNoRek() {
 		return noRek;
 	}
+	
 	public void setNoRek(String noRek) {
 		this.noRek = noRek;
 	}
@@ -56,6 +59,22 @@ public class FormMutasi {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getStatusPeriode() {
+		return statusPeriode;
+	}
+
+	public void setStatusPeriode(String statusPeriode) {
+		this.statusPeriode = statusPeriode;
+	}
+
+	public String getStatusJangkaWaktu() {
+		return statusJangkaWaktu;
+	}
+
+	public void setStatusJangkaWaktu(String statusJangkaWaktu) {
+		this.statusJangkaWaktu = statusJangkaWaktu;
 	}
 	
 	

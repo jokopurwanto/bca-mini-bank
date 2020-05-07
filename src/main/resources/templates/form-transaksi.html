@@ -52,11 +52,12 @@
 	        </div>
 	        <div>
 	          	<label>Start date: </label>
-			  	<input type="date" name="startDate" th:field="*{startDate}" id="startDate" required><br>
+			  	<input type="date" name="startDate" th:field="*{startDate}" id="startDate"><br>
 	        </div>	        
 	        <div>
 	          	<label>End date: </label>
-			  	<input type="date" name="endDate" th:field="*{endDate}" id="endDate" required><br>
+			  	<input type="date" name="endDate" th:field="*{endDate}" id="endDate"><br>
+			  	<span class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
 	        </div>
 	        <div>
 	            <input type="submit" value="Next">
@@ -65,7 +66,7 @@
         </div>
         <div class="tab-pane" id="periode">
          <form th:action="@{/transaksi1}" th:object="${formMutasi}" method="post">
-             <div>
+             	<div>
                  <label>No Rek: </label>
                  <input type="text" th:field="*{noRek}" id="noRek" placeholder="noRek" readonly>
                  <span th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span>
@@ -87,6 +88,7 @@
                         <input type="radio" id="sebulan" name="periode" th:field="*{periode}" value="sebulan">
                     <label for="female">Satu bulan terakhir</label><br>
                     <span style="color: red" th:if="${#fields.hasErrors('periode')}" th:errors="*{periode}"></span>
+                  
                 </div>
                 <div>
                     <input type="submit" value="Next">

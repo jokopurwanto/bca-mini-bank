@@ -61,8 +61,7 @@
 							<td>
 							<label th:value="${formTransferPage.noRek}"  th:text="${formTransferPage.noRek}"></label>
 							<input type="hidden" th:field="*{noRek}" id="noRek"
-								placeholder="noRek" readonly> <span style="color: red"
-								th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span>
+								placeholder="noRek" readonly>
 							</td>
 						</tr>
 						<tr>
@@ -71,6 +70,7 @@
 							<td><input type="number" class="form-control"
 								th:field="*{noRekTujuan}" id="noRekTujuan"
 								placeholder="masukkan no rekening tujuan"> <span style="color: red"
+								th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span><span style="color: red"
 								th:if="${#fields.hasErrors('noRekTujuan')}"
 								th:errors="*{noRekTujuan}"></span></td>
 						</tr>

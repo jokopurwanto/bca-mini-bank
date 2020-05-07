@@ -1,12 +1,24 @@
 .all{
-    width: 900px;
-    height:500px ;
+    width: 1000px;
+    height:650px ;
     margin: 35px auto;
     font-family: 'Open Sans', sans-serif;
+}
+@media (max-width: 576px) {
+    .home-logo{
+        height:15px;
+        position: absolute;
+    }
+}
+.bg-custom{
+    background-color: #070c5ad8;
 }
 .back-button{
     margin-left: 85%;
     margin-top: 20px;
+}
+.back-button :hover{
+   color: rgb(96, 177, 16);
 }
 .back-button a{
     color: green;
@@ -15,6 +27,13 @@
 .carousel-inner{
     width: 60%;
     margin: 20px auto;
+}
+.cek-saldo-border1{
+    background-color: rgba(235, 234, 236, 0.192);
+}
+.cek-saldo-border2{
+    background-color: rgb(239, 235, 243);
+    color: black;
 }
 .container h2{
     font-family: 'Roboto', sans-serif;
@@ -41,23 +60,29 @@
     border-radius: 0 0 20px 20px;
 }
 .content h2{
-    margin-top: 2%;
-}
-.content h4{
     margin-top: 1%;
 }
+.content h4{
+    margin-top: 0.5%;
+}
+.dropdown:hover>.dropdown-menu{
+    display: block;
+}
+.dropdown-menu{
+    background-color: rgb(224, 235, 245);
+}
+
 .footer{
-    background-color:rgba(7, 12, 90, 0.849);
-    height: 10%;
+    background-color:#070c5ad8;
+    height: 8%;
     text-align: center;
     color: white;
-    border: 4px rgba(7, 12, 90, 0.849);
+    border: 4px #070c5ad8;
     border-radius: 20px;
     font-size: 12px;
 }
-
 .form-create-pin{
-    background-color:rgba(75, 72, 72, 0.952);
+    background-color:#4b4848f3;
     width: 500px;
     padding: 30px;
     margin: 50px auto;
@@ -72,7 +97,7 @@
     border-radius: 7px;
 }
 .form-regist-success{
-    background-color:rgba(83, 78, 78, 0.89);
+    background-color:#534e4ee3;
     width: 600px;
     padding: 50px;
     margin: 20px auto;
@@ -92,7 +117,7 @@ h6{
 }
 .header{
     background-color:white;
-    height: 20%;
+    height: 22%;
     border: 4px solid white;
     border-radius: 20px 20px 0 0;
 }
@@ -145,15 +170,17 @@ h6{
     box-sizing: border-box;
     font-size: 14px;
   }
-.logout a{
+/* .logout a{
     color: white;
-    font-size: 16px;
-    margin-left: 80%;
-}
+    font-size: 18px;
+    margin-left: 105px;
+} */
 .menu{
     margin-top: 6%;
-    background-color:rgba(7, 12, 90, 0.849);
+    background-color:#070c5ad8;
+    font-size: 18px;
 }
+
 .navbar-brand:hover{
     color: red;
     }
@@ -163,18 +190,24 @@ h6{
 .nav-link:hover{
     color: rgb(64, 231, 64);
     }
-.filter-date a:hover{
-    color: white;
-}
-.active{
+/* .active{
     background-color:whitesmoke;
     color: black;
     border: 1px solid rgba(11, 18, 124, 0.945);
-}
+} */
+
 .next-button{
     margin-left: 70%;
     margin-top: 10px;
   }
+.next-button-mutasi{
+    margin-left: 80%;
+    margin-top: 10px;
+}
+.next-button-mutasi2{
+    margin-left: 82%;
+    margin-top: 42px;
+}
 .nextbutton{
       margin-left: 85%;
   }
@@ -190,6 +223,12 @@ h6{
     margin-top: 20px;
     margin-left: 47.5%;
 }
+.radio-content{
+    margin-left: 36%;
+}
+.range input{
+    margin-left: 10%;
+ }
 .registbody{
     margin: 0;
     padding: 0;
@@ -205,6 +244,41 @@ h6{
     padding: 0;
     background: url(Images/background.png); 
     background-size: 100%;
+}
+.submit-button{
+    width: 150px;
+    margin: auto;
+}
+.submit-button a{
+    width: 80px;
+    margin-left: 36%;
+}
+.sub-content-cek-mutasi{
+    width: 560px;
+    height: 380px;
+    background-color: rgba(56, 58, 63, 0.932);
+    margin: 20px auto;
+    padding : 20px;
+    font-size: 14px;
+    color: white;
+    border-radius: 7px;
+}
+.sub-content-cek-mutasi select{
+    font-size: 14px;
+    height: 30px;
+}
+.sub-content-ceksaldo{
+    width: 400px;
+    background-color: rgb(69, 68, 71);
+    margin: 20px auto;
+    padding : 30px;
+    font-size: 14px;
+    color: white;
+    border-radius: 7px;
+}
+.sub-content-ceksaldo input{
+    font-size: 14px;
+    height: 24px;
 }
 .sub-content-pengaturan{
     width: 400px;
@@ -247,54 +321,39 @@ h6{
     border-radius: 7px;
 }
 .sub-content-transaksi2 input{
-    font-size: 12px;
+    font-size: 14px;
     width: 200px;
     height: 25px;
 }
-.sub-content-ceksaldo{
-    width: 400px;
-    background-color: rgb(69, 68, 71);
+.sub-content-transaksi2 tr{
+    vertical-align: top;
+    height: 25px;
+}
+.sub-content-setor{
+    width: 450px;
+    background-color: lawngreen;
     margin: 20px auto;
-    padding : 30px;
+    padding : 20px;
     font-size: 14px;
-    color: white;
+    color: black;
     border-radius: 7px;
 }
-.sub-content-ceksaldo input{
-    font-size: 14px;
-    height: 24px;
-}
-.sub-content-cek-mutasi{
-    width: 550px;
-    height: 280px;
-    background-color: rgba(56, 58, 63, 0.932);
+.sub-content-setor-status{
+    width: 500px;
+    background-color: rgba(175, 226, 197, 0.562);
     margin: 20px auto;
-    padding : 30px;
+    padding : 20px;
     font-size: 14px;
-    color: white;
+    color: black;
     border-radius: 7px;
 }
-.sub-content-cek-mutasi select{
-    font-size: 14px;
+.sub-content-setor tr{
+    vertical-align: top;
     height: 30px;
 }
-.radio-content{
-    margin-left: 36%;
-}
-.cek-saldo-border1{
-    background-color: rgba(235, 234, 236, 0.192);
-}
-.cek-saldo-border2{
-    background-color: rgb(239, 235, 243);
-    color: black;
-}
-.submit-button{
-    width: 150px;
-    margin: auto;
-}
-.submit-button a{
-    width: 80px;
-    margin-left: 36%;
+.sub-content-setor input{
+    font-size: 14px;
+    height: 24px;
 }
 .success{
     height: 150px;
@@ -306,31 +365,41 @@ h6{
     margin-left: 45%;
     margin-top: 1%;
 }
-.menu-tab{
-    width: 50%;
+.table-bordered tbody, thead{
     text-align: center;
-}
-.filter-date{
-    width: 450px;
-}
-.tab-content{
-    height: 100px;
-}
-.tab-pane{
-    height: 130%;
+} 
+.table-borderless tbody, thead{
+    text-align: center;
 }
 .table-striped{
     width: 90%;
     margin: 20px auto;
 }
-.table-bordered tbody, thead{
-    text-align: center;
-} 
-.range input{
-   margin-left: 10%;
+/* .tab-content {
+    width: 460px;
+} */
+.tab-pane{
+    height: 270px;
+    background-color: whitesmoke;
+    color: black;
+}
+.tab-pane form{
+    width: auto;
+    height: 240px;
+    background-color:  whitesmoke;
+    color: black;
+    margin-top: 0px;
 }
 .tab-pane input{
     font-size: 12px;
+}
+
+.filter-date a:hover{
+    color: white;
+}
+.menu-tab{
+    width: 50%;
+    text-align: center;
 }
 footer.regist{
     font-size: 14px;
@@ -356,8 +425,14 @@ form{
     padding: 20px;
     margin: 20px auto;
 }
-
-
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+table{
+    overflow-x: auto;
+}
 
 
 

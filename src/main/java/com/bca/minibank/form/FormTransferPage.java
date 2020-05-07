@@ -15,7 +15,9 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.lang.NonNull;
 
 import com.bca.minibank.model.ModelTransferPage;
+import com.bca.minibank.utils.FieldMatch;
 
+@FieldMatch(first = "noRek", second = "noRekTujuan", message = "no rek pengirim & no rek tujuan tidak boleh sama")
 public class FormTransferPage {
 
 	@Pattern(regexp="(^[0-9]{6})", message = "No Rek harus berupa angka dan min 10 digit")

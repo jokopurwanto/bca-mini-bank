@@ -1,5 +1,7 @@
 package com.bca.minibank.controller;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,8 +66,21 @@ public class HandleController {
 		String date = simpleDateFormat.format(cal.getTime());
 		System.out.println(date);
 		
+		double harga = 250000000;
+	    DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+	    DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+	 
+	    formatRp.setCurrencySymbol("Rp. ");
+	    formatRp.setMonetaryDecimalSeparator(',');
+	    formatRp.setGroupingSeparator('.');
+	 
+	    kursIndonesia.setDecimalFormatSymbols(formatRp);
+	    System.out.printf("Harga Rupiah: %s %n", kursIndonesia.format(harga));
+		
+		
+		
 //		return "home";
-		return "CekMutasi3";
+		return "CekMutasiNew";
 	}
 	
 }
