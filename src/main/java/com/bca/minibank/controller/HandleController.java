@@ -14,25 +14,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-
 import com.bca.minibank.Form.FormTransaksi;
 import com.bca.minibank.Model.ModelTransaksi;
-import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.entity.TbUsers;
@@ -40,32 +30,21 @@ import com.bca.minibank.repository.RepositoryTbRekening;
 import com.bca.minibank.repository.RepositoryTbUsers;
 import com.bca.minibank.repository.RepostitoryTbTransaksi;
 
-import com.bca.minibank.configuration.MyUserPrincipal;
-import com.bca.minibank.entity.TbRekening;
-import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.dao.DaoTbUsers;
-import com.bca.minibank.dao.DaoTbRekening;
-
 
 	@Controller
+	//@RequestMapping("/setor")
 	public class HandleController {
 		@Autowired
 		private RepostitoryTbTransaksi daoTbTransaksi;
 		
-		@Autowired
-		private RepositoryTbUsers daoTbUser;
 		
 		@Autowired
-		private DaoTbUsers daoTbUsers;
+		private RepositoryTbUsers repositoryTbUsers;
 		
 		@Autowired
-		private RepositoryTbRekening daoTbRekening;
-	  
-    @Autowired
-	  DaoTbUsers DaoTbUsers;
+		private RepositoryTbRekening repositoryTbRekening;
 	
-	  @Autowired
-	  DaoTbRekening DaoTbRekening;
+
 
 		
 		ModelTransaksi modelTransaksi;
@@ -86,17 +65,17 @@ import com.bca.minibank.dao.DaoTbRekening;
 			return "home";
 		}
 		
-		@GetMapping("/SetorHome")
+		@GetMapping("/nasabah/setor/minibank")
 		public String SetorHome(Model model) {
 			
 			
 			return "SetorTunai-1";
 		}
-		@GetMapping("/setorForm")
+		@GetMapping("/nasabah/setor")
 		public String setorForm(Model model) {
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			TbUsers tbUsers = this.daoTbUser.findByUsername(auth.getName());
+			TbUsers tbUsers = this.repositoryTbUsers.findByUsername(auth.getName());
 			System.out.println(tbUsers.getEmail());
 		
 			FormTransaksi formTransaksi = new FormTransaksi();
@@ -106,7 +85,7 @@ import com.bca.minibank.dao.DaoTbRekening;
 			return "setor";
 		}
 		
-		@PostMapping("/setor")
+		@PostMapping("/nasabah/setor/konfirmasi")
 		public String setor(Model model, @Valid FormTransaksi formTransaksi ,BindingResult rs) {
 			//setorValidator.validate(formTransaksi, rs);
 			if(rs.hasErrors()) {
@@ -118,12 +97,12 @@ import com.bca.minibank.dao.DaoTbRekening;
 				System.out.println(modelTransaksi.getNominal());
 				System.out.println(modelTransaksi.getNoRek());
 				
-				return "redirect:/validate";
+				return "redirect:/nasabah/setor/konfirmasi";
 			
 		}
 	
 	
-		@GetMapping("/validate")
+		@GetMapping("/nasabah/setor/konfirmasi")
 		public String validateSetor(Model model) {
 			
 				FormTransaksi formTransaksi= new FormTransaksi();
@@ -137,18 +116,18 @@ import com.bca.minibank.dao.DaoTbRekening;
 		
 		}
 		
-		@PostMapping("/save")
+		@PostMapping("/nasabah/setor/pengajuan-sukses")
 		public String save(Model model,@Valid FormTransaksi formTransaksi) {
 			
 			TbTransaksi tbTransaksi = new TbTransaksi();
 			
-			tbTransaksi.setTglTransaksi(new Date());
+			tbTransaksi.setTglPengajuan(new Date());
 			tbTransaksi.setJnsTransaksi("Setor Tunai");
 			tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
 			tbTransaksi.setStatusTransaksi("PENDING");
 			tbTransaksi.setNominal(formTransaksi.getNominal());
 			
-			TbRekening tbRekening = this.daoTbRekening.findByNoRek(formTransaksi.getNoRek());
+			TbRekening tbRekening = this.repositoryTbRekening.findByNoRek(formTransaksi.getNoRek());
 			
 			tbTransaksi.setTbRekening(tbRekening);
 		
@@ -159,11 +138,11 @@ import com.bca.minibank.dao.DaoTbRekening;
 		
 		}
 		
-		@GetMapping("/statusSetor")
+		@GetMapping("/nasabah/setor/status")
 		public  String statusSetor(Model model){
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			TbUsers tbUsers = this.daoTbUser.findByUsername(auth.getName());
+			TbUsers tbUsers = this.repositoryTbUsers.findByUsername(auth.getName());
 			
 	
 			TbTransaksi tbTransaksi = new TbTransaksi();
@@ -176,33 +155,9 @@ import com.bca.minibank.dao.DaoTbRekening;
 			model.addAttribute("status", this.daoTbTransaksi.findByNoRekTujuanANDJnsTransaksi(tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
 			return "SetorTunai-3";
 			
-		  }	
-	}
-
-	@GetMapping("/")
-	public String indexdirectPage() {
-		return "redirect:/login";
-	}
-	
-	@GetMapping("/login")
-	public String loginPage(Model model, HttpSession session) {
-		String error = (String)session.getAttribute("error");
-		if(error!= null)
-		{
-			model.addAttribute("error", error);
 		}
-		return "login";
+		
+		
+		
 	}
 	
-	@GetMapping("/admin")
-	public String adminPage(Model model) {
-    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	int idUser = user.getIdUser();
-    	String nama = user.getNama();
-    	String keterangan = user.getKeterangan();
-    	model.addAttribute("idUser", idUser);
-    	model.addAttribute("nama", nama);
-		return "admin";
-	}	
-}
-
