@@ -58,7 +58,8 @@ public class HandleController {
 		{
 			model.addAttribute("message", message);
 		}
-		session.invalidate();
+		session.removeAttribute("error");
+		session.removeAttribute("message");
 		return "/handle/login";
 	}
 
