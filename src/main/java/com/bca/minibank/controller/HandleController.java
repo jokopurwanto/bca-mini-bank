@@ -1,86 +1,154 @@
 package com.bca.minibank.controller;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import com.bca.minibank.entity.TbRekening;
+import com.bca.minibank.entity.TbJnsTab;
+import com.bca.minibank.entity.TbUserJnsTmp;
 import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.repository.RepositoryTbRekening;
-import com.bca.minibank.repository.RepositoryTbUsers;
+import com.bca.minibank.form.FormRegisterUser;
+import com.bca.minibank.dao.DaoTbUsers;
+import com.bca.minibank.dao.DaoTbJnsTab;
+import com.bca.minibank.dao.DaoTbRekening;
+import com.bca.minibank.dao.DaoTbUserJnsTmp;
+
 
 @Controller
 public class HandleController {
-	
+
 	@Autowired
-	private RepositoryTbUsers repositoryTbUsers;
-	
+	DaoTbUsers DaoTbUsers;
+
 	@Autowired
-	private RepositoryTbRekening repositoryTbRekening;
-	
-	
+	DaoTbRekening DaoTbRekening;
+
+	@Autowired
+	DaoTbJnsTab DaoTbJnsTab;
+
+	@Autowired
+	DaoTbUserJnsTmp DaoTbUserJnsTmp;
+
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@GetMapping("/")
+	public String indexdirectPage() {
+		return "redirect:/login";
+	}
+
 	@GetMapping("/login")
-	public String loginPage() {
-		return "login";
+	public String loginPage(Model model, HttpSession session) {
+		String error = (String)session.getAttribute("error");
+		String message = (String)session.getAttribute("message");
+		if(error!= null)
+		{
+			model.addAttribute("error", error);
+		}
+		else if(message!=null)
+		{
+			model.addAttribute("message", message);
+		}
+		session.invalidate();
+		return "/handle/login";
 	}
-	
-	@GetMapping("/register")
-	public String registerPage(TbUsers tbUsers) {
-		return "register";
+
+	@GetMapping("/admin")
+	public String adminPage(Model model) {
+
+		return "redirect:/admin/listusers/terverifikasi";
 	}
-	
-	@GetMapping("/home")
-	public String homePage() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		TbUsers tbUsers = this.repositoryTbUsers.findByUsername(auth.getName());
-//		System.out.println(auth.getName());
-		System.out.println(tbUsers.getEmail());
-		System.out.println(tbUsers.getNoHp());
-		System.out.println(tbUsers.getStatusUser());
-		System.out.println(tbUsers.getTbRekening().getNoRek());
-		
-		System.out.println("TB REKENING");
-		TbRekening tbRekening = this.repositoryTbRekening.findByNoRek("089643");
-		System.out.println(tbRekening.getSaldo());
-		System.out.println(tbRekening.getStatusRek());
-		System.out.println(tbRekening.getTbUsers().getNama());
-		
-		int i = Integer.parseInt("20000");
-		int j = 550 + i;
-		System.out.println("hasil "+j);
-		
-		
-		Calendar cal = Calendar.getInstance(); 
-        cal.add(Calendar.DAY_OF_MONTH, -2);
-        System.out.println(cal.getTime());
-        String pattern = "dd-MM-yyyy";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		String date = simpleDateFormat.format(cal.getTime());
-		System.out.println(date);
-		
-		double harga = 250000000;
-	    DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
-	    DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
-	 
-	    formatRp.setCurrencySymbol("Rp. ");
-	    formatRp.setMonetaryDecimalSeparator(',');
-	    formatRp.setGroupingSeparator('.');
-	 
-	    kursIndonesia.setDecimalFormatSymbols(formatRp);
-	    System.out.printf("Harga Rupiah: %s %n", kursIndonesia.format(harga));
-		
-		
-		
-//		return "home";
-		return "CekMutasiNew";
+
+	@GetMapping("/registrasi")
+	public String registrasiPage(Model model, FormRegisterUser formRegisterUser) {
+		List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
+		model.addAttribute("AllTbJnsTab", AllTbJnsTab);
+		return "/handle/registrasi";
 	}
-	
+
+	@PostMapping("/registrasi/konfirmasi")
+	public String registrasiPost(HttpServletRequest request, Model model, @Valid FormRegisterUser formRegisterUser, BindingResult bindingResult) 
+	{
+		boolean flagU = false;
+		boolean flagE = false;
+		boolean flagNoHp = false;
+		boolean flagNoKtp = false;
+		boolean flagCPass = false;
+		if(DaoTbUsers.findTbUsersByUsername(formRegisterUser.getUsername()) != null)
+		{
+			flagU = true;
+		}
+		if(DaoTbUsers.findTbUsersByEmail(formRegisterUser.getEmail()) != null)
+		{
+			flagE = true;
+		}
+		if(DaoTbUsers.findTbUsersByNoHp(formRegisterUser.getNoHp()) != null)
+		{
+			flagNoHp = true;
+		}
+		if(DaoTbUsers.findTbUsersByNoKtp(formRegisterUser.getNoKtp()) != null)
+		{
+			flagNoKtp = true;
+		}
+		if(!formRegisterUser.getPassword().equals(formRegisterUser.getConfirmPassword()))
+		{
+			flagCPass = true;
+		}
+		if(bindingResult.hasErrors() || flagU == true || flagE == true || flagNoHp == true || flagNoKtp == true || flagCPass == true)
+		{
+			model.addAttribute("flagU", flagU);
+			model.addAttribute("flagE", flagE);
+			model.addAttribute("flagNoHp", flagNoHp);
+			model.addAttribute("flagNoKtp", flagNoKtp);
+			model.addAttribute("flagCPass", flagCPass);
+
+			List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
+			model.addAttribute("AllTbJnsTab", AllTbJnsTab);
+			return "/handle/registrasi";
+		}
+		else
+		{
+			TbUsers tbUsers = new TbUsers();
+			tbUsers.setNama(formRegisterUser.getNama());
+			tbUsers.setNoKtp(formRegisterUser.getNoKtp());
+			tbUsers.setNoHp(formRegisterUser.getNoHp());
+			tbUsers.setAlamat(formRegisterUser.getAlamat());
+			tbUsers.setEmail(formRegisterUser.getEmail());
+			tbUsers.setUsername(formRegisterUser.getUsername());
+			tbUsers.setPassword(bCryptPasswordEncoder.encode(formRegisterUser.getPassword()));
+			tbUsers.setStatusUser("PENDING");
+			tbUsers.setRole("NASABAH");
+			tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
+			request.getSession().setAttribute("tbUsersTemp", tbUsers);
+
+			TbJnsTab tbJnsTab = DaoTbJnsTab.getOne(formRegisterUser.getIdJnsTab());
+			TbUserJnsTmp tbUserJnsTmp = new TbUserJnsTmp();
+			tbUserJnsTmp.setTbJnsTab(tbJnsTab);
+			tbUserJnsTmp.setTbUsers(tbUsers);
+			request.getSession().setAttribute("tbUserJnsTmpTemp", tbUserJnsTmp);
+
+			model.addAttribute("tbUsers", tbUsers);
+			model.addAttribute("tbUserJnsTmp", tbUserJnsTmp);
+			return "/handle/registrasikonfirmasi";
+		}
+	}
+
+	@PostMapping("/registrasi/sukses")
+	public String registrasisuksesPost(HttpSession session) 
+	{
+		DaoTbUsers.add((TbUsers)session.getAttribute("tbUsersTemp"));
+		DaoTbUserJnsTmp.add((TbUserJnsTmp)session.getAttribute("tbUserJnsTmpTemp"));
+		session.invalidate(); 
+		return "/handle/registrasiberhasil";
+	}
 }
+

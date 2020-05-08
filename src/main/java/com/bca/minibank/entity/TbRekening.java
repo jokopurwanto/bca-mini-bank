@@ -32,8 +32,8 @@ public class TbRekening implements java.io.Serializable {
 	private String pin;
 	private double saldo;
 	private String statusRek;
-	private int transaksiHarian;
 	private Set<TbTransaksi> tbTransaksis = new HashSet<TbTransaksi>(0);
+	private int transaksiHarian;
 
 	public TbRekening() {
 	}
@@ -135,12 +135,11 @@ public class TbRekening implements java.io.Serializable {
 	public void setTbTransaksis(Set<TbTransaksi> tbTransaksis) {
 		this.tbTransaksis = tbTransaksis;
 	}
-
-	@Column(name = "TRANSAKSI_HARIAN", nullable = false, length = 11)
+	
+	@Column(name = "TRANSAKSI_HARIAN", nullable = false, precision = 126, scale = 0)
 	public int getTransaksiHarian() {
 		return transaksiHarian;
 	}
-
 
 	public void setTransaksiHarian(int transaksiHarian) {
 		this.transaksiHarian = transaksiHarian;

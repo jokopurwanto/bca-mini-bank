@@ -50,7 +50,7 @@ public class TbLogAdmin implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO,  generator = "tb_log_admin_seq")
 	@Column(name = "ID_LOG", unique = true, nullable = false, precision = 22, scale = 0)
 	public int getIdLog() {
 		return this.idLog;
@@ -70,7 +70,7 @@ public class TbLogAdmin implements java.io.Serializable {
 		this.tbUsers = tbUsers;
 	}
 
-	@Column(name = "ACTION", nullable = false, length = 15)
+	@Column(name = "ACTION", nullable = false, length = 20)
 	public String getAction() {
 		return this.action;
 	}
@@ -88,7 +88,7 @@ public class TbLogAdmin implements java.io.Serializable {
 		this.toIdUser = toIdUser;
 	}
 
-	@Column(name = "TO_ID_TRANSAKSI", precision = 22, scale = 0)
+	@Column(name = "TO_ID_TRANSAKSI",nullable=true, precision = 22, scale = 0)
 	public int getToIdTransaksi() {
 		return this.toIdTransaksi;
 	}

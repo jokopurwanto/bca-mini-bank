@@ -1,3 +1,4 @@
+
 package com.bca.minibank.form;
 
 import javax.validation.constraints.NotBlank;
@@ -7,12 +8,12 @@ public class FormMasukanPin {
 	
 	@NotBlank(message = "Pin harus diisi")
 	@Pattern(regexp = "^[0-9]{6,6}$", message = "Input PIN tidak valid!")
-	String pin;
+	private String pin;
 
 	public FormMasukanPin() {
-		
-	}
 	
+	}
+
 	public String getPin() {
 		return pin;
 	}
@@ -20,7 +21,5 @@ public class FormMasukanPin {
 	public void setPin(String pin) {
 		this.pin = pin;
 	}
-	
-	
-
 }
+

@@ -30,19 +30,17 @@ public class TbMutasi implements java.io.Serializable {
 	private TbTransaksi tbTransaksi;
 	private String jnsMutasi;
 	private double saldoAkhir;
-	private Timestamp tglMutasi;
-	private String noRek;
+
 
 	public TbMutasi() {
 	}
 
-	public TbMutasi(int idMutasi, TbTransaksi tbTransaksi, String jnsMutasi,
-			double saldoAkhir, Timestamp tglMutasi) {
+	public TbMutasi(int idMutasi, TbTransaksi tbTransaksi, String jnsMutasi, 
+			double saldoAkhir) {
 		this.idMutasi = idMutasi;
 		this.tbTransaksi = tbTransaksi;
 		this.jnsMutasi = jnsMutasi;
 		this.saldoAkhir = saldoAkhir;
-		this.tglMutasi = tglMutasi;
 	}
 
 	@Id
@@ -83,24 +81,4 @@ public class TbMutasi implements java.io.Serializable {
 	public void setSaldoAkhir(double saldoAkhir) {
 		this.saldoAkhir = saldoAkhir;
 	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "TGL_MUTASI", nullable = false, length = 7)
-	public Date getTglMutasi() {
-		return this.tglMutasi;
-	}
-
-	public void setTglMutasi(Timestamp tglMutasi) {
-		this.tglMutasi = tglMutasi;
-	}
-
-	@Column(name = "NO_REK", unique = true, nullable = false, length = 10)
-	public String getNoRek() {
-		return noRek;
-	}
-
-	public void setNoRek(String noRek) {
-		this.noRek = noRek;
-	}
-
 }

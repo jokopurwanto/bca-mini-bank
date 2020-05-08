@@ -358,6 +358,6 @@ public class ContentEmailWestBankPKWT {
 				"<p>Jl. Slipi Jaya No. 1 Jakarta Barat</p>\r\n" + 
 				"<p>   Telp : (021) 0500999</p>";
 	}
-	
 
 }
+

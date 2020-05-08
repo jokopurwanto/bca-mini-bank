@@ -15,7 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -28,29 +29,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "TB_TRANSAKSI")
 public class TbTransaksi implements java.io.Serializable {
 
+	private int nominal;
 	private int idTransaksi;
 	private TbRekening tbRekening;
 	private String jnsTransaksi;
 	private String noRekTujuan;
 	private Timestamp tglTransaksi;
 	private String statusTransaksi;
-	private int nominal;
 	private String note;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
+//	private double nominal;
+	private Date tglPengajuan;
 
+	
 	public TbTransaksi() {
+		
 	}
 
-	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Timestamp tglTransaksi, String statusTransaksi, String note) {
-		this.idTransaksi = idTransaksi;
-		this.tbRekening = tbRekening;
-		this.jnsTransaksi = jnsTransaksi;
-		this.noRekTujuan = noRekTujuan;
-		this.tglTransaksi = tglTransaksi;
-		this.statusTransaksi = statusTransaksi;
-		this.note = note;
-	}
 
 	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
 			Timestamp tglTransaksi, String statusTransaksi, String note, Set<TbMutasi> tbMutasis) {
@@ -62,14 +57,25 @@ public class TbTransaksi implements java.io.Serializable {
 		this.statusTransaksi = statusTransaksi;
 		this.note = note;
 		this.tbMutasis = tbMutasis;
+		this.tglPengajuan = tglPengajuan;
+	}
+
+	@Column(name="NOMINAL",nullable=false, precision = 126, scale = 0)
+	public int getNominal() {
+		return nominal;
+	}
+
+	public void setNominal(int nominal) {
+		this.nominal = nominal;
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "tb_transaksi_seq")
 	@Column(name = "ID_TRANSAKSI", unique = true, nullable = false, precision = 22, scale = 0)
 	public int getIdTransaksi() {
 		return this.idTransaksi;
 	}
+	
 
 	public void setIdTransaksi(int idTransaksi) {
 		this.idTransaksi = idTransaksi;
@@ -103,7 +109,8 @@ public class TbTransaksi implements java.io.Serializable {
 		this.noRekTujuan = noRekTujuan;
 	}
 
-	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 7)
+
+	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 11)
 	public Timestamp getTglTransaksi() {
 		return this.tglTransaksi;
 	}
@@ -129,23 +136,24 @@ public class TbTransaksi implements java.io.Serializable {
 	public void setTbMutasis(Set<TbMutasi> tbMutasis) {
 		this.tbMutasis = tbMutasis;
 	}
-
-	@Column(name = "NOMINAL", nullable = false, precision = 22, scale = 0)
-	public int getNominal() {
-		return nominal;
-	}
-
-	public void setNominal(int nominal) {
-		this.nominal = nominal;
-	}
 	
-	@Column(name = "NOTE", nullable = false)
+	@Column(name = "NOTE", nullable = true)
 	public String getNote() {
 		return this.note;
 	}
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "TGL_PENGAJUAN", nullable = true, length = 11)
+	public Date getTglPengajuan() {
+		return this.tglPengajuan;
+	}
+
+	public void setTglPengajuan(Date tglPengajuan) {
+		this.tglPengajuan = tglPengajuan;
 	}
 
 }

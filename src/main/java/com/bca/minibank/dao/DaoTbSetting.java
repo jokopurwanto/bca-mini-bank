@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bca.minibank.entity.TbSetting;
 import com.bca.minibank.repository.RepositoryTbSetting;
 
 @Service
@@ -17,3 +18,4 @@ public class DaoTbSetting {
 		return this.repositoryTbSetting.getOne(key).getValue();
 	}
 }
+
