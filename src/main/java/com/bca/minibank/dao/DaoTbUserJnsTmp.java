@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bca.minibank.entity.TbUserJnsTmp;
+import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.repository.RepositoryTbUserJnsTmp;
 
 @Service
@@ -37,5 +38,9 @@ public class DaoTbUserJnsTmp {
 		TbUserJnsTmp TbUserJnsTmpTemp = RepositoryTbUserJnsTmp.getOne(idTmp);
 		TbUserJnsTmpTemp.setTbJnsTab(newTbUserJnsTmp.getTbJnsTab());
 		TbUserJnsTmpTemp.setTbUsers(newTbUserJnsTmp.getTbUsers());
+	}
+	
+	public TbUserJnsTmp getOneByTbUsers(TbUsers tbUsers) {
+		return RepositoryTbUserJnsTmp.findByTbUsers(tbUsers);
 	}
 }

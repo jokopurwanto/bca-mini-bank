@@ -12,7 +12,7 @@ import com.bca.minibank.repository.RepositoryTbUsers;
 
 
 @Service
-public class MiniBankUserDetailsService implements UserDetailsService {
+public class MBUserDetailsService implements UserDetailsService {
 
     @Autowired
     private RepositoryTbUsers userRepository;
@@ -24,6 +24,6 @@ public class MiniBankUserDetailsService implements UserDetailsService {
         {
             throw new UsernameNotFoundException(username);
         }
-        return new MyUserPrincipal(user);
+        return new MBUserPrincipal(user);
     }
 }

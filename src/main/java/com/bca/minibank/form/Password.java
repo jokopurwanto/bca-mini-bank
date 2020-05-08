@@ -10,15 +10,26 @@ public class Password {
 	@Pattern(regexp = "((?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{8,32})", message = "Harus mengandung angka, huruf kapital dan huruf kecil!")
 	private String newpassword;
 	private String oldpassword;
+	private String confirmpass;
 	
 	public Password() {
 		
 	}
 
-	public Password(String oldpassword,
-			@Size(min = 8, max = 32, message = "Rentang pengisian password harus 8 sampai 32 digit!") @Pattern(regexp = "((?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{8,32})", message = "Harus mengandung angka, huruf kapital dan huruf kecil!") String newpassword) {
+	public Password(
+			@Size(min = 8, max = 32, message = "Rentang pengisian password harus 8 sampai 32 digit!") @Pattern(regexp = "((?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{8,32})", message = "Harus mengandung angka, huruf kapital dan huruf kecil!") String newpassword,
+			String oldpassword, String confirmpass) {
 		super();
+		this.newpassword = newpassword;
 		this.oldpassword = oldpassword;
+		this.confirmpass = confirmpass;
+	}
+
+	public String getNewpassword() {
+		return newpassword;
+	}
+
+	public void setNewpassword(String newpassword) {
 		this.newpassword = newpassword;
 	}
 
@@ -30,12 +41,12 @@ public class Password {
 		this.oldpassword = oldpassword;
 	}
 
-	public String getNewpassword() {
-		return newpassword;
+	public String getConfirmpass() {
+		return confirmpass;
 	}
 
-	public void setNewpassword(String newpassword) {
-		this.newpassword = newpassword;
+	public void setConfirmpass(String confirmpass) {
+		this.confirmpass = confirmpass;
 	}
 
 }

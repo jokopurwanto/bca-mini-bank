@@ -9,11 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.bca.minibank.entity.TbUsers;
 
-public class MyUserPrincipal implements UserDetails{
+public class MBUserPrincipal implements UserDetails{
     private TbUsers TbUsers;
     
     //Bawaan dari
-    public MyUserPrincipal(TbUsers user) 
+    public MBUserPrincipal(TbUsers user) 
     {
         this.TbUsers = user;
     }

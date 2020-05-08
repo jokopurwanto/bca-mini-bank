@@ -1,90 +1,155 @@
 package com.bca.minibank.controller;
 
-import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.catalina.core.ApplicationContext;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
-
-import com.bca.minibank.Model.ModelTransaksi;
-import com.bca.minibank.dao.DaoTbUsers;
-import com.bca.minibank.entity.TbRekening;
-import com.bca.minibank.entity.TbTransaksi;
+import com.bca.minibank.entity.TbJnsTab;
+import com.bca.minibank.entity.TbUserJnsTmp;
 import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.form.FormTransaksi;
-import com.bca.minibank.repository.RepositoryTbRekening;
-import com.bca.minibank.repository.RepositoryTbUsers;
-import com.bca.minibank.repository.RepositoryTbTransaksi;
-
-import com.bca.minibank.configuration.MyUserPrincipal;
-import com.bca.minibank.entity.TbRekening;
-import com.bca.minibank.entity.TbUsers;
+import com.bca.minibank.form.FormRegisterUser;
 import com.bca.minibank.dao.DaoTbUsers;
+import com.bca.minibank.dao.DaoTbJnsTab;
 import com.bca.minibank.dao.DaoTbRekening;
+import com.bca.minibank.dao.DaoTbUserJnsTmp;
 
 
-	@Controller
-	public class HandleController {
-		
-		@Autowired
-		private DaoTbUsers daoTbUsers;
-	  
-		@Autowired
-		DaoTbUsers DaoTbUsers;
-	
-		@Autowired
-		DaoTbRekening DaoTbRekening;
+@Controller
+public class HandleController {
 
-	
-		@GetMapping("/")
-		public String indexdirectPage() {
-			return "redirect:/login";
+	@Autowired
+	DaoTbUsers DaoTbUsers;
+
+	@Autowired
+	DaoTbRekening DaoTbRekening;
+
+	@Autowired
+	DaoTbJnsTab DaoTbJnsTab;
+
+	@Autowired
+	DaoTbUserJnsTmp DaoTbUserJnsTmp;
+
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@GetMapping("/")
+	public String indexdirectPage() {
+		return "redirect:/login";
+	}
+
+	@GetMapping("/login")
+	public String loginPage(Model model, HttpSession session) {
+		String error = (String)session.getAttribute("error");
+		String message = (String)session.getAttribute("message");
+		if(error!= null)
+		{
+			model.addAttribute("error", error);
 		}
-		
-		@GetMapping("/login")
-		public String loginPage(Model model, HttpSession session) {
-			String error = (String)session.getAttribute("error");
-			if(error!= null)
-			{
-				model.addAttribute("error", error);
-			}
-			return "login";
+		else if(message!=null)
+		{
+			model.addAttribute("message", message);
 		}
-		
-		@GetMapping("/admin")
-		public String adminPage(Model model) {
-	    	MyUserPrincipal user = (MyUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    	int idUser = user.getIdUser();
-	    	String nama = user.getNama();
-	    	String keterangan = user.getKeterangan();
-	    	model.addAttribute("idUser", idUser);
-	    	model.addAttribute("nama", nama);
-			return "admin";
-		}	
-		
+		session.invalidate();
+		return "/handle/login";
+	}
+
+	@GetMapping("/admin")
+	public String adminPage(Model model) {
+
+		return "redirect:/admin/listusers/terverifikasi";
+	}
+
+	@GetMapping("/registrasi")
+	public String registrasiPage(Model model, FormRegisterUser formRegisterUser) {
+		List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
+		model.addAttribute("AllTbJnsTab", AllTbJnsTab);
+		return "/handle/registrasi";
+	}
+
+	@PostMapping("/registrasi/konfirmasi")
+	public String registrasiPost(HttpServletRequest request, Model model, @Valid FormRegisterUser formRegisterUser, BindingResult bindingResult) 
+	{
+		boolean flagU = false;
+		boolean flagE = false;
+		boolean flagNoHp = false;
+		boolean flagNoKtp = false;
+		boolean flagCPass = false;
+		if(DaoTbUsers.findTbUsersByUsername(formRegisterUser.getUsername()) != null)
+		{
+			flagU = true;
+		}
+		if(DaoTbUsers.findTbUsersByEmail(formRegisterUser.getEmail()) != null)
+		{
+			flagE = true;
+		}
+		if(DaoTbUsers.findTbUsersByNoHp(formRegisterUser.getNoHp()) != null)
+		{
+			flagNoHp = true;
+		}
+		if(DaoTbUsers.findTbUsersByNoKtp(formRegisterUser.getNoKtp()) != null)
+		{
+			flagNoKtp = true;
+		}
+		if(!formRegisterUser.getPassword().equals(formRegisterUser.getConfirmPassword()))
+		{
+			flagCPass = true;
+		}
+		if(bindingResult.hasErrors() || flagU == true || flagE == true || flagNoHp == true || flagNoKtp == true || flagCPass == true)
+		{
+			model.addAttribute("flagU", flagU);
+			model.addAttribute("flagE", flagE);
+			model.addAttribute("flagNoHp", flagNoHp);
+			model.addAttribute("flagNoKtp", flagNoKtp);
+			model.addAttribute("flagCPass", flagCPass);
+
+			List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
+			model.addAttribute("AllTbJnsTab", AllTbJnsTab);
+			return "/handle/registrasi";
+		}
+		else
+		{
+			TbUsers tbUsers = new TbUsers();
+			tbUsers.setNama(formRegisterUser.getNama());
+			tbUsers.setNoKtp(formRegisterUser.getNoKtp());
+			tbUsers.setNoHp(formRegisterUser.getNoHp());
+			tbUsers.setAlamat(formRegisterUser.getAlamat());
+			tbUsers.setEmail(formRegisterUser.getEmail());
+			tbUsers.setUsername(formRegisterUser.getUsername());
+			tbUsers.setPassword(bCryptPasswordEncoder.encode(formRegisterUser.getPassword()));
+			tbUsers.setStatusUser("PENDING");
+			tbUsers.setRole("NASABAH");
+			tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
+			request.getSession().setAttribute("tbUsersTemp", tbUsers);
+
+			TbJnsTab tbJnsTab = DaoTbJnsTab.getOne(formRegisterUser.getIdJnsTab());
+			TbUserJnsTmp tbUserJnsTmp = new TbUserJnsTmp();
+			tbUserJnsTmp.setTbJnsTab(tbJnsTab);
+			tbUserJnsTmp.setTbUsers(tbUsers);
+			request.getSession().setAttribute("tbUserJnsTmpTemp", tbUserJnsTmp);
+
+			model.addAttribute("tbUsers", tbUsers);
+			model.addAttribute("tbUserJnsTmp", tbUserJnsTmp);
+			return "/handle/registrasikonfirmasi";
+		}
+	}
+
+	@PostMapping("/registrasi/sukses")
+	public String registrasisuksesPost(HttpSession session) 
+	{
+		DaoTbUsers.add((TbUsers)session.getAttribute("tbUsersTemp"));
+		DaoTbUserJnsTmp.add((TbUserJnsTmp)session.getAttribute("tbUserJnsTmpTemp"));
+		session.invalidate(); 
+		return "/handle/registrasiberhasil";
+	}
 }
+
 

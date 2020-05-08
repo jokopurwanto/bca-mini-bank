@@ -55,4 +55,8 @@ public class DaoTbTransaksi {
 		tbTransaksi.setStatusTransaksi(statusTransaksi);
 		tbTransaksi.setTglTransaksi(tglTransaksi);
 	}
+	
+	public List<TbTransaksi> findByNoRekTujuanANDJnsTransaksi(String noRekTujuan, String jenis){
+		return this.repostitoryTbTransaksi.findByNoRekTujuanANDJnsTransaksi(noRekTujuan, jenis);
+	}
 }

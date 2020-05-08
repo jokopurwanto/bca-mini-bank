@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bca.minibank.entity.TbRekening;
+import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.repository.RepositoryTbRekening;
 
 @Repository
@@ -55,4 +56,14 @@ public class DaoTbRekening {
 		TbRekening tbRekening = this.getOne(noRek);
 		tbRekening.setStatusRek(statusRek);
 	}	
+	
+	public void updatepin(String noRek, String newPin) {
+		TbRekening tbRekening = this.repositoryTbRekening.getOne(noRek);
+		tbRekening.setPin(newPin);
+	}
+	
+	public TbRekening noRek(String noRek) {
+		return this.repositoryTbRekening.findByNoRek(noRek);
+		
+	}
 }
