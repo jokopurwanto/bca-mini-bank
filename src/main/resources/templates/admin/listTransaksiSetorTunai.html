@@ -49,7 +49,7 @@ nav a:hover {
 	<table cellspacing='0'>
 		<thead>
 			<tr>
-				<th>Tanggal</th>
+				<th>Tanggal Pengajuan</th>
 				<th>No.Rek</th>
 				<th>Jenis Transaksi</th>
 				<th>No. Rek Tujuan</th>
@@ -61,7 +61,7 @@ nav a:hover {
 		</thead>
 		<tbody>
 			<tr th:each="listTrans : ${listTransaksi}">
-				<td th:text="${listTrans.tglTransaksi}"></td>
+				<td th:text="${listTrans.tglPengajuan}"></td>
 				<td th:text="${listTrans.tbRekening.noRek}"></td>
 				<td th:text="${listTrans.jnsTransaksi}"></td>
 				<td th:text="${listTrans.noRekTujuan}"></td>

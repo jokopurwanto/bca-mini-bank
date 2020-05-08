@@ -11,7 +11,7 @@ import com.bca.minibank.entity.TbRekening;
 @Repository
 public interface RepositoryTbRekening extends JpaRepository<TbRekening, String> {
 	
-	List<TbRekening> findByStatusRek(String statusRek);
+	List<TbRekening> findByStatusRekOrderByNoRekAsc(String statusRek);
 	
     @Query("SELECT a FROM TbRekening a WHERE a.noRek= ?1")
     TbRekening findByNoRek(String noRek);

@@ -69,7 +69,8 @@ nav a:hover {
 <table cellspacing='0' align="center">
 		<thead>
 			<tr>
-				<th>Tanggal</th>
+				<th>Tanggal Pengajuan</th>
+				<th>Tanggal Transaksi</th>
 				<th>Transaksi</th>
 				<th>Rek.Tujuan</th>
 				<th>Nominal</th>
@@ -78,6 +79,7 @@ nav a:hover {
 		</thead>
 		<tbody>
 			<tr th:each="listTrans : ${listTransaksi}">
+				<td th:text="${listTrans.tglPengajuan}"></td>
 				<td th:text="${listTrans.tglTransaksi}"></td>
 				<td th:text="${listTrans.jnsTransaksi}"></td>
 				<td th:text="${listTrans.noRekTujuan}"></td>
@@ -87,4 +89,7 @@ nav a:hover {
 		</tbody>
 	</table>
 </body>
+<script type="text/javascript">
+	
+</script>
 </html>

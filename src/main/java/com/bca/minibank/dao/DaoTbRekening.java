@@ -24,8 +24,8 @@ public class DaoTbRekening {
 		return  this.repositoryTbRekening.findAll();
 	}
 	
-	public List<TbRekening> getAllByStatusRek(String statusRek){
-		return  this.repositoryTbRekening.findByStatusRek(statusRek);
+	public List<TbRekening> getAllByStatusRekOrderByNoRekAsc(String statusRek){
+		return  this.repositoryTbRekening.findByStatusRekOrderByNoRekAsc(statusRek);
 	}
 	
 	public Boolean findById(String noRek) {

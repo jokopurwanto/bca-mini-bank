@@ -19,7 +19,7 @@ public interface RepositoryTbTransaksi extends JpaRepository<TbTransaksi, Intege
 	 @Query("SELECT a from TbTransaksi a where a.noRekTujuan =:noRekTujuan AND a.jnsTransaksi = :jenis")
 	   List<TbTransaksi> findByNoRekTujuanANDJnsTransaksi(@Param("noRekTujuan") String noRekTujuan, @Param("jenis")String jenis);
 	 
-	 	List<TbTransaksi> findByTbRekening(TbRekening tbRekening);
-		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksi(String jnsTransaksi, String statusTransaksi);
-		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiAndTbRekening(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening);
+	 	List<TbTransaksi> findByTbRekeningOrderByIdTransaksi(TbRekening tbRekening);
+		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi);
+		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening);
 }

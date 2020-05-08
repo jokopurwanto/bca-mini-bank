@@ -19,8 +19,8 @@ public interface RepositoryTbUsers extends JpaRepository<TbUsers, Integer> {
 	public TbUsers findByEmail(String email);
 	public TbUsers findByNoKtp(String noKtp);
 	public TbUsers findByNoHp(String noHp);
-	List<TbUsers> findByStatusUserAndRole(String statusUser, String role);
-	List<TbUsers> findByStatusUserAndRoleAndUsernameContainingIgnoreCase(String statusUser, String role, String username);
+	List<TbUsers> findByStatusUserAndRoleOrderByIdUserAsc(String statusUser, String role);
+	List<TbUsers> findByStatusUserAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(String statusUser, String role, String username);
 
 }
 

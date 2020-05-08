@@ -25,12 +25,12 @@ public class DaoTbUsers {
 		return  this.repositoryTbUsers.findAll();
 	}
 
-	public List<TbUsers> getUsersByStatusAndRole(String statusUser, String role){ 
-		return this.repositoryTbUsers.findByStatusUserAndRole(statusUser, role);
+	public List<TbUsers> getUsersByStatusAndRoleOrderByIdUserAsc(String statusUser, String role){ 
+		return this.repositoryTbUsers.findByStatusUserAndRoleOrderByIdUserAsc(statusUser, role);
 	}
 	
-	public List<TbUsers> getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(String statusUser, String role, String username){ 
-		return this.repositoryTbUsers.findByStatusUserAndRoleAndUsernameContainingIgnoreCase(statusUser, role, username);
+	public List<TbUsers> getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(String statusUser, String role, String username){ 
+		return this.repositoryTbUsers.findByStatusUserAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(statusUser, role, username);
 	}
 	
 	public void add(TbUsers tbUsers) {

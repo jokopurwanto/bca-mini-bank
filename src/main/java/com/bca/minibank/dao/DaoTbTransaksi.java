@@ -26,16 +26,16 @@ public class DaoTbTransaksi {
 		return  this.repostitoryTbTransaksi.findAll();
 	}
 	
-	public List<TbTransaksi> getAllByTbRekening(TbRekening tbRekening){
-		return  this.repostitoryTbTransaksi.findByTbRekening(tbRekening);
+	public List<TbTransaksi> getAllByTbRekeningOrderByIdTransaksi(TbRekening tbRekening){
+		return  this.repostitoryTbTransaksi.findByTbRekeningOrderByIdTransaksi(tbRekening);
 	}
 	
-	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksi(String jnsTransaksi, String statusTransaksi){
-		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksi(jnsTransaksi, statusTransaksi);
+	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi){
+		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(jnsTransaksi, statusTransaksi);
 	}
 	
-	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksiAndTbRekening(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening){
-		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksiAndTbRekening(jnsTransaksi, statusTransaksi, tbRekening);
+	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening){
+		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(jnsTransaksi, statusTransaksi, tbRekening);
 	}
 	
 	public void add(TbTransaksi tbTransaksi) {
