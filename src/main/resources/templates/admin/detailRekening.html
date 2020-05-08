@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" type="img/png" href="icon.png">
+	<title>Detail Rekening User</title>
+	<link rel="stylesheet" href="/css/style_detail.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<style>
+nav {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #000080;
+}
+nav a {
+  font-family:Arial, Helvetica, sans-serif;
+  text-decoration:none;
+  color:white;
+  padding:5px 15px;
+  display:inline-block;
+}
+nav a:hover {
+  color:#000;
+  background-color:#ddd;
+}
+</style>
+</head>
+<body>
+ <div class="header">
+  </div>
+<nav>
+  	<a href="/admin/listusers/terverifikasi"  style="color:blue;">DATA USER</a>
+  	<a href="/admin/listusers/baru">USER BARU</a>
+  	<a href="/admin/listusers/terblokir" >BLOCKED USER</a>
+  	<a href="/admin/listtransaksi/setortunai">ACC SETOR</a>
+    <a href="/admin/listrekening/nonaktif">NON-ACTIVE REKENING</a> 
+  </nav>
+  <div>
+    <a class="a" href="/admin/listusers/terverifikasi" >Kembali</a>
+    <h2 class="h1">DETAIL REKENING</h2>
+    <table align="center" border="0" >
+        <tr align="left">
+          <td>Status Rekening</td>
+          <td>: </td>
+          <td th:text="${rekening.statusRek}"></td>
+        </tr>
+        <tr>
+          <td>No.Rekening</td>
+          <td>: </td>
+          <td th:text="${rekening.noRek}"></td>
+        </tr>
+        <tr>
+          <td>No.Kartu</td>
+          <td>: </td>
+          <td th:text="${rekening.noKartu}"></td>
+        </tr>
+        <tr>
+          <td>Saldo</td>
+          <td>: </td>
+          <td th:text="${rekening.saldo}"></td>
+        </tr>
+        <tr>
+          <td>Jenis Tabungan</td>
+          <td>: </td>
+          <td th:text="${rekening.tbJnsTab.namaJnsTab}"></td>
+        </tr>
+        <tr>
+        <form th:action="${formURL}" method="post">
+          	<td>
+				<input type="hidden" name="noRek" th:value="${rekening.noRek}" >
+          		<button type="submit" class="btn btn-secondary" th:text="${btnText}"></button>
+          	</td>
+        </form>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

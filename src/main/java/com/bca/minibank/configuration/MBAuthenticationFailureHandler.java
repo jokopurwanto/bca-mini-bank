@@ -20,46 +20,46 @@ public class MBAuthenticationFailureHandler implements AuthenticationFailureHand
 
 	@Autowired
 	DaoTbUsers DaoTbUsers;
-	
+
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException 
 	{
-		 	TbUsers user = DaoTbUsers.findTbUsersByUsername((String)request.getParameter("username"));
-		 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  
-			if(user == null)
-			{//username gak ketemu
-				request.getSession().setAttribute("error", "Username tidak ditemukan");
-			}
-			else if(!encoder.matches((String)request.getParameter("password"), user.getPassword()))	//password gak ketemu 
+		TbUsers user = DaoTbUsers.findTbUsersByUsername((String)request.getParameter("username"));
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  
+		if(user == null)
+		{//username gak ketemu
+			request.getSession().setAttribute("error", "Username tidak ditemukan");
+		}
+		else if(!encoder.matches((String)request.getParameter("password"), user.getPassword()))	//password gak ketemu 
+		{
+			HttpSession session = request.getSession();
+			if(session.getAttribute("usernameBefore") == null)
 			{
-				HttpSession session = request.getSession();
-				if(session.getAttribute("usernameBefore") == null)
-				{
-					request.getSession().setAttribute("loginattempt", 1);
-				}
-				else if(session.getAttribute("usernameBefore").equals(request.getParameter("username"))) //counting salah password
-				{
-					int loginattempt = (Integer)session.getAttribute("loginattempt");
-					loginattempt++;
-					request.getSession().setAttribute("loginattempt", loginattempt);
-					if(loginattempt > 3)
-					{
-						user.setStatusUser("BLOCK");
-						user.setKeterangan("Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut");
-						DaoTbUsers.update(user.getIdUser(), user);
-					}
-				}
-				else
-				{
-					request.getSession().setAttribute("loginattempt", 1);
-				}
-				request.getSession().setAttribute("error", "Password anda salah sebanyak: " + session.getAttribute("loginattempt") + "x");
-				request.getSession().setAttribute("usernameBefore", user.getUsername());
+				request.getSession().setAttribute("loginattempt", 1);
 			}
-			else //Pending, Not Verified, Block
+			else if(session.getAttribute("usernameBefore").equals(request.getParameter("username"))) //counting salah password
 			{
-				request.getSession().setAttribute("error", user.getKeterangan());
+				int loginattempt = (Integer)session.getAttribute("loginattempt");
+				loginattempt++;
+				request.getSession().setAttribute("loginattempt", loginattempt);
+				if(loginattempt > 3)
+				{
+					user.setStatusUser("BLOCK");
+					user.setKeterangan("Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut");
+					DaoTbUsers.update(user.getIdUser(), user);
+				}
 			}
-			response.sendRedirect("/login?error=true");
+			else
+			{
+				request.getSession().setAttribute("loginattempt", 1);
+			}
+			request.getSession().setAttribute("error", "Password anda salah sebanyak: " + session.getAttribute("loginattempt") + "x");
+			request.getSession().setAttribute("usernameBefore", user.getUsername());
+		}
+		else //Pending, Not Verified, Block
+		{
+			request.getSession().setAttribute("error", user.getKeterangan());
+		}
+		response.sendRedirect("/login?error=true");
 	}
 }

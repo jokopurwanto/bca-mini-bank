@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" type="img/png" href="/img/icon.png">
+	<title>Non-Aktif Rekening</title>
+	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<style>
+nav {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #000080;
+}
+nav a {
+  font-family:Arial, Helvetica, sans-serif;
+  text-decoration:none;
+  color:white;
+  padding:5px 15px;
+  display:inline-block;
+}
+nav a:hover {
+  color:#000;
+  background-color:#ddd;
+}
+</style>
+</head>
+<body>
+ <div class="header">
+  </div>
+<nav>
+  	<a href="/admin/listusers/terverifikasi"  style="color:blue;">DATA USER</a>
+  	<a href="/admin/listusers/baru">USER BARU</a>
+  	<a href="/admin/listusers/terblokir" >BLOCKED USER</a>
+  	<a href="/admin/listtransaksi/setortunai">ACC SETOR</a>
+    <a href="/admin/listrekening/nonaktif" style="color:blue;">NON-ACTIVE REKENING</a>
+  </nav>
+<div class="content">
+	<form action="/admin/listrekening/nonaktif" method="post">
+		<input name="searchNoRek" th:value="${searchNoRek}" class="search" type="text" placeholder="Masukkan No. Rekening" >
+		<button class="button" type="submit">cari</button>
+		<p th:text="${msg}"></p>
+	</form> 
+	<table cellspacing='0'>
+		<thead>
+			<tr>
+                <th>Status</th>
+				<th>No. Rek</th>
+				<th>Nama</th>
+				<th>No.Kartu</th>
+				<th>Jen.Tab</th>
+				<th>Transaksi Harian</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="rek : ${listRekening}">
+				<td th:text="${rek.statusRek}"></td>
+				<td th:text="${rek.noRek}"></td>
+				<td th:text="${rek.tbUsers.nama}"></td>
+				<td th:text="${rek.noKartu}"></td>
+				<td th:text="${rek.tbJnsTab.namaJnsTab}"></td>
+				<td th:text="${rek.transaksiHarian}"></td>
+				<form action="/admin/listrekening/nonaktif/aktif" method="post">
+				<td>
+					<input type="hidden" name="noRek" th:value="${rek.noRek}">
+					<button type="submit" class="btn btn-secondary">Aktifkan</button>
+				</td>
+                </form>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

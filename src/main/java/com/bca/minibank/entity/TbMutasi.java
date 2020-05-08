@@ -24,23 +24,23 @@ public class TbMutasi implements java.io.Serializable {
 	private int idMutasi;
 	private TbTransaksi tbTransaksi;
 	private String jnsMutasi;
-	private int nominal;
+//	private double nominal;
 	private double saldoAkhir;
-	private String note;
-	private Date tglMutasi;
+//	private String note;
+//	private Date tglMutasi;
 
 	public TbMutasi() {
 	}
 
-	public TbMutasi(int idMutasi, TbTransaksi tbTransaksi, String jnsMutasi, int nominal,
-			double saldoAkhir, String note, Date tglMutasi) {
+	public TbMutasi(int idMutasi, TbTransaksi tbTransaksi, String jnsMutasi, 
+			double saldoAkhir) {
 		this.idMutasi = idMutasi;
 		this.tbTransaksi = tbTransaksi;
 		this.jnsMutasi = jnsMutasi;
-		this.nominal = nominal;
+//		this.nominal = nominal;
 		this.saldoAkhir = saldoAkhir;
-		this.note = note;
-		this.tglMutasi = tglMutasi;
+//		this.note = note;
+//		this.tglMutasi = tglMutasi;
 	}
 
 	@Id
@@ -64,7 +64,7 @@ public class TbMutasi implements java.io.Serializable {
 		this.tbTransaksi = tbTransaksi;
 	}
 
-	@Column(name = "JNS_MUTASI", nullable = false, length = 3)
+	@Column(name = "JNS_MUTASI", nullable = false, length = 11)
 	public String getJnsMutasi() {
 		return this.jnsMutasi;
 	}
@@ -73,41 +73,34 @@ public class TbMutasi implements java.io.Serializable {
 		this.jnsMutasi = jnsMutasi;
 	}
 
-	@Column(name = "NOMINAL", nullable = false, precision = 22, scale = 0)
-	public int getNominal() {
-		return this.nominal;
-	}
-
-	public void setNominal(int nominal) {
-		this.nominal = nominal;
-	}
-
 	@Column(name = "SALDO_AKHIR", nullable = false, precision = 22, scale = 0)
 	public double getSaldoAkhir() {
 		return this.saldoAkhir;
 	}
 
-	public void setSaldoAkhir(int saldoAkhir) {
+	public void setSaldoAkhir(double saldoAkhir) {
 		this.saldoAkhir = saldoAkhir;
 	}
 
-	@Column(name = "NOTE", nullable = false)
-	public String getNote() {
-		return this.note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "TGL_MUTASI", nullable = false, length = 7)
-	public Date getTglMutasi() {
-		return this.tglMutasi;
-	}
-
-	public void setTglMutasi(Date tglMutasi) {
-		this.tglMutasi = tglMutasi;
-	}
+//	@Column(name = "NOTE", nullable = false)
+//	public String getNote() {
+//		return this.note;
+//	}
+//
+//	public void setNote(String note) {
+//		this.note = note;
+//	}
+//
+////	@Temporal(TemporalType.DATE)
+////	@Column(name = "TGL_MUTASI", nullable = false, length = 7)
+//	@Temporal(TemporalType.TIMESTAMP)
+//	@Column(name = "TGL_MUTASI", nullable = false, length = 11)
+//	public Date getTglMutasi() {
+//		return this.tglMutasi;
+//	}
+//
+//	public void setTglMutasi(Date tglMutasi) {
+//		this.tglMutasi = tglMutasi;
+//	}
 
 }

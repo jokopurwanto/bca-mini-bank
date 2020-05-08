@@ -6,18 +6,19 @@ public class Pin {
 	
 	@Pattern(regexp = "^[0-9]{6,6}$", message = "Pengisian pin harus 6 digit angka!")
 	private String newPin;
-	
 	private String oldPin;
-
+	private String confirmpin;
+	
 	public Pin() {
 		
 	}
 
 	public Pin(@Pattern(regexp = "^[0-9]{6,6}$", message = "Pengisian pin harus 6 digit angka!") String newPin,
-			String oldPin) {
+			String oldPin, String confirmpin) {
 		super();
 		this.newPin = newPin;
 		this.oldPin = oldPin;
+		this.confirmpin = confirmpin;
 	}
 
 	public String getNewPin() {
@@ -35,7 +36,13 @@ public class Pin {
 	public void setOldPin(String oldPin) {
 		this.oldPin = oldPin;
 	}
-	
-	
+
+	public String getConfirmpin() {
+		return confirmpin;
+	}
+
+	public void setConfirmpin(String confirmpin) {
+		this.confirmpin = confirmpin;
+	}
 	
 }

@@ -24,6 +24,14 @@ public class DaoTbUsers {
 	public List<TbUsers> getAll(){
 		return  this.repositoryTbUsers.findAll();
 	}
+
+	public List<TbUsers> getUsersByStatusAndRole(String statusUser, String role){ 
+		return this.repositoryTbUsers.findByStatusUserAndRole(statusUser, role);
+	}
+	
+	public List<TbUsers> getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(String statusUser, String role, String username){ 
+		return this.repositoryTbUsers.findByStatusUserAndRoleAndUsernameContainingIgnoreCase(statusUser, role, username);
+	}
 	
 	public void add(TbUsers tbUsers) {
 		this.repositoryTbUsers.save(tbUsers);
@@ -39,7 +47,25 @@ public class DaoTbUsers {
 		TbUserTemp.setStatusUser(newTbUsers.getStatusUser());
 		TbUserTemp.setPassword(newTbUsers.getPassword());
 	}
+
+	public void updatePassword(int idUser, String newPassword) {
+		TbUsers user = this.repositoryTbUsers.getOne(idUser);
+		user.setPassword(newPassword);
+	}
+
+	public void updateStatusUser(int idUser, String statusUser) {
+		TbUsers user = this.repositoryTbUsers.getOne(idUser);
+		user.setStatusUser(statusUser);
+	}
+	public void updateKeterangan(int idUser, String keterangan) {
+		TbUsers user = this.repositoryTbUsers.getOne(idUser);
+		user.setKeterangan(keterangan);
+	}
 	
+	public TbUsers findByUsername(String username) {
+		return  this.repositoryTbUsers.findByUsername(username);
+	}
+
 	public TbUsers findTbUsersByUsername(String username) {
 		return this.repositoryTbUsers.findByUsername(username);
 	}
@@ -55,5 +81,5 @@ public class DaoTbUsers {
 	public TbUsers findTbUsersByNoHp(String NoHp) {
 		return this.repositoryTbUsers.findByNoHp(NoHp);
 	}
-	
+
 }

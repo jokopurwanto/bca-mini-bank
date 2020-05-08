@@ -1,21 +1,18 @@
 package com.bca.minibank.controller;
 
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.bca.minibank.configuration.MBUserPrincipal;
 import com.bca.minibank.entity.TbJnsTab;
 import com.bca.minibank.entity.TbUserJnsTmp;
 import com.bca.minibank.entity.TbUsers;
@@ -25,28 +22,30 @@ import com.bca.minibank.dao.DaoTbJnsTab;
 import com.bca.minibank.dao.DaoTbRekening;
 import com.bca.minibank.dao.DaoTbUserJnsTmp;
 
+
 @Controller
 public class HandleController {
+
 	@Autowired
 	DaoTbUsers DaoTbUsers;
-	
+
 	@Autowired
 	DaoTbRekening DaoTbRekening;
-	
+
 	@Autowired
 	DaoTbJnsTab DaoTbJnsTab;
-	
+
 	@Autowired
 	DaoTbUserJnsTmp DaoTbUserJnsTmp;
-	
+
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@GetMapping("/")
 	public String indexdirectPage() {
 		return "redirect:/login";
 	}
-	
+
 	@GetMapping("/login")
 	public String loginPage(Model model, HttpSession session) {
 		String error = (String)session.getAttribute("error");
@@ -60,26 +59,22 @@ public class HandleController {
 			model.addAttribute("message", message);
 		}
 		session.invalidate();
-		return "login";
+		return "/handle/login";
 	}
-	
+
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
-		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	int idUser = user.getIdUser();
-    	String nama = user.getNama();
-    	model.addAttribute("idUser", idUser);
-    	model.addAttribute("nama", nama);
-		return "admin";
+
+		return "redirect:/admin/listusers/terverifikasi";
 	}
-	
+
 	@GetMapping("/registrasi")
 	public String registrasiPage(Model model, FormRegisterUser formRegisterUser) {
 		List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
 		model.addAttribute("AllTbJnsTab", AllTbJnsTab);
-		return "registrasi";
+		return "/handle/registrasi";
 	}
-	
+
 	@PostMapping("/registrasi/konfirmasi")
 	public String registrasiPost(HttpServletRequest request, Model model, @Valid FormRegisterUser formRegisterUser, BindingResult bindingResult) 
 	{
@@ -115,10 +110,10 @@ public class HandleController {
 			model.addAttribute("flagNoHp", flagNoHp);
 			model.addAttribute("flagNoKtp", flagNoKtp);
 			model.addAttribute("flagCPass", flagCPass);
-			
+
 			List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
 			model.addAttribute("AllTbJnsTab", AllTbJnsTab);
-			return "registrasi";
+			return "/handle/registrasi";
 		}
 		else
 		{
@@ -134,26 +129,27 @@ public class HandleController {
 			tbUsers.setRole("NASABAH");
 			tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
 			request.getSession().setAttribute("tbUsersTemp", tbUsers);
-			
+
 			TbJnsTab tbJnsTab = DaoTbJnsTab.getOne(formRegisterUser.getIdJnsTab());
 			TbUserJnsTmp tbUserJnsTmp = new TbUserJnsTmp();
 			tbUserJnsTmp.setTbJnsTab(tbJnsTab);
 			tbUserJnsTmp.setTbUsers(tbUsers);
 			request.getSession().setAttribute("tbUserJnsTmpTemp", tbUserJnsTmp);
-			
+
 			model.addAttribute("tbUsers", tbUsers);
 			model.addAttribute("tbUserJnsTmp", tbUserJnsTmp);
-			return "registrasikonfirmasi";
+			return "/handle/registrasikonfirmasi";
 		}
 	}
-	
+
 	@PostMapping("/registrasi/sukses")
 	public String registrasisuksesPost(HttpSession session) 
 	{
 		DaoTbUsers.add((TbUsers)session.getAttribute("tbUsersTemp"));
 		DaoTbUserJnsTmp.add((TbUserJnsTmp)session.getAttribute("tbUserJnsTmpTemp"));
 		session.invalidate(); 
-		return "registrasiberhasil";
+		return "/handle/registrasiberhasil";
 	}
 }
+
 

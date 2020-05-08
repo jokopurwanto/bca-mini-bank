@@ -32,15 +32,17 @@ public class TbTransaksi implements java.io.Serializable {
 	private Date tglTransaksi;
 	private String statusTransaksi;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
+//	private double nominal;
+	private String note;
+	private Date tglPengajuan;
 
+	
 	public TbTransaksi() {
 		
 	}
-	
-	
 
 	public TbTransaksi(int nominal, int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Date tglTransaksi, String statusTransaksi, int transaksiHarian, Set<TbMutasi> tbMutasis) {
+			Date tglTransaksi, String statusTransaksi, Set<TbMutasi> tbMutasis, String note, Date tglPengajuan) {
 		super();
 		this.nominal = nominal;
 		this.idTransaksi = idTransaksi;
@@ -50,10 +52,14 @@ public class TbTransaksi implements java.io.Serializable {
 		this.tglTransaksi = tglTransaksi;
 		this.statusTransaksi = statusTransaksi;
 		this.tbMutasis = tbMutasis;
+		this.note = note;
+		this.tglPengajuan = tglPengajuan;
 	}
-	
-	
-	@Column(name="NOMINAL",nullable=false )
+
+
+
+
+	@Column(name="NOMINAL",nullable=false, precision = 126, scale = 0)
 	public int getNominal() {
 		return nominal;
 	}
@@ -102,8 +108,10 @@ public class TbTransaksi implements java.io.Serializable {
 		this.noRekTujuan = noRekTujuan;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 7)
+//	@Temporal(TemporalType.DATE)
+//	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 7)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "TGL_TRANSAKSI", nullable = true, length = 11)
 	public Date getTglTransaksi() {
 		return this.tglTransaksi;
 	}
@@ -128,6 +136,25 @@ public class TbTransaksi implements java.io.Serializable {
 
 	public void setTbMutasis(Set<TbMutasi> tbMutasis) {
 		this.tbMutasis = tbMutasis;
+	}
+	
+	@Column(name = "NOTE", nullable = true)
+	public String getNote() {
+		return this.note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "TGL_PENGAJUAN", nullable = true, length = 11)
+	public Date getTglPengajuan() {
+		return this.tglPengajuan;
+	}
+
+	public void setTglPengajuan(Date tglPengajuan) {
+		this.tglPengajuan = tglPengajuan;
 	}
 
 }

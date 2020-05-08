@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bca.minibank.entity.TbRekening;
+import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.repository.RepositoryTbRekening;
 
 @Repository
@@ -24,6 +25,14 @@ public class DaoTbRekening {
 		return  this.repositoryTbRekening.findAll();
 	}
 	
+	public List<TbRekening> getAllByStatusRek(String statusRek){
+		return  this.repositoryTbRekening.findByStatusRek(statusRek);
+	}
+	
+	public Boolean findById(String noRek) {
+		return this.repositoryTbRekening.findById(noRek).isPresent();
+	}
+	
 	public void add(TbRekening tbRekening) {
 		this.repositoryTbRekening.save(tbRekening);
 	}
@@ -39,4 +48,22 @@ public class DaoTbRekening {
 		TbRekeningTemp.setSaldo(newTbRekening.getSaldo());
 	}
 	
+	public void updateSaldo(String noRek, double saldo) {
+		TbRekening tbRekening = this.getOne(noRek);
+		tbRekening.setSaldo(saldo);
+	}	
+	public void updateStatusRek(String noRek, String statusRek) {
+		TbRekening tbRekening = this.getOne(noRek);
+		tbRekening.setStatusRek(statusRek);
+	}	
+	
+	public void updatepin(String noRek, String newPin) {
+		TbRekening tbRekening = this.repositoryTbRekening.getOne(noRek);
+		tbRekening.setPin(newPin);
+	}
+	
+	public TbRekening noRek(String noRek) {
+		return this.repositoryTbRekening.findByNoRek(noRek);
+		
+	}
 }

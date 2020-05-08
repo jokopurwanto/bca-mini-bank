@@ -149,7 +149,7 @@ public class TbUsers implements java.io.Serializable {
 		this.role = role;
 	}
 
-	@Column(name = "STATUS_USER", nullable = false, length = 10)
+	@Column(name = "STATUS_USER", nullable = false, length = 12)
 	public String getStatusUser() {
 		return this.statusUser;
 	}
