@@ -312,7 +312,7 @@ public class ControllerNasabah {
 
 //	============================================START MUTASI=========================================
 	@GetMapping("/nasabah/mutasi")
-	public String getMutasi1(Model model, HttpSession session, HttpServletRequest req) {
+	public String getMutasi(Model model, HttpSession session, HttpServletRequest req) {
 		if ((Boolean) session.getAttribute("pinTervalidasi") == null
 				|| (Boolean) session.getAttribute("pinTervalidasi") == false) {
 			req.getSession().setAttribute("url", "redirect:/nasabah/mutasi");
@@ -330,12 +330,12 @@ public class ControllerNasabah {
 	}
 
 	@GetMapping("/nasabah/mutasi/jangkawaktu")
-	public String getMutasi12() {
+	public String getMutasiJangkaWaktu() {
 		return "redirect:/nasabah/mutasi";
 	}
 	
 	@PostMapping("/nasabah/mutasi/jangkawaktu")
-	public String postTransaksi(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
+	public String postMutasiJangkaWaktu(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return "CekMutasi-1";
 		}
@@ -390,7 +390,7 @@ public class ControllerNasabah {
 	}
 
 	@GetMapping("/nasabah/mutasi/periode")
-	public String getMutasi11() {
+	public String getMutasiPeriode() {
 		return "redirect:/nasabah/mutasi";
 	}
 
