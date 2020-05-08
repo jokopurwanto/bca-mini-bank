@@ -22,7 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.bca.minibank.Model.ModelTransaksi;
+import com.bca.minibank.model.ModelTransaksi;
 import com.bca.minibank.configuration.MBUserPrincipal;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;

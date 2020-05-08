@@ -1,4 +1,4 @@
-package com.bca.minibank.Model;
+package com.bca.minibank.model;
 
 import java.util.Date;
 

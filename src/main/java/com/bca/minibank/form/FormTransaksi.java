@@ -6,7 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.bca.minibank.Model.ModelTransaksi;
+import com.bca.minibank.model.ModelTransaksi;
 import com.bca.minibank.entity.TbTransaksi;
 
 /**
