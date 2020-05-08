@@ -103,11 +103,11 @@
                         </div>
                         <div>
                           <select class="form-control" th:field="*{jnsMutasi}" id="sel1" name="sellist1">
-                            <option value="SEMUA">SEMUA</option>
-                            <option value="UANG MASUK">UANG MASUK</option>
-                            <option value="UANG KELUAR">UANG KELUAR</option>
+                            <option value="semua">Semua Transaksi</option>
+                            <option value="uang masuk">Transaksi Masuk</option>
+                            <option value="uang keluar">Transaksi Keluar</option>
                           </select>
-                           <span class="text-danger" th:if="${#fields.hasErrors('jnsMutasi')}" th:errors="*{jnsMutasi}"></span>
+                          <span class="text-danger" th:if="${#fields.hasErrors('jnsMutasi')}" th:errors="*{jnsMutasi}"></span>
                         </div>
                       </div>
                     </div>
@@ -145,31 +145,40 @@
                         <div><label for="sel1">Jenis Transaksi</label></div>
                       </div>
                       <div class="col-md-7">
-                        <div class="cek-saldo-border1">Tampilkan No Rekening</div>
-                        <div><select class="form-control" id="sel1" name="sellist1">
-                            <option>Semua Transaksi</option>
-                            <option>Transaksi Masuk</option>
-                            <option>Transaksi Keluar</option>
-                          </select>
+                        <div class="cek-saldo-border1">
+                          <label th:value="${formMutasi.noRek}" th:text="${formMutasi.noRek}"></label>
+                          <input type="hidden" th:field="*{noRek}" id="noRek" placeholder="noRek" readonly>
+                        </div>
+                        <div>
+                           <select class="form-control" th:field="*{jnsMutasi}" id="sel1" name="sellist1">
+                             <option value="semua">Semua Transaksi</option>
+                             <option value="uang masuk">Transaksi Masuk</option>
+                             <option value="uang keluar">Transaksi Keluar</option>
+                           </select>
+                           <span class="text-danger" th:if="${#fields.hasErrors('jnsMutasi')}" th:errors="*{jnsMutasi}"></span>
                         </div>
                       </div>
                     </div>
                     <br>
                     <div class="form-check radio-content">
                       <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optradio">Hari ini
+                        <input type="radio" class="form-check-input" name="optradio" th:field="*{periode}"
+                          value="sehari" checked>Hari ini
                       </label>
                     </div>
                     <div class="form-check radio-content">
                       <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optradio">Satu minggu terakhir
+                        <input type="radio" class="form-check-input" name="optradio" th:field="*{periode}"
+                          value="seminggu">Satu minggu terakhir
                       </label>
                     </div>
                     <div class="form-check radio-content">
                       <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optradio">Satu bulan terakhir
+                        <input type="radio" class="form-check-input" name="optradio" th:field="*{periode}"
+                          value="sebulan">Satu bulan terakhir
                       </label>
                     </div>
+                     <span style="color: red" th:if="${#fields.hasErrors('periode')}" th:errors="*{periode}"></span>
                     <div class="next-button-mutasi2">
                       <button type="submit" class="btn btn-primary" role="button" onclick="dateFilter()">Lanjut</button>
                     </div>
@@ -192,7 +201,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-  <script src="West-bank.js" async></script>
+  <script src="js/West-bank.js" async></script>
 </body>
 
 </html>

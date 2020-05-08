@@ -20,5 +20,15 @@ public class UtilsSession {
 	public static void removeModelInfo(HttpServletRequest req) {
 		req.getSession().removeAttribute("myData");
 	}
+	
+	public static int getPercobaan(HttpServletRequest req) {
+		int percobaan = (Integer) req.getSession().getAttribute("percobaan");
+		
+		if(percobaan == 0) {
+			req.getSession().setAttribute("percobaan", 0);
+		}
+		
+		return percobaan;		
+	}
 
 }
