@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
-import com.bca.minibank.repository.RepostitoryTbTransaksi;
+import com.bca.minibank.repository.RepositoryTbTransaksi;
 
 @Service
 @Transactional
 public class DaoTbTransaksi {
 	
 	@Autowired
-	private RepostitoryTbTransaksi repostitoryTbTransaksi;
+	private RepositoryTbTransaksi repostitoryTbTransaksi;
 	
 	public TbTransaksi getOne(int idTransaksi) {
 		return this.repostitoryTbTransaksi.getOne(idTransaksi);
