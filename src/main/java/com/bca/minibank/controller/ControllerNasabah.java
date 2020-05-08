@@ -2,22 +2,10 @@ package com.bca.minibank.controller;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-import java.util.Random;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -49,28 +37,11 @@ import com.bca.minibank.mail.ContentEmailWestBankPKWT;
 import com.bca.minibank.mail.SendEmailSMTP;
 import com.bca.minibank.model.ModelSession;
 import com.bca.minibank.model.ModelTransferPage;
-import com.bca.minibank.repository.RepositoryTbJnsTab;
-import com.bca.minibank.repository.RepositoryTbLogAdmin;
-import com.bca.minibank.repository.RepositoryTbMutasi;
-import com.bca.minibank.repository.RepositoryTbRekening;
-import com.bca.minibank.repository.RepositoryTbUsers;
-import com.bca.minibank.repository.RepostitoryTbTransaksi;
 import com.bca.minibank.utils.UtilsSession;
 
 @Controller
 public class ControllerNasabah {
 
-//	private static final SimpleDateFormat sdf =	new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-
-	@Autowired
-	private RepositoryTbJnsTab repoJnsTab;
-
-	@Autowired
-	private RepositoryTbUsers repoTbUsers;
-
-	@Autowired
-	private RepositoryTbRekening repoTbRekening;
-	
 	@Autowired
 	private DaoTbUsers daoTbUsers;
 	
@@ -93,7 +64,7 @@ public class ControllerNasabah {
 	private static final String JNS_MUTASI_MASUK = "UANG MASUK";
 	private static final String JNS_MUTASI_KELUAR = "UANG KELUAR";
 	private static final String PETTERN_DATE_TIME = "dd-MM-yyyy HH:mm:ss";
-	private static final String PETTERN_DATE = "dd-MM-yyyy";
+	private static final String PETTERN_DATE = "dd-MMM-yyyy";
 	private static final String STATUS_REK_NOT_ACTIVE = "NOT ACTIVE";
 	private static final String STATUS_USER_BLOCK = "BLOCK";
 	private static final String KETERANGAN_BLOCK = "Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut";
@@ -231,16 +202,16 @@ public class ControllerNasabah {
 		TbMutasi mutasiPengirim = new TbMutasi();
 		mutasiPengirim.setJnsMutasi(JNS_MUTASI_KELUAR);
 		mutasiPengirim.setSaldoAkhir(rekPengirim.getSaldo() - nominal);
-		mutasiPengirim.setTglMutasi(new Timestamp(System.currentTimeMillis()));
-		mutasiPengirim.setNoRek(rekPengirim.getNoRek());
+//		mutasiPengirim.setTglMutasi(new Timestamp(System.currentTimeMillis()));
+//		mutasiPengirim.setNoRek(rekPengirim.getNoRek());
 		mutasiPengirim.setTbTransaksi(transaksi);
 
 //		meanmbah ke tabel mutasi [penerima]
 		TbMutasi mutasiPenerima = new TbMutasi();
 		mutasiPenerima.setJnsMutasi(JNS_MUTASI_MASUK);
 		mutasiPenerima.setSaldoAkhir(rekPenerima.getSaldo() + nominal);
-		mutasiPenerima.setTglMutasi(new Timestamp(System.currentTimeMillis()));
-		mutasiPenerima.setNoRek(formTransferValidationPage.getNoRekTujuan());
+//		mutasiPenerima.setTglMutasi(new Timestamp(System.currentTimeMillis()));
+//		mutasiPenerima.setNoRek(formTransferValidationPage.getNoRekTujuan());
 		mutasiPenerima.setTbTransaksi(transaksi);
 		
 //		insert to table mutasi
@@ -398,7 +369,7 @@ public class ControllerNasabah {
 		}
 			
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+		TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PETTERN_DATE);
 		String startDate = simpleDateFormat.format(formMutasi.getStartDate());
 		String endDate = simpleDateFormat.format(formMutasi.getEndDate());
@@ -409,7 +380,6 @@ public class ControllerNasabah {
 			model.addAttribute("mutasi", this.daoTbMutasi.findByFilterTransaksiIn(tbUsers.getTbRekening().getNoRek(),
 					startDate, endDate));
 		} else if (formMutasi.getJnsMutasi().equalsIgnoreCase(JNS_MUTASI_KELUAR)) {
-			System.out.println("if uang keluar");
 			model.addAttribute("mutasi", this.daoTbMutasi.findByFilterTransaksiOut(tbUsers.getTbRekening().getNoRek(),
 					startDate, endDate));
 		} else {
@@ -440,14 +410,13 @@ public class ControllerNasabah {
 			return "CekMutasi-1";
 		}
 		
-		System.out.println(formMutasi.getPeriode());
 		if(!formMutasi.getPeriode().equalsIgnoreCase("sehari") && !formMutasi.getPeriode().equalsIgnoreCase("seminggu") && !formMutasi.getPeriode().equalsIgnoreCase("sebulan")){
 			result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
 			return "CekMutasi-1";
 		}
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+		TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PETTERN_DATE);
 		String endDate = simpleDateFormat.format(new Date());
 		if (formMutasi.getJnsMutasi().equalsIgnoreCase(JNS_SEMUA_MUTASI)) {			
@@ -474,23 +443,22 @@ public class ControllerNasabah {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		boolean flagPin = false;
 		boolean flagBlock = false;
-		TbUsers tbUsers = this.repoTbUsers.findByUsername(auth.getName());
+		TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 		if (!encoder.matches(formMasukanPin.getPin(), tbUsers.getTbRekening().getPin())) {
-			System.out.println("beda");
 			int pinattempt = (Integer) session.getAttribute("pinattempt");
 			pinattempt++;
 			request.getSession().setAttribute("pinattempt", pinattempt);
 			flagPin = true;
 			if (pinattempt >= 3) {
 				flagBlock = true;
-				TbRekening tbRekening = this.repoTbRekening.findByNoRek(tbUsers.getTbRekening().getNoRek());
+				TbRekening tbRekening = this.daoTbRekening.findByNoRek(tbUsers.getTbRekening().getNoRek());
 				tbRekening.setStatusRek(STATUS_REK_NOT_ACTIVE);
 				tbUsers.setStatusUser(STATUS_USER_BLOCK);
 				tbUsers.setKeterangan(KETERANGAN_BLOCK);
-				this.repoTbRekening.save(tbRekening);
-				this.repoTbUsers.save(tbUsers);
+				this.daoTbRekening.update(tbRekening);
+				this.daoTbUsers.update(tbUsers);
 				return "redirect:/logout";
 			}
 		}
@@ -501,7 +469,6 @@ public class ControllerNasabah {
 			model.addAttribute("pinattempt", session.getAttribute("pinattempt"));
 			return "pinrequest1";
 		} else {
-			System.out.println("sama");
 			request.getSession().setAttribute("pinTervalidasi", true);
 			return (String) session.getAttribute("url");
 		}
