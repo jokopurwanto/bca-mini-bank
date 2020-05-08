@@ -38,5 +38,9 @@ public class DaoTbRekening {
 		TbRekeningTemp.setPin(newTbRekening.getPin());
 		TbRekeningTemp.setSaldo(newTbRekening.getSaldo());
 	}
+	public TbRekening noRek(String noRek) {
+		return this.repositoryTbRekening.findByNoRek(noRek);
+		
+	}
 	
 }
