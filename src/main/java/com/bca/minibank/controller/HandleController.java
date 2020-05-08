@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.bca.minibank.Form.FormTransaksi;
 import com.bca.minibank.Model.ModelTransaksi;
 import com.bca.minibank.dao.DaoTbRekening;
+import com.bca.minibank.dao.DaoTbSetting;
 import com.bca.minibank.dao.DaoTbTransaksi;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.entity.TbUsers;
+import com.bca.minibank.mail.ContentEmailWestBankPKWT;
+import com.bca.minibank.mail.SendEmailSMTP;
 
 
 
@@ -38,6 +41,9 @@ import com.bca.minibank.entity.TbUsers;
 		
 		@Autowired
 		private DaoTbRekening daoTbRekening;
+		
+		@Autowired
+		private DaoTbSetting daoTbSetting;
 	
 
 
@@ -113,11 +119,12 @@ import com.bca.minibank.entity.TbUsers;
 		
 		@PostMapping("/nasabah/setor/pengajuan-sukses")
 		public String save(Model model,@Valid FormTransaksi formTransaksi) {
+
 			
 			TbTransaksi tbTransaksi = new TbTransaksi();
 			
 			tbTransaksi.setTglPengajuan(new Date());
-			tbTransaksi.setJnsTransaksi("Setor Tunai");
+			tbTransaksi.setJnsTransaksi("SETOR TUNAI");
 			tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
 			tbTransaksi.setStatusTransaksi("PENDING");
 			tbTransaksi.setNominal(formTransaksi.getNominal());
@@ -127,6 +134,19 @@ import com.bca.minibank.entity.TbUsers;
 			tbTransaksi.setTbRekening(tbRekening);
 		
 			this.daoTbTransaksi.add(tbTransaksi);
+			
+			ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
+			contentEmail.getContentPengajuanSetorTunai(tbTransaksi.getIdTransaksi(), tbTransaksi.getTglPengajuan(), tbTransaksi.getJnsTransaksi(),formTransaksi.getNoRek(), tbTransaksi.getNoRekTujuan(), formTransaksi.getNominal());
+			SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoTbSetting.getValue("SMTP_SERVER"),
+					daoTbSetting.getValue("PORT"),
+					daoTbSetting.getValue("USERNAME"),
+					daoTbSetting.getValue("PASSWORD"),
+					daoTbSetting.getValue("EMAIL"), 
+					daoTbTransaksi.getOne(tbTransaksi.getIdTransaksi()).getTbRekening().getTbUsers().getEmail(), "",
+					contentEmail.getContentSubject(),
+					contentEmail.getContentFull(), 
+					contentEmail.getContentType());
+			sendEmailSMTP.sendEmail();
 			model.addAttribute("formTransaksi",tbTransaksi);
 			
 			return"Success";
@@ -145,9 +165,11 @@ import com.bca.minibank.entity.TbUsers;
 			FormTransaksi formTransaksi = new FormTransaksi();
 			formTransaksi.setNoRek(tbUsers.getTbRekening().getNoRek());
 			tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
-			tbTransaksi.setJnsTransaksi("Setor Tunai");
+			tbTransaksi.setJnsTransaksi("SETOR TUNAI");
 			//model.addAttribute("status", this.daoTbTransaksi.findByNoRekTujuan(tbTransaksi.getNoRekTujuan()));
 			model.addAttribute("status", this.daoTbTransaksi.findByNoRekTujuanANDJnsTransaksi(tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
+			
+			
 			return "SetorTunai-3";
 			
 		}
