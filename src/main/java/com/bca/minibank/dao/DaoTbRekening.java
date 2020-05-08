@@ -36,4 +36,9 @@ public class DaoTbRekening {
 		this.repositoryTbRekening.save(tbRekening);
 	}
 	
+	public TbRekening findByNoRek(String noRek) {
+		return this.repositoryTbRekening.findByNoRek(noRek);
+	}
+	
+	
 }

@@ -221,7 +221,7 @@ public class ContentEmailWestBankPKWT {
 				"<p>   Telp : (021) 08123456789 </p>";
 	}
 	
-	public void getContentSuccessSendTransfer(int idTransaksi, Date tglTransaksi, String jnsTransaksi, String noRekAsal, String noRekTujuan, String nama, String keterangan, int nominal) {
+	public void getContentSuccessSendTransfer(int idTransaksi, String tglTransaksi, String jnsTransaksi, String noRekAsal, String noRekTujuan, String nama, String keterangan, int nominal) {
 		contentSubject = "Transfers Transaction Journal";
 		contentType = "text/html";
 		contentHeader = "<h1>Website West Bank</h1>\r\n" + 
@@ -293,7 +293,7 @@ public class ContentEmailWestBankPKWT {
 	}
 	
 	
-	public void getContentSuccessReceiveTransfer(int idTransaksi, Date tglTransaksi, String jnsTransaksi, String noRekAsal, String nama, String keterangan, int nominal) {
+	public void getContentSuccessReceiveTransfer(int idTransaksi, String tglTransaksi, String jnsTransaksi, String noRekAsal, String nama, String keterangan, int nominal) {
 		contentSubject = "Kamu menerima "+ formatRp(nominal) + " dari "+nama;
 		contentType = "text/html";
 		contentHeader = "<h1>Website West Bank</h1>\r\n" + 

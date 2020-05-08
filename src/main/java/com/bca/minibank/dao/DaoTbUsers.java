@@ -36,5 +36,9 @@ public class DaoTbUsers {
 	public void update(TbUsers tbUsers) {
 		this.repositoryTbUsers.save(tbUsers);
 	}
+	
+	public TbUsers findByUsername(String username) {
+		return  this.repositoryTbUsers.findByUsername(username);
+	}
 
 }
