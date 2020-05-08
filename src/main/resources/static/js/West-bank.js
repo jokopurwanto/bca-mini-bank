@@ -160,7 +160,7 @@ function validateall()
 {
 	if(
 			checkPassword2()&&
-			validatePwd2() &&
+			validatePwd2() 
 	){
         alert('Password anda telah diubah');
         return true;
@@ -199,7 +199,7 @@ function validateall2()
 {
 	if(
 			checkPin2()&&
-			validatePin2() &&
+			validatePin2() 
 	){
         alert('Pin anda telah diubah');
         return true;
