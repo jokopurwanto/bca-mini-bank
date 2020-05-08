@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
 @Table(name = "TB_TRANSAKSI")
 public class TbTransaksi implements java.io.Serializable {
 
-	private int nominal;
 	private int idTransaksi;
 	private TbRekening tbRekening;
 	private String jnsTransaksi;
@@ -32,19 +31,28 @@ public class TbTransaksi implements java.io.Serializable {
 	private Date tglTransaksi;
 	private String statusTransaksi;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
-//	private double nominal;
+	private double nominal;
 	private String note;
 	private Date tglPengajuan;
 
-	
 	public TbTransaksi() {
-		
 	}
 
-	public TbTransaksi(int nominal, int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Date tglTransaksi, String statusTransaksi, Set<TbMutasi> tbMutasis, String note, Date tglPengajuan) {
-		super();
+	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
+			Date tglTransaksi, String statusTransaksi, double nominal, String note, Date tglPengajuan) {
+		this.idTransaksi = idTransaksi;
+		this.tbRekening = tbRekening;
+		this.jnsTransaksi = jnsTransaksi;
+		this.noRekTujuan = noRekTujuan;
+		this.tglTransaksi = tglTransaksi;
+		this.statusTransaksi = statusTransaksi;
 		this.nominal = nominal;
+		this.note = note;
+		this.tglPengajuan = tglPengajuan;
+	}
+
+	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
+			Date tglTransaksi, String statusTransaksi, double nominal, String note, Date tglPengajuan, Set<TbMutasi> tbMutasis) {
 		this.idTransaksi = idTransaksi;
 		this.tbRekening = tbRekening;
 		this.jnsTransaksi = jnsTransaksi;
@@ -52,29 +60,17 @@ public class TbTransaksi implements java.io.Serializable {
 		this.tglTransaksi = tglTransaksi;
 		this.statusTransaksi = statusTransaksi;
 		this.tbMutasis = tbMutasis;
+		this.nominal = nominal;
 		this.note = note;
 		this.tglPengajuan = tglPengajuan;
 	}
 
-
-
-
-	@Column(name="NOMINAL",nullable=false, precision = 126, scale = 0)
-	public int getNominal() {
-		return nominal;
-	}
-
-	public void setNominal(int nominal) {
-		this.nominal = nominal;
-	}
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "tb_transaksi_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_TRANSAKSI", unique = true, nullable = false, precision = 22, scale = 0)
 	public int getIdTransaksi() {
 		return this.idTransaksi;
 	}
-	
 
 	public void setIdTransaksi(int idTransaksi) {
 		this.idTransaksi = idTransaksi;
@@ -137,6 +133,15 @@ public class TbTransaksi implements java.io.Serializable {
 	public void setTbMutasis(Set<TbMutasi> tbMutasis) {
 		this.tbMutasis = tbMutasis;
 	}
+
+	@Column(name = "NOMINAL", nullable = false, precision = 126, scale = 0)
+	public double getNominal() {
+		return this.nominal;
+	}
+
+	public void setNominal(double nominal) {
+		this.nominal = nominal;
+	}
 	
 	@Column(name = "NOTE", nullable = true)
 	public String getNote() {
@@ -156,5 +161,4 @@ public class TbTransaksi implements java.io.Serializable {
 	public void setTglPengajuan(Date tglPengajuan) {
 		this.tglPengajuan = tglPengajuan;
 	}
-
 }

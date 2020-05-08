@@ -40,11 +40,8 @@ public class DaoTbRekening {
 		this.repositoryTbRekening.deleteById(noRek);
 	}
 	
-	public void update(String NoRek, TbRekening newTbRekening) {
-		TbRekening TbRekeningTemp = this.repositoryTbRekening.getOne(NoRek);
-		TbRekeningTemp.setTbJnsTab(newTbRekening.getTbJnsTab());
-		TbRekeningTemp.setPin(newTbRekening.getPin());
-		TbRekeningTemp.setSaldo(newTbRekening.getSaldo());
+	public void update(TbRekening tbRekening) {
+		this.repositoryTbRekening.save(tbRekening);
 	}
 	
 	public void updateSaldo(String noRek, double saldo) {

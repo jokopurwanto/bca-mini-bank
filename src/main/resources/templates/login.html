@@ -1,49 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta charset="ISO-8859-1">
-	<link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
-	<title>WestBank Login</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+<title>Login</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-	<form class="box" name='f'  th:action="@{/login}" method="post">
-		<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;" th:text="${error}"></p></div>
-		<input type="text" name="username" id="username" placeholder="username">
-		<input type="password" name="password" id="password" placeholder="password">
-		<input type="submit" value="Login">
-<!-- 		<a class="a" th:href="@{/recover-password}">Forgot password?</a> -->
-		<a class="a" th:href="@{/registrasi}">Daftar User Baru</a>
-	</form>
+<body style="background-color:#ededed;">
+	<div style="background-color:#337ab7;height:50px;"></div>
+	<div class="container-fluid">
+		<div class="row col-lg-4 col-lg-offset-4" style="margin-top: 80px;background-color:#fff;padding:20px;border:solid 1px #ddd;">
+			<!-- <img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo" /> -->
+			<form th:action="@{/login}" method="POST" class="form-signin">
+				<h3 class="form-signin-heading" th:text="Login"></h3>
+				<br /> <input type="text" id="username" name="username" th:placeholder="Username" class="form-control" /> <br /> <input type="password" th:placeholder="Password" id="password" name="password" class="form-control" /> <br />
 
-	<script>
-            function validasi(){
-                var username = document.getElementById('username');
-                var password = document.getElementById('password');
-
-                if (harusDiisi(username, "Username tidak boleh kosong")) 
-                {
-                    if (harusDiisi(password, "Password tidak boleh kosong")) {
-                            return true;
-                        };
-                    };
-                return false;
-            }
-
-            function harusDiisi(att, msg){
-                if (att.value.length == 0) {
-                    alert(msg);
-                    att.focus();
-                    return false;
-                }
-
-                return true;
-            }
-        </script>
-
+				<div align="center" th:if="${param.error}">
+					<p style="font-size: 20; color: #FF1C19;">Username or Password is invalid.</p>
+				</div>
+				<button class="btn btn-lg btn-primary" name="Submit" value="Login" type="Submit" th:text="Login" style="margin-right:10px;"></button>
+				<a href="/recover-password">Forgot password?</a>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

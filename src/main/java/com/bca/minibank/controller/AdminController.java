@@ -75,8 +75,7 @@ public class AdminController {
 	
 	@GetMapping("/admin/listusers/terverifikasi")
 	public String adminListuserTerverifikasi(Model model) {
-		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_VERIFIED,ROLE_NASABAH));
-		System.out.println(daoUsers.getOne(1007).getTbRekening().getNoRek());
+		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_VERIFIED,ROLE_NASABAH));		
 		return "/admin/listUserTerverifikasi.html";
 	}
 	
@@ -341,7 +340,7 @@ public class AdminController {
 		TbTransaksi tbTransaksi = daoTransaksi.getOne(idTransaksi);
 		String noRekTujuan = tbTransaksi.getNoRekTujuan();
 		String noRekAsal = tbTransaksi.getTbRekening().getNoRek();
-		int nominal = tbTransaksi.getNominal();
+		double nominal = tbTransaksi.getNominal();
 		if(daoRekening.getOne(noRekTujuan).getNoRek().isEmpty() || !(noRekAsal.equals(noRekTujuan))){
 			daoTransaksi.updateStatusTransaksiAndTglTransaksi(idTransaksi, STATUSTRANSAKSI_FAILED, new Timestamp(System.currentTimeMillis()));
 			ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();

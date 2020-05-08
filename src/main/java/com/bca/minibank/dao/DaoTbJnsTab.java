@@ -35,4 +35,7 @@ public class DaoTbJnsTab {
 	public void update(TbJnsTab TbJnsTab) {
 		this.repositoryTbJnsTab.save(TbJnsTab);
 	}
+	
+	
+	
 }
