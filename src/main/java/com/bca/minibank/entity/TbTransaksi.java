@@ -24,25 +24,30 @@ import javax.persistence.TemporalType;
 @Table(name = "TB_TRANSAKSI")
 public class TbTransaksi implements java.io.Serializable {
 
-	private int nominal;
 	private int idTransaksi;
 	private TbRekening tbRekening;
 	private String jnsTransaksi;
 	private String noRekTujuan;
 	private Date tglTransaksi;
 	private String statusTransaksi;
+	private int transaksiHarian;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
 
 	public TbTransaksi() {
-		
 	}
-	
-	
 
-	public TbTransaksi(int nominal, int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
-			Date tglTransaksi, String statusTransaksi, int transaksiHarian, Set<TbMutasi> tbMutasis) {
-		super();
-		this.nominal = nominal;
+	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
+			Date tglTransaksi, String statusTransaksi) {
+		this.idTransaksi = idTransaksi;
+		this.tbRekening = tbRekening;
+		this.jnsTransaksi = jnsTransaksi;
+		this.noRekTujuan = noRekTujuan;
+		this.tglTransaksi = tglTransaksi;
+		this.statusTransaksi = statusTransaksi;
+	}
+
+	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
+			Date tglTransaksi, String statusTransaksi, Set<TbMutasi> tbMutasis) {
 		this.idTransaksi = idTransaksi;
 		this.tbRekening = tbRekening;
 		this.jnsTransaksi = jnsTransaksi;
@@ -51,24 +56,13 @@ public class TbTransaksi implements java.io.Serializable {
 		this.statusTransaksi = statusTransaksi;
 		this.tbMutasis = tbMutasis;
 	}
-	
-	
-	@Column(name="NOMINAL",nullable=false )
-	public int getNominal() {
-		return nominal;
-	}
-
-	public void setNominal(int nominal) {
-		this.nominal = nominal;
-	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "tb_transaksi_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID_TRANSAKSI", unique = true, nullable = false, precision = 22, scale = 0)
 	public int getIdTransaksi() {
 		return this.idTransaksi;
 	}
-	
 
 	public void setIdTransaksi(int idTransaksi) {
 		this.idTransaksi = idTransaksi;
@@ -128,6 +122,15 @@ public class TbTransaksi implements java.io.Serializable {
 
 	public void setTbMutasis(Set<TbMutasi> tbMutasis) {
 		this.tbMutasis = tbMutasis;
+	}
+
+	@Column(name = "TRANSAKSI_HARIAN", nullable = false, length = 11)
+	public int getTransaksiHarian() {
+		return transaksiHarian;
+	}
+
+	public void setTransaksiHarian(int transaksiHarian) {
+		this.transaksiHarian = transaksiHarian;
 	}
 
 }

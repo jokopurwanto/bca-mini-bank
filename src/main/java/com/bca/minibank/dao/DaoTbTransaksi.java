@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bca.minibank.entity.TbTransaksi;
-import com.bca.minibank.repository.RepositoryTbTransaksi;
+import com.bca.minibank.repository.RepostitoryTbTransaksi;
 
 @Service
 @Transactional
 public class DaoTbTransaksi {
 	
 	@Autowired
-	private RepositoryTbTransaksi repostitoryTbTransaksi;
+	private RepostitoryTbTransaksi repostitoryTbTransaksi;
 	
 	public TbTransaksi getOne(int idTransaksi) {
 		return this.repostitoryTbTransaksi.getOne(idTransaksi);

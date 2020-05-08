@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 
 public class FormRegisterUser {
 	@NotBlank(message = "Username harus diisi!")
-	@Pattern(regexp = "^(?![0-9_.-])[A-Za-z0-9_.-]{6,12}$", message = "Username tidak invalid, silahkan cek ketentuan pengisian username!")
+	@Pattern(regexp = "^(?![0-9_.-])[A-Za-z0-9_.-]{5,12}$", message = "Username tidak invalid, silahkan cek ketentuan pengisian username!")
 	private String username;
 	
 	@Size(min = 8, max = 32, message = "Rentang pengisian password harus 8 sampai 32 digit!")

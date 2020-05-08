@@ -71,12 +71,12 @@
             </div>
             <div class="form-group">
                 <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="pwd" th:field="*{password}" onchange="validatePwd()" placeholder="masukkan password" required>
+                <input type="text" class="form-control" id="pwd" th:field="*{password}" onchange="validatePwd()" placeholder="masukkan password" required>
                 <span  class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"><br></span>
             </div>
           <div class="form-group">
                 <label for="confirm-pwd">Konfirmasi Password:</label>
-                <input type="password" class="form-control" id="confirm-pwd" th:field="*{confirmPassword}"  onchange="checkPassword()" placeholder="konfirmasi password" required>
+                <input type="text" class="form-control" id="confirm-pwd" th:field="*{confirmPassword}"  onchange="checkPassword()" placeholder="konfirmasi password" required>
                 <span  class="text-danger" th:if="${flagCPass}" th:text="'Konfirmasi Password tidak sesuai dengan Password!'"><br></span> 
             </div>  
             <div class="nextbutton">

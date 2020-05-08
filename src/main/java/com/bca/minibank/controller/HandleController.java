@@ -1,6 +1,5 @@
 package com.bca.minibank.controller;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -12,22 +11,10 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,35 +30,41 @@ import com.bca.minibank.repository.RepositoryTbRekening;
 import com.bca.minibank.repository.RepositoryTbUsers;
 import com.bca.minibank.repository.RepostitoryTbTransaksi;
 
-import org.springframework.web.bind.annotation.PostMapping;
 
-import com.bca.minibank.configuration.MBUserPrincipal;
-import com.bca.minibank.entity.TbJnsTab;
-import com.bca.minibank.entity.TbUserJnsTmp;
-import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.form.FormRegisterUser;
-import com.bca.minibank.dao.DaoTbUsers;
-import com.bca.minibank.dao.DaoTbJnsTab;
-import com.bca.minibank.dao.DaoTbRekening;
-import com.bca.minibank.dao.DaoTbUserJnsTmp;
+	@Controller
+	//@RequestMapping("/setor")
+	public class HandleController {
+		@Autowired
+		private RepostitoryTbTransaksi daoTbTransaksi;
+		
+		
+		@Autowired
+		private RepositoryTbUsers repositoryTbUsers;
+		
+		@Autowired
+		private RepositoryTbRekening repositoryTbRekening;
+	
 
-@Controller
-public class HandleController {
-	@Autowired
-	DaoTbUsers DaoTbUsers;
-	
-	@Autowired
-	DaoTbRekening DaoTbRekening;
-	
-	@Autowired
-	DaoTbJnsTab DaoTbJnsTab;
-	
-	@Autowired
-	DaoTbUserJnsTmp DaoTbUserJnsTmp;
-	
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
+		
+		ModelTransaksi modelTransaksi;
+		
+		@GetMapping("/login")
+		public String loginPage() {
+			return "login";
+		}
+		
+		@GetMapping("/register")
+		public String registerPage(TbUsers tbUsers) {
+			return "register";
+		}
+		@GetMapping("/home")
+		public String homePage(Model model) {
+			
+			
+			return "home";
+		}
+		
 		@GetMapping("/nasabah/setor/minibank")
 		public String SetorHome(Model model) {
 			
@@ -164,3 +157,7 @@ public class HandleController {
 			
 		}
 		
+		
+		
+	}
+	

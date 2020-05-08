@@ -55,5 +55,4 @@ public class DaoTbUsers {
 	public TbUsers findTbUsersByNoHp(String NoHp) {
 		return this.repositoryTbUsers.findByNoHp(NoHp);
 	}
-	
 }

@@ -16,7 +16,7 @@ import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.dao.DaoTbUsers;
 
 
-public class MBAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
 	@Autowired
 	DaoTbUsers DaoTbUsers;
@@ -45,7 +45,7 @@ public class MBAuthenticationFailureHandler implements AuthenticationFailureHand
 					if(loginattempt > 3)
 					{
 						user.setStatusUser("BLOCK");
-						user.setKeterangan("Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut");
+						user.setKeterangan("Akun anda terblokir dikarenakan salah password 3x berturut-turut");
 						DaoTbUsers.update(user.getIdUser(), user);
 					}
 				}
