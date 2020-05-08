@@ -35,4 +35,7 @@ public class DaoTbTransaksi {
 	public void update(TbTransaksi tbTransaksi) {
 		this.repostitoryTbTransaksi.save(tbTransaksi);
 	}
+	public List<TbTransaksi> findByNoRekTujuanANDJnsTransaksi(String noRekTujuan, String jenis){
+		return this.repostitoryTbTransaksi.findByNoRekTujuanANDJnsTransaksi(noRekTujuan, jenis);
+	}
 }
