@@ -1,77 +1,65 @@
 package com.bca.minibank.controller;
 
-
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
 
-import org.apache.catalina.core.ApplicationContext;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.bca.minibank.Form.FormTransaksi;
 import com.bca.minibank.Model.ModelTransaksi;
+import com.bca.minibank.dao.DaoTbRekening;
+import com.bca.minibank.dao.DaoTbTransaksi;
+import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.repository.RepositoryTbRekening;
-import com.bca.minibank.repository.RepositoryTbUsers;
-import com.bca.minibank.repository.RepostitoryTbTransaksi;
 
-import org.springframework.web.bind.annotation.PostMapping;
 
-import com.bca.minibank.configuration.MBUserPrincipal;
-import com.bca.minibank.entity.TbJnsTab;
-import com.bca.minibank.entity.TbUserJnsTmp;
-import com.bca.minibank.entity.TbUsers;
-import com.bca.minibank.form.FormRegisterUser;
-import com.bca.minibank.dao.DaoTbUsers;
-import com.bca.minibank.dao.DaoTbJnsTab;
-import com.bca.minibank.dao.DaoTbRekening;
-import com.bca.minibank.dao.DaoTbUserJnsTmp;
 
-@Controller
-public class HandleController {
-	@Autowired
-	DaoTbUsers DaoTbUsers;
+	@Controller
+	//@RequestMapping("/setor")
+	public class HandleController {
+		@Autowired
+		private DaoTbTransaksi daoTbTransaksi;
+		
+		
+		@Autowired
+		private DaoTbUsers daoTbUsers;
+		
+		@Autowired
+		private DaoTbRekening daoTbRekening;
 	
-	@Autowired
-	DaoTbRekening DaoTbRekening;
-	
-	@Autowired
-	DaoTbJnsTab DaoTbJnsTab;
-	
-	@Autowired
-	DaoTbUserJnsTmp DaoTbUserJnsTmp;
-	
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
+
+		
+		ModelTransaksi modelTransaksi;
+		
+		@GetMapping("/login")
+		public String loginPage() {
+			return "login";
+		}
+		
+		@GetMapping("/register")
+		public String registerPage(TbUsers tbUsers) {
+			return "register";
+		}
+		@GetMapping("/home")
+		public String homePage(Model model) {
+			
+			
+			return "home";
+		}
+		
 		@GetMapping("/nasabah/setor/minibank")
 		public String SetorHome(Model model) {
 			
@@ -82,7 +70,7 @@ public class HandleController {
 		public String setorForm(Model model) {
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			TbUsers tbUsers = this.repositoryTbUsers.findByUsername(auth.getName());
+			TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
 			System.out.println(tbUsers.getEmail());
 		
 			FormTransaksi formTransaksi = new FormTransaksi();
@@ -134,11 +122,11 @@ public class HandleController {
 			tbTransaksi.setStatusTransaksi("PENDING");
 			tbTransaksi.setNominal(formTransaksi.getNominal());
 			
-			TbRekening tbRekening = this.repositoryTbRekening.findByNoRek(formTransaksi.getNoRek());
+			TbRekening tbRekening = this.daoTbRekening.noRek(formTransaksi.getNoRek());
 			
 			tbTransaksi.setTbRekening(tbRekening);
 		
-			this.daoTbTransaksi.save(tbTransaksi);
+			this.daoTbTransaksi.add(tbTransaksi);
 			model.addAttribute("formTransaksi",tbTransaksi);
 			
 			return"Success";
@@ -149,7 +137,7 @@ public class HandleController {
 		public  String statusSetor(Model model){
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			TbUsers tbUsers = this.repositoryTbUsers.findByUsername(auth.getName());
+			TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
 			
 	
 			TbTransaksi tbTransaksi = new TbTransaksi();
@@ -164,3 +152,7 @@ public class HandleController {
 			
 		}
 		
+		
+		
+	}
+	
