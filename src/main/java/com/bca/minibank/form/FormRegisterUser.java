@@ -17,7 +17,7 @@ public class FormRegisterUser {
 	private String confirmPassword;
 	
 	@NotBlank(message = "Nama harus diisi!")
-	@Pattern(regexp = "(^[a-zA-Z.']+$)", message = "Nama hanya mengandung huruf kapital, huruf kecil, dan simbol .'")
+	@Pattern(regexp = "(^[a-zA-Z.' ]+$)", message = "Nama hanya mengandung huruf kapital, huruf kecil, dan simbol .'")
 	@Size(max = 30, message = "Maksimal 30 Karakter!")
 	private String nama;
 	
@@ -37,7 +37,7 @@ public class FormRegisterUser {
 	
 	@NotBlank(message = "Email harus diisi")
 	@Size(max = 30, message = "Maksimal 30 Karakter!")
-	@Pattern(regexp = "^\\w+[\\w-\\.]*\\@\\w+((-\\w+)|(\\w*))\\.[a-z]{2,3}$", message = "Pengisian email tidak valid!")
+	@Pattern(regexp = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$", message = "Pengisian email tidak valid!")
 	private String email;
 	
 
