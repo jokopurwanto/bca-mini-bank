@@ -23,7 +23,7 @@ function validateName()
     if (name.value.length <= 30 && name.value.match(validasiHuruf)){
         return true;
     }
-    alert("Nama terdiri dari maksimum 30 karakter dan tidak mengandung angka")
+    alert("Nama terdiri dari maksimum 30 karakter dan hanya dapat terdiri dari huruf, dan simbol .'")
     name.focus();
     return false;
 }
@@ -85,7 +85,7 @@ function validateUsername()
     if (username.value.length >= 6 && username.value.match(validasiUserName)){
         return true;
     }
-    alert("Username terdiri dari minimum 6 karakter dan tidak diawali dengan angka")
+    alert("Username terdiri dari minimum 6 karakter dan harus diawali dengan huruf")
     username.focus();
     return false;
 }
@@ -130,3 +130,34 @@ function dateFilter()
     }
     return true;    
 }
+
+//dari Risyaf
+//filter keyboard untuk nama, username, no hp dan no telp
+//Restricts input for the given textbox to the given inputFilter.
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
+
+
+// Install input filters.
+setInputFilter(document.getElementById("nama"), function(value) {
+  return /^[a-zA-Z.\' ]*$/i.test(value); });
+setInputFilter(document.getElementById("ktp"), function(value) {
+  return /^\d*$/.test(value); });
+setInputFilter(document.getElementById("hp"), function(value) {
+	return /^\d*$/.test(value); });
+setInputFilter(document.getElementById("username"), function(value) {
+	return /^[A-Za-z0-9_.-]*$/i.test(value); });

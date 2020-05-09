@@ -33,7 +33,7 @@
 		            </div>
 		            <div class="form-group">
 		                <label for="ktp">No KTP:</label>
-		                <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "16" class="form-control" id="ktp" th:field="*{noKtp}" onchange="validateKtp()" placeholder="masukkan no KTP"  required >
+		                <input type="text" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "16" class="form-control" id="ktp" th:field="*{noKtp}" onchange="validateKtp()" placeholder="masukkan no KTP"  required >
 		                <span  class="text-danger" th:if="${#fields.hasErrors('noKtp')}" th:errors="*{noKtp}"><br></span>
 		                 <span  class="text-danger" th:if="${flagNoKtp}" th:text="'No. KTP telah digunakan!'"><br></span>
 		            </div>
@@ -43,7 +43,7 @@
 		            </div> -->
 		            <div class="form-group">
 		                <label for="HP">No Handphone:</label>
-		                <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "13" class="form-control" id="hp" th:field="*{noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon"  required>
+		                <input type="text" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "13" class="form-control" id="hp" th:field="*{noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon"  required>
 		                <span  class="text-danger" th:if="${#fields.hasErrors('noHp')}" th:errors="*{noHp}"><br></span>
 		                <span  class="text-danger" th:if="${flagNoHp}" th:text="'No. HP telah digunakan!'"><br></span>
 		            </div>
@@ -72,7 +72,7 @@
 		                <div class="input-group mb-3">
 		                <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="masukkan username" onchange="validateUsername()" maxlength=12 required>
 		                	<div class="input-group-append">
-		                      <span class="input-group-text fas fa-info"  data-toggle="popover" data-trigger="hover" data-html="true" title="Ketentuan Pengisian User Name" data-content="1.Karakter pertama harus berupa huruf, <br /> 2.Terdiri dari minimal 6 karakter dan maksimal 32 karakter, <br />3. Disarankan terdiri dari kombinasi huruf dan angka."></span>
+		                      <span class="input-group-text fas fa-info"  data-toggle="popover" data-trigger="hover" data-html="true" title="Ketentuan Pengisian User Name" data-content="1.Karakter pertama harus berupa huruf, <br /> 2.Terdiri dari minimal 6 karakter dan maksimal 12 karakter, <br />3. Dapat terdiri dari huruf, angka dan simbol _-."></span>
 		                    </div>
 		                </div>
 		                <span  class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"><br></span>
@@ -117,5 +117,5 @@ $(document).ready(function(){
 $('[data-toggle="popover"]').popover();   
 });
 </script>
-<script th:src="@{js/West-bank.js}" async></script>
+<script th:src="@{/js/West-bank.js}" async></script>
 </html>
