@@ -74,5 +74,10 @@ public class DaoTbRekening {
 	public void updateData(TbRekening tbRekening) {
 		this.repositoryTbRekening.save(tbRekening);
 	}
+	
+	public List<TbRekening> getAllByStatusRekOrderByNoRekAsc(String statusRek){
+		return  this.repositoryTbRekening.findByStatusRekOrderByNoRekAsc(statusRek);
+	}
+	
 }
 

@@ -38,14 +38,11 @@ public class TbTransaksi implements java.io.Serializable {
 	private String statusTransaksi;
 	private String note;
 	private Set<TbMutasi> tbMutasis = new HashSet<TbMutasi>(0);
-//	private double nominal;
 	private Date tglPengajuan;
 
-	
 	public TbTransaksi() {
 		
 	}
-
 
 	public TbTransaksi(int idTransaksi, TbRekening tbRekening, String jnsTransaksi, String noRekTujuan,
 			Timestamp tglTransaksi, String statusTransaksi, String note, Set<TbMutasi> tbMutasis) {
@@ -110,7 +107,7 @@ public class TbTransaksi implements java.io.Serializable {
 	}
 
 
-	@Column(name = "TGL_TRANSAKSI", nullable = false, length = 11)
+	@Column(name = "TGL_TRANSAKSI", nullable = true, length = 11)
 	public Timestamp getTglTransaksi() {
 		return this.tglTransaksi;
 	}

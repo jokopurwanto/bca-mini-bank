@@ -15,4 +15,7 @@ public interface RepositoryTbRekening extends JpaRepository<TbRekening, String> 
     @Query("SELECT a FROM TbRekening a WHERE a.noRek= ?1")
     TbRekening findByNoRek(String noRek);
     
+    List<TbRekening> findByStatusRekOrderByNoRekAsc(String statusRek);
+
+    
 }

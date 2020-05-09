@@ -86,4 +86,12 @@ public class DaoTbUsers {
 	public void updateData(TbUsers tbUsers) {
 		this.repositoryTbUsers.save(tbUsers);
 	}
+	
+	public List<TbUsers> getUsersByStatusAndRoleOrderByIdUserAsc(String statusUser, String role){ 
+		return this.repositoryTbUsers.findByStatusUserAndRoleOrderByIdUserAsc(statusUser, role);
+	}
+	
+	public List<TbUsers> getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(String statusUser, String role, String username){ 
+		return this.repositoryTbUsers.findByStatusUserAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(statusUser, role, username);
+	}
 }

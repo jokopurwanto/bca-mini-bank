@@ -79,6 +79,7 @@ public class AdminController {
 	private static final String ACTION_AUTO_DECLINE_SETOR_TUNAI = "AUTO DECLINE SETOR";
 	private static final String ACTION_NON_ACTIVE_REKENING = "NON ACTIVE REKENING";
 	private static final String ACTION_ACTIVE_REKENING = "ACTIVE REKENING";
+
 	private static final String JNSTRANSAKSI_SETOR_TUNAI = "SETOR TUNAI";
 	private static final String STATUSTRANSAKSI_PENDING = "PENDING";
 	private static final String STATUSTRANSAKSI_SUCCESS = "SUCCESS";
@@ -87,7 +88,7 @@ public class AdminController {
 
 	@GetMapping("/admin/listusers/terverifikasi")
 	public String adminListuserTerverifikasi(Model model) {
-		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_VERIFIED,ROLE_NASABAH));
+		model.addAttribute("users", daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_VERIFIED,ROLE_NASABAH));
 		return "/admin/listUserTerverifikasi.html";
 	}
 
@@ -95,15 +96,15 @@ public class AdminController {
 	public String adminListuserTerverifikasi2(Model model, String searchUsername) {
 		List<TbUsers> users = new ArrayList<TbUsers>();
 		if(!(searchUsername == "")) {
-			if(!(daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(STATUSUSER_VERIFIED, ROLE_NASABAH, searchUsername).isEmpty())) {
-				users = daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(STATUSUSER_VERIFIED,ROLE_NASABAH, searchUsername);
+			if(!(daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(STATUSUSER_VERIFIED, ROLE_NASABAH, searchUsername).isEmpty())) {
+				users = daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(STATUSUSER_VERIFIED,ROLE_NASABAH, searchUsername);
 			}else {
 				model.addAttribute("msg", "USERNAME : "+ searchUsername +" tidak terdaftar");
-				users = daoUsers.getUsersByStatusAndRole(STATUSUSER_VERIFIED,ROLE_NASABAH);
+				users = daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_VERIFIED,ROLE_NASABAH);
 			}
 
 		} else {
-			users = daoUsers.getUsersByStatusAndRole(STATUSUSER_VERIFIED,ROLE_NASABAH);	
+			users = daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_VERIFIED,ROLE_NASABAH);	
 		}		
 		model.addAttribute("users", users);	
 		model.addAttribute("searchUsername",searchUsername);
@@ -112,7 +113,7 @@ public class AdminController {
 
 	@GetMapping("/admin/listusers/baru")
 	public String adminListUserBaru(Model model) {
-		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_PENDING,ROLE_NASABAH));		
+		model.addAttribute("users", daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_PENDING,ROLE_NASABAH));		
 		return "/admin/listUserBaru.html";
 	}
 
@@ -120,15 +121,15 @@ public class AdminController {
 	public String adminListUserBaru2(Model model, String searchUsername) {
 		List<TbUsers> users = new ArrayList<TbUsers>();
 		if(!(searchUsername == "")) {
-			if(!(daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(STATUSUSER_PENDING,ROLE_NASABAH, searchUsername).isEmpty())) {
-				users = daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(STATUSUSER_PENDING,ROLE_NASABAH, searchUsername);
+			if(!(daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(STATUSUSER_PENDING,ROLE_NASABAH, searchUsername).isEmpty())) {
+				users = daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(STATUSUSER_PENDING,ROLE_NASABAH, searchUsername);
 			}else {
 				model.addAttribute("msg", "USERNAME : "+ searchUsername +" tidak terdaftar");
-				users = daoUsers.getUsersByStatusAndRole(STATUSUSER_PENDING,ROLE_NASABAH);
+				users = daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_PENDING,ROLE_NASABAH);
 			}
 
 		} else {
-			users = daoUsers.getUsersByStatusAndRole(STATUSUSER_PENDING,ROLE_NASABAH);	
+			users = daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_PENDING,ROLE_NASABAH);	
 		}	
 		model.addAttribute("users", users);	
 		model.addAttribute("searchUsername",searchUsername);
@@ -137,7 +138,7 @@ public class AdminController {
 
 	@GetMapping("/admin/listusers/terblokir")
 	public String adminListUserTerblokir(Model model) {
-		model.addAttribute("users", daoUsers.getUsersByStatusAndRole(STATUSUSER_BLOCKED,ROLE_NASABAH));		
+		model.addAttribute("users", daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_BLOCKED,ROLE_NASABAH));		
 		return "/admin/listUserTerblokir.html";
 	}
 
@@ -145,15 +146,15 @@ public class AdminController {
 	public String adminListUserTerblokir2(Model model, String searchUsername) {
 		List<TbUsers> users = new ArrayList<TbUsers>();
 		if(!(searchUsername == "")) {
-			if(!(daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(STATUSUSER_BLOCKED,ROLE_NASABAH, searchUsername).isEmpty())) {
-				users = daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCase(STATUSUSER_BLOCKED,ROLE_NASABAH, searchUsername);
+			if(!(daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(STATUSUSER_BLOCKED,ROLE_NASABAH, searchUsername).isEmpty())) {
+				users = daoUsers.getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(STATUSUSER_BLOCKED,ROLE_NASABAH, searchUsername);
 			}else {
 				model.addAttribute("msg", "USERNAME : "+ searchUsername +" tidak terdaftar");
-				users = daoUsers.getUsersByStatusAndRole(STATUSUSER_BLOCKED,ROLE_NASABAH);
+				users = daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_BLOCKED,ROLE_NASABAH);
 			}
 
 		} else {
-			users = daoUsers.getUsersByStatusAndRole(STATUSUSER_BLOCKED,ROLE_NASABAH);	
+			users = daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_BLOCKED,ROLE_NASABAH);	
 		}	
 		model.addAttribute("users", users);	
 		model.addAttribute("searchUsername",searchUsername);
@@ -162,7 +163,7 @@ public class AdminController {
 
 	@GetMapping("/admin/listtransaksi/setortunai")
 	public String adminListTransaksiSetor(Model model) {
-		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
 		return "/admin/listTransaksiSetorTunai.html";
 	}
 
@@ -173,14 +174,14 @@ public class AdminController {
 			Boolean foundNoRek = daoRekening.findById(searchNoRek);
 			if(foundNoRek) {
 				TbRekening tbRekening = daoRekening.getOne(searchNoRek);
-				transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiAndTbRekening(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING, tbRekening);
+				transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING, tbRekening);
 				if(transaksi.isEmpty()) {
 					model.addAttribute("msg", "Tidak ada Transaksi dengan No Rekening : "+ searchNoRek);
-					transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING);
+					transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING);
 				}
 			}else {
 				model.addAttribute("msg", "No Rekening : "+ searchNoRek +" tidak terdaftar");
-				transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING);
+				transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING);
 			}
 		} else {
 			return "redirect:/admin/listtransaksi/setortunai";
@@ -191,7 +192,7 @@ public class AdminController {
 	}
 	@GetMapping("/admin/listrekening/nonaktif")
 	public String adminListRekeningNonAktif(Model model) {
-		model.addAttribute("listRekening", daoRekening.getAllByStatusRek( STATUSREK_NON_ACTIVE));		
+		model.addAttribute("listRekening", daoRekening.getAllByStatusRekOrderByNoRekAsc( STATUSREK_NON_ACTIVE));		
 		return "/admin/listRekeningNonAktif.html";
 	}
 
@@ -204,14 +205,14 @@ public class AdminController {
 				//transaksi = daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiAndTbRekening(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING, tbRekening);
 				if(!(daoRekening.getOne(searchNoRek).getStatusRek().equals(STATUSREK_NON_ACTIVE))) {
 					model.addAttribute("msg", "No Rekening : "+ searchNoRek + " berstatus aktif");
-					rekening = daoRekening.getAllByStatusRek(STATUSREK_NON_ACTIVE);
+					rekening = daoRekening.getAllByStatusRekOrderByNoRekAsc(STATUSREK_NON_ACTIVE);
 				}else {
 					rekening.clear();
 					rekening.add(daoRekening.getOne(searchNoRek));
 				}
 			}else {
 				model.addAttribute("msg", "No Rekening : "+ searchNoRek +" tidak terdaftar");
-				rekening = daoRekening.getAllByStatusRek(STATUSREK_NON_ACTIVE);
+				rekening = daoRekening.getAllByStatusRekOrderByNoRekAsc(STATUSREK_NON_ACTIVE);
 			}
 		} else {
 			return "redirect:/admin/listrekening/nonaktif";
@@ -273,7 +274,7 @@ public class AdminController {
 	public String adminListTransaksiUser(Model model, int idUser) {
 		TbUsers tbUsers = daoUsers.getOne(idUser);
 		model.addAttribute("user", daoUsers.getOne(idUser));
-		model.addAttribute("listTransaksi", daoTransaksi.getAllByTbRekening(tbUsers.getTbRekening()));
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByTbRekeningOrderByIdTransaksi(tbUsers.getTbRekening()));
 		return "/admin/listTransaksiUser.html";
 	}
 
@@ -448,7 +449,7 @@ public class AdminController {
 			simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_ACCEPT_SETOR_TUNAI, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
 			msgBox = "Setor tunai berhasil disetujui.";
 		}
-		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
 		model.addAttribute("msgBox", msgBox);
 		return "/admin/listTransaksiSetorTunai.html";
 	}
@@ -472,7 +473,7 @@ public class AdminController {
 				contentEmail.getContentType());
 		sendEmailSMTP.sendEmail();
 		simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_DECLINE_SETOR_TUNAI, daoTransaksi.getOne(idTransaksi).getTbRekening().getTbUsers().getIdUser(), idTransaksi);
-		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
+		model.addAttribute("listTransaksi", daoTransaksi.getAllByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(JNSTRANSAKSI_SETOR_TUNAI, STATUSTRANSAKSI_PENDING));		
 		model.addAttribute("msgBox", "Setor tunai berhasil ditolak.");
 		return "/admin/listTransaksiSetorTunai.html";
 	}

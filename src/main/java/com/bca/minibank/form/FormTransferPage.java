@@ -23,7 +23,7 @@ public class FormTransferPage {
 //	@Pattern(regexp="(^[0-9]{10})", message = "No Rek harus berupa angka dan min 10 digit")
 	private String noRek;
 	
-	@Pattern(regexp="(^[0-9]{6})", message = "No Rek tujuan tidak boleh kosong & berupa angka, min 10 digit")
+	@Pattern(regexp="(^[0-9]{10})", message = "No Rek tujuan tidak boleh kosong & berupa angka, min 10 digit")
 	private String noRekTujuan;
 	
 	@Pattern(regexp="([0-9]+)", message = "nominal tidak boleh kosong & berupa angka")

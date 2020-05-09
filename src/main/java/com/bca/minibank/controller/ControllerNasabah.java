@@ -392,20 +392,32 @@ public class ControllerNasabah {
 	public String save(Model model,@Valid FormTransaksi formTransaksi) {
 
 		TbTransaksi tbTransaksi = new TbTransaksi();
-
+		
 		tbTransaksi.setTglPengajuan(new Date());
 		tbTransaksi.setJnsTransaksi("SETOR TUNAI");
 		tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
 		tbTransaksi.setStatusTransaksi("PENDING");
 		tbTransaksi.setNominal(formTransaksi.getNominal());
-
+		
 		TbRekening tbRekening = this.daoTbRekening.noRek(formTransaksi.getNoRek());
 		
 		tbTransaksi.setTbRekening(tbRekening);
 	
 		this.daoTbTransaksi.add(tbTransaksi);
+		
+		ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
+		contentEmail.getContentPengajuanSetorTunai(tbTransaksi.getIdTransaksi(), tbTransaksi.getTglPengajuan(), tbTransaksi.getJnsTransaksi(),formTransaksi.getNoRek(), tbTransaksi.getNoRekTujuan(), formTransaksi.getNominal());
+		SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"),
+				daoSetting.getValue("PORT"),
+				daoSetting.getValue("USERNAME"),
+				daoSetting.getValue("PASSWORD"),
+				daoSetting.getValue("EMAIL"), 
+				daoTbTransaksi.getOne(tbTransaksi.getIdTransaksi()).getTbRekening().getTbUsers().getEmail(), "",
+				contentEmail.getContentSubject(),
+				contentEmail.getContentFull(), 
+				contentEmail.getContentType());
+		sendEmailSMTP.sendEmail();
 		model.addAttribute("formTransaksi",tbTransaksi);
-
 		return"/nasabah/Success";
 
 	}
@@ -440,7 +452,7 @@ public class ControllerNasabah {
 		formTransferPage.setNoRek(tbUsers.getTbRekening().getNoRek());
 		model.addAttribute("formTransferPage", formTransferPage);
 
-		return "Transfer-1";
+		return "/nasabah/Transfer-1";
 	}
 
 	@PostMapping("/nasabah/transfer")
@@ -450,11 +462,11 @@ public class ControllerNasabah {
 		TbRekening NoRekTujuanExist = this.daoTbRekening.findByNoRek(formTransferPage.getNoRekTujuan());
 		if ((!formTransferPage.getNoRekTujuan().equals("")) && (null == NoRekTujuanExist)) {
 			result.rejectValue("noRekTujuan", "error.formTransferPage", "Maaf, no rek yg d tuju salah");
-			return "Transfer-1";
+			return "/nasabah/Transfer-1";
 		}
 
 		if (result.hasErrors()) {
-			return "Transfer-1";
+			return "/nasabah/Transfer-1";
 		}
 
 		int nominal = Integer.parseInt(formTransferPage.getNominal());
@@ -463,7 +475,7 @@ public class ControllerNasabah {
 		if (cekSaldo.getTransaksiHarian() + nominal > cekSaldo.getTbJnsTab().getLimitTransaksi()) {
 			result.rejectValue("nominal", "error.formTransferPage", "maaf, sisa limit transfer harian kamu adalah "
 					+ (cekSaldo.getTbJnsTab().getLimitTransaksi() - cekSaldo.getTransaksiHarian()));
-			return "Transfer-1";
+			return "/nasabah/Transfer-1";
 		}
 
 //      validasi saldo tidak mencukupi
@@ -504,14 +516,14 @@ public class ControllerNasabah {
 		formTransferValidationPage.setNamaPenerima(rekTujuan.getTbUsers().getNama());
 		model.addAttribute("formTransferValidationPage", formTransferValidationPage);
 
-		return "Transfer-2";
+		return "/nasabah/Transfer-2";
 	}
 
 	@PostMapping("/nasabah/transfer/konfirmasi")
 	public String postTransferValidation(@Valid FormTransferValidationPage formTransferValidationPage,
 			BindingResult result, Model model, HttpServletRequest req) {
 		if (result.hasErrors()) {
-			return "Transfer-2";
+			return "/nasabah/Transfer-2";
 		}
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -538,7 +550,7 @@ public class ControllerNasabah {
 			}
 			int limitAttempt = 3 - Integer.parseInt((String) req.getSession().getAttribute("code"));
 			result.rejectValue("pin", "error.formTransferPage", "Maaf, pin anda salah, tersisa "+limitAttempt+"x percobaan");
-			return "Transfer-2";
+			return "/nasabah/Transfer-2";
 		}
 
 //		SET PENERIMA
@@ -666,7 +678,7 @@ public class ControllerNasabah {
 //		hapus data variabel session
 		UtilsSession.removeModelInfo(req);
 
-		return "Transfer-3";
+		return "/nasabah/Transfer-3";
 	}
 //	============================================END TRANSFER=========================================
 
@@ -685,7 +697,7 @@ public class ControllerNasabah {
 			FormMutasi formMutasi = new FormMutasi();
 			formMutasi.setNoRek(tbUsers.getTbRekening().getNoRek());
 			model.addAttribute("formMutasi", formMutasi);
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
 	}
 
@@ -697,12 +709,12 @@ public class ControllerNasabah {
 	@PostMapping("/nasabah/mutasi/jangkawaktu")
 	public String postMutasiJangkaWaktu(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
 
 		if ((null == formMutasi.getStartDate()) || (null == formMutasi.getEndDate())) {
 			result.rejectValue("endDate", "error.formMutasi", "Maaf, tanggal harus disi semua");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
 
 //		validasi calender
@@ -716,16 +728,16 @@ public class ControllerNasabah {
 		int rangeDate = (int)daysBetween(calStartDate, calEndtDate);
 		if(compareStartDate < 0){
 			result.rejectValue("endDate", "error.formMutasi", "Maaf, tanggal awal lebih besar dari tanggal hari ini");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}else if(compareEndDate < 0){
 			result.rejectValue("endDate", "error.formMutasi", "Maaf, tanggal akhir lebih besar dari tanggal hari ini");
-			return "CekMutasi-1";		
+			return "/nasabah/CekMutasi-1";		
 		}else if(compareRangeDate < 0) {
 			result.rejectValue("endDate", "error.formMutasi", "Maaf, tanggal awal lebih besar dari tanggal alkhir");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}else if(rangeDate > 30) {
 			result.rejectValue("endDate", "error.formMutasi", "Maaf, periode mutasi yang dapat dipilih 30 hari");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
 			
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -744,9 +756,9 @@ public class ControllerNasabah {
 					startDate, endDate));
 		} else {
 			result.rejectValue("jnsMutasi", "error.formMutasi", "Maaf, jenis transaksi yang kamu masukan salah");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}	
-		return "CekMutasi-2";
+		return "/nasabah/CekMutasi-2";
 	}
 
 	@GetMapping("/nasabah/mutasi/periode")
@@ -757,7 +769,7 @@ public class ControllerNasabah {
 	@PostMapping("/nasabah/mutasi/periode")
 	public String postMutasiPeriode(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
 		
 //		jika null direct ke transfer
@@ -767,12 +779,12 @@ public class ControllerNasabah {
 
 		if (null == formMutasi.getPeriode()) {
 			result.rejectValue("periode", "error.formMutasi", "Maaf, periode tidak boleh kosong");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
 		
 		if(!formMutasi.getPeriode().equalsIgnoreCase("sehari") && !formMutasi.getPeriode().equalsIgnoreCase("seminggu") && !formMutasi.getPeriode().equalsIgnoreCase("sebulan")){
 			result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -787,14 +799,14 @@ public class ControllerNasabah {
 			model.addAttribute("mutasi", this.daoTbMutasi.findByFilterTransaksiOut(tbUsers.getTbRekening().getNoRek(), genStartDate(formMutasi), endDate));
 		} else {
 			result.rejectValue("jnsMutasi", "error.formMutasi", "Maaf, jenis transaksi yang kamu masukan salah");
-			return "CekMutasi-1";
+			return "/nasabah/CekMutasi-1";
 		}
-		return "CekMutasi-2";
+		return "/nasabah/CekMutasi-2";
 	}
 
 	@GetMapping("/nasabah/pin1")
 	public String pinRequestPage(Model model, FormMasukanPin formMasukanPin) {
-		return "pinrequest1";
+		return "/nasabah/pinrequest1";
 	}
 
 	@PostMapping("/nasabah/pin1")

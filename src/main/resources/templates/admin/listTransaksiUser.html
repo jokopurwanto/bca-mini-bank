@@ -45,23 +45,19 @@ nav a:hover {
 	<table cellspacing='0' align="center">
 		<thead>
 			<tr>
-				<th>Status</th>
-				<th>Username</th>
-				<th>No.Rek</th>
-				<th>Nama</th>
-				<th>Jen.Tab</th>
-				<th>Alamat</th>		
-			</tr>
+				<th>Tanggal</th>
+				<th>Tanggal Pengajuan</th>
+				<th>Tanggal Transaksi</th>
+				<th>Transaksi</th>
+				<th>Rek.Tujuan</th>
+				<th>Nominal</th>
 		</thead>
 		<tbody>
-			<tr>
-				<td th:text="${user.statusUser}"></td>
-				<td th:text="${user.username}"></td>
-				<td th:text="${user.tbRekening.noRek}"></td>
-				<td th:text="${user.nama}"></td>
-				<td th:text="${user.tbRekening.tbJnsTab.namaJnsTab}"></td>
-				<td th:text="${user.alamat}"></td>	
-			</tr>
+			<tr th:each="listTrans : ${listTransaksi}">
+				<td th:text="${listTrans.tglPengajuan}"></td>
+				<td th:text="${listTrans.tglTransaksi}"></td>
+				<td th:text="${listTrans.jnsTransaksi}"></td>
+				<td th:text="${listTrans.noRekTujuan}"></td>
 		</tbody>
 	</table>
 </div>
