@@ -61,7 +61,7 @@ public class MBAuthenticationFailureHandler implements AuthenticationFailureHand
 					int loginattempt = (Integer)session.getAttribute("loginattempt");
 					loginattempt++;
 					request.getSession().setAttribute("loginattempt", loginattempt);
-					if(loginattempt > 3 && user.getRole().equals("NASABAH"))
+					if(loginattempt > 3 && user.getRole().equals("NASABAH")  && !user.getStatusUser().equals("NOT VERIFIED"))
 					{
 						user.setStatusUser("BLOCK");
 						user.setKeterangan("Akun anda terblokir dikarenakan salah password dan/atau salah pin sebanyak 3x berturut-turut");
