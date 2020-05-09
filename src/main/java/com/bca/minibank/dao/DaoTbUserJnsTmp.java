@@ -43,4 +43,5 @@ public class DaoTbUserJnsTmp {
 	public TbUserJnsTmp getOneByTbUsers(TbUsers tbUsers) {
 		return RepositoryTbUserJnsTmp.findByTbUsers(tbUsers);
 	}
+	
 }

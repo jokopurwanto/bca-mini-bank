@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bca.minibank.entity.TbRekening;
 import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.repository.RepositoryTbUsers;
 
@@ -81,5 +82,16 @@ public class DaoTbUsers {
 	public TbUsers findTbUsersByNoHp(String NoHp) {
 		return this.repositoryTbUsers.findByNoHp(NoHp);
 	}
-
+	
+	public void updateData(TbUsers tbUsers) {
+		this.repositoryTbUsers.save(tbUsers);
+	}
+	
+	public List<TbUsers> getUsersByStatusAndRoleOrderByIdUserAsc(String statusUser, String role){ 
+		return this.repositoryTbUsers.findByStatusUserAndRoleOrderByIdUserAsc(statusUser, role);
+	}
+	
+	public List<TbUsers> getUsersByStatusAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(String statusUser, String role, String username){ 
+		return this.repositoryTbUsers.findByStatusUserAndRoleAndUsernameContainingIgnoreCaseOrderByIdUserAsc(statusUser, role, username);
+	}
 }

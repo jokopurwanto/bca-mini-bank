@@ -1,3 +1,4 @@
+
 package com.bca.minibank.form;
 
 import javax.validation.constraints.NotBlank;
@@ -21,3 +22,4 @@ public class FormMasukanPin {
 		this.pin = pin;
 	}
 }
+

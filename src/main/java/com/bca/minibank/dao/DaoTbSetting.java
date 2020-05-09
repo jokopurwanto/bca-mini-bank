@@ -18,3 +18,4 @@ public class DaoTbSetting {
 		return this.repositoryTbSetting.getOne(key).getValue();
 	}
 }
+

@@ -1,5 +1,6 @@
 package com.bca.minibank.dao;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class DaoTbTransaksi {
 		this.repostitoryTbTransaksi.save(tbTransaksi);
 	}
 	
-	public void updateStatusTransaksiAndTglTransaksi(int idTransaksi, String statusTransaksi, Date tglTransaksi) {
+	public void updateStatusTransaksiAndTglTransaksi(int idTransaksi, String statusTransaksi, Timestamp tglTransaksi) {
 		TbTransaksi tbTransaksi = this.getOne(idTransaksi);
 		tbTransaksi.setStatusTransaksi(statusTransaksi);
 		tbTransaksi.setTglTransaksi(tglTransaksi);
@@ -59,4 +60,17 @@ public class DaoTbTransaksi {
 	public List<TbTransaksi> findByNoRekTujuanANDJnsTransaksi(String noRekTujuan, String jenis){
 		return this.repostitoryTbTransaksi.findByNoRekTujuanANDJnsTransaksi(noRekTujuan, jenis);
 	}
+	
+	public List<TbTransaksi> getAllByTbRekeningOrderByIdTransaksi(TbRekening tbRekening){
+		return  this.repostitoryTbTransaksi.findByTbRekeningOrderByIdTransaksi(tbRekening);
+	}
+	
+	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi){
+		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(jnsTransaksi, statusTransaksi);
+	}
+	
+	public List<TbTransaksi> getAllByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening){
+		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(jnsTransaksi, statusTransaksi, tbRekening);
+	}
+	
 }

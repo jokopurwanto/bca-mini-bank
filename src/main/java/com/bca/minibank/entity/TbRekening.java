@@ -144,5 +144,7 @@ public class TbRekening implements java.io.Serializable {
 	public void setTransaksiHarian(int transaksiHarian) {
 		this.transaksiHarian = transaksiHarian;
 	}
+	
+	
 
 }

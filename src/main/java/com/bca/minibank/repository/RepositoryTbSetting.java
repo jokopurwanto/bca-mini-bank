@@ -7,3 +7,4 @@ import com.bca.minibank.entity.TbSetting;
 public interface RepositoryTbSetting extends JpaRepository<TbSetting, String> {
 
 }
+

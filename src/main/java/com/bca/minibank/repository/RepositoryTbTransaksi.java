@@ -22,4 +22,8 @@ public interface RepositoryTbTransaksi extends JpaRepository<TbTransaksi, Intege
 	 	List<TbTransaksi> findByTbRekening(TbRekening tbRekening);
 		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksi(String jnsTransaksi, String statusTransaksi);
 		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiAndTbRekening(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening);
+
+		List<TbTransaksi> findByTbRekeningOrderByIdTransaksi(TbRekening tbRekening);
+		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi);
+		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening);
 }
