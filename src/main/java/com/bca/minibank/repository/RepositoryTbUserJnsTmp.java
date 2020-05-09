@@ -11,4 +11,6 @@ import com.bca.minibank.entity.TbUsers;
 @Repository
 public interface RepositoryTbUserJnsTmp extends JpaRepository<TbUserJnsTmp, Integer>  {
 	public TbUserJnsTmp findByTbUsers(TbUsers tbUsers);
+	
+
 }

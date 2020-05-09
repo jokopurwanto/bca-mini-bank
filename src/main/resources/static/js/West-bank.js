@@ -1,4 +1,3 @@
-
 function validateForm()
 {
     if (
@@ -124,84 +123,5 @@ function dateFilter()
         return false;
     }
     return true;    
-}
 
-
-
-function checkPassword2()
-{
-    var password = document.getElementById('pwd-new').value;
-    var confirmPwd = document.getElementById('pwd-new2');
-
-    if (confirmPwd.value === password){
-        return true;
-    }
-    alert("Password tidak sama")
-    confirmPwd.focus();
-    return false;
-}
-
-function validatePwd2()
-{
-    var password = document.getElementById('pwd-new');
-    // Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:
-    var pwdFormat = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/    ;
-
-    if (password.value.match(pwdFormat)){
-        return true;
-    }
-    alert("Password harus terdiri dari minimum 8 karakter serta kombinasi dari huruf besar, huruf kecil, dan angka")
-    password.focus();
-    return false;
-
-}
-
-function validateall()
-{
-	if(
-			checkPassword2()&&
-			validatePwd2() 
-	){
-        alert('Password anda telah diubah');
-        return true;
-    }
-}
-
-function checkPin2()
-{
-    var pin = document.getElementById('pin-new').value;
-    var confirmPin = document.getElementById('pin-new2');
-
-    if (confirmPin.value === pin){
-        return true;
-    }
-    alert("Pin tidak sama")
-    confirmPin.focus();
-    return false;
-}
-
-function validatePin2()
-{
-    var pin = document.getElementById('pin-new');
-    // Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:
-    var pinFormat = /[0-9]{6,6}$/  ;
-
-    if (pin.value.match(pinFormat)){
-        return true;
-    }
-    alert("Pin harus 6 angka")
-    pin.focus();
-    return false;
-
-}
-
-function validateall2()
-{
-	if(
-			checkPin2()&&
-			validatePin2() 
-	){
-        alert('Pin anda telah diubah');
-        return true;
-    }
 }

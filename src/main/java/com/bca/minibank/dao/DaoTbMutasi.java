@@ -35,4 +35,13 @@ public class DaoTbMutasi {
 	public void update(TbMutasi tbMutasi) {
 		this.repositoryTbMutasi.save(tbMutasi);
 	}
+	
+	public List<TbMutasi> findByFilterTransaksiOut(String noRek, String startDate, String endDate){
+		return this.repositoryTbMutasi.findByFilterTransaksiOut(noRek, startDate, endDate);
+	}
+	
+	public List<TbMutasi> findByFilterTransaksiIn(String noRek, String startDate, String endDate){
+		return this.repositoryTbMutasi.findByFilterTransaksiIn(noRek, startDate, endDate);
+	}
+	
 }
