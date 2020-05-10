@@ -167,9 +167,17 @@ public class ControllerNasabah {
 	}
 
 	@GetMapping("/nasabah/pin") 
-	public String pinRequestPage1(Model model, FormMasukanPin formMasukanPin) 
+	public String pinRequestPage1(Model model, FormMasukanPin formMasukanPin, HttpSession session) 
 	{
-		return "/nasabah/pinrequest";
+		if((Boolean)session.getAttribute("validateUrl") == null || (Boolean)session.getAttribute("validateUrl") == false)
+		{
+			return "redirect:/beranda";
+		}
+		else
+		{
+			session.removeAttribute("validateUrl");
+			return "/nasabah/pinrequest";
+		}
 	}
 
 	@PostMapping("/nasabah/pin") 
@@ -223,6 +231,7 @@ public class ControllerNasabah {
 	{	
 		if((Boolean)session.getAttribute("pintervalidasi") == null || (Boolean)session.getAttribute("pintervalidasi") == false)
 		{
+			request.getSession().setAttribute("validateUrl", true);
 			request.getSession().setAttribute("url", "redirect:/nasabah/ceksaldo");
 			return "redirect:/nasabah/pin";
 		}
