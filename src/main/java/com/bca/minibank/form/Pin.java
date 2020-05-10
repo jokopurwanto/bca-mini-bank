@@ -1,8 +1,10 @@
 package com.bca.minibank.form;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 public class Pin {
+	
 	
 	@Pattern(regexp = "^[0-9]{6,6}$", message = "Pengisian pin harus 6 digit angka!")
 	private String newPin;
@@ -10,10 +12,11 @@ public class Pin {
 	private String confirmpin;
 	
 	public Pin() {
-		
+		super();
 	}
 
-	public Pin(@Pattern(regexp = "^[0-9]{6,6}$", message = "Pengisian pin harus 6 digit angka!") String newPin,
+	public Pin(
+			@NotBlank(message = "Pin tidak boleh kosong") @Pattern(regexp = "^[0-9]{6,6}$", message = "Pengisian pin harus 6 digit angka!") String newPin,
 			String oldPin, String confirmpin) {
 		super();
 		this.newPin = newPin;

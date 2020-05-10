@@ -41,6 +41,8 @@ public class HandleController {
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	//	============================================ LOGIN =========================================
+
 	@GetMapping("/")
 	public String indexdirectPage() {
 		return "redirect:/login";
@@ -63,11 +65,15 @@ public class HandleController {
 		return "/handle/login";
 	}
 
+	//	============================================ ADMIN =========================================
+
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
 
 		return "redirect:/admin/listusers/terverifikasi";
 	}
+
+	//	============================================ REGISTRASI =========================================
 
 	@GetMapping("/registrasi")
 	public String registrasiPage(Model model, FormRegisterUser formRegisterUser) {
@@ -152,4 +158,3 @@ public class HandleController {
 		return "/handle/registrasiberhasil";
 	}
 }
-

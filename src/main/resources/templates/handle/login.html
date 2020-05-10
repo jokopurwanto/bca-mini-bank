@@ -1,50 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta charset="ISO-8859-1">
-	<link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
-	<title>WestBank Login</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="ISO-8859-1">
+<link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
+<title>WestBank Login</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
-	<form class="box" name='f'  th:action="@{/login}" method="post">
-		<div align="center" th:if="${param.message}"><mark style="font-size: 20; color: green; background-color: white;" th:text="${message}"></mark></div>
-		<div align="center" th:if="${param.error}"><p style="font-size: 20; color: red;" th:text="${error}"></p></div>
-		<input type="text" name="username" id="username" placeholder="username">
-		<input type="password" name="password" id="password" placeholder="password">
-		<input type="submit" value="Login">
-<!-- 		<a class="a" th:href="@{/recover-password}">Forgot password?</a> -->
+	<form class="box" name='f' th:action="@{/login}" method="post">
+		<div align="center" th:if="${param.message}">
+			<mark style="font-size: 20; color: green; background-color: white;"
+				th:text="${message}"></mark>
+		</div>
+		<div align="center" th:if="${param.error}">
+			<p style="font-size: 20; color: red;" th:text="${error}"></p>
+		</div>
+		<input type="text" name="username" id="username"
+			placeholder="username"> <input type="password"
+			name="password" id="password" placeholder="password"> <input
+			type="submit" value="Login">
+		<!-- 		<a class="a" th:href="@{/recover-password}">Forgot password?</a> -->
 		<a class="a" th:href="@{/registrasi}">Daftar User Baru</a>
 	</form>
 
 	<script>
-            function validasi(){
-                var username = document.getElementById('username');
-                var password = document.getElementById('password');
+		function validasi() {
+			var username = document.getElementById('username');
+			var password = document.getElementById('password');
 
-                if (harusDiisi(username, "Username tidak boleh kosong")) 
-                {
-                    if (harusDiisi(password, "Password tidak boleh kosong")) {
-                            return true;
-                        };
-                    };
-                return false;
-            }
+			if (harusDiisi(username, "Username tidak boleh kosong")) {
+				if (harusDiisi(password, "Password tidak boleh kosong")) {
+					return true;
+				}
+				;
+			}
+			;
+			return false;
+		}
 
-            function harusDiisi(att, msg){
-                if (att.value.length == 0) {
-                    alert(msg);
-                    att.focus();
-                    return false;
-                }
+		function harusDiisi(att, msg) {
+			if (att.value.length == 0) {
+				alert(msg);
+				att.focus();
+				return false;
+			}
 
-                return true;
-            }
-        </script>
+			return true;
+		}
+	</script>
 
 </body>
 </html>

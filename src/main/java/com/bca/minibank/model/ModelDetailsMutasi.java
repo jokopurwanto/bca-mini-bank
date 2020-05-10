@@ -62,8 +62,4 @@ public class ModelDetailsMutasi {
 	public void setSaldoAkhir(double saldoAkhir) {
 		this.saldoAkhir = saldoAkhir;
 	}
-	
-	
-
-	
 }

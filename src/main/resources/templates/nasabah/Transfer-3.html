@@ -1,137 +1,152 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/5c4f979ba0.js" crossorigin="anonymous"></script>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
-    <title>Transfer</title>
-    <link rel="stylesheet" th:href="@{/css/West-bank.css}">
-  </head>
-  <body class="home-body">
-    <div class="all">
-        <div class="header">
-            <img src="https://i.imgur.com/AkVFWPz.png" alt="logo"  class="home-logo" >
-                        <div class="menu">
-             <div class="container mt-4">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/beranda}">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " th:href="@{/nasabah/ceksaldo}">Cek Saldo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/nasabah/transfer}">Transfer</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link  dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                         Setor Tunai
-                        </a>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" th:href="@{/nasabah/setor}">Transaksi Setor Tunai</a>
-                          <a class="dropdown-item" th:href="@{/nasabah/setor/status}">Status Setor Tunai</a>
-                        </div>
-                      </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/nasabah/mutasi}">Cek Mutasi</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                         Pengaturan
-                        </a>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" th:href="@{/nasabah/ubahpassword}">Ubah Password</a>
-                          <a class="dropdown-item" th:href="@{/nasabah/ubahpin}">Ubah PIN</a>
-                        </div>
-                      </li>
-                    <li class="nav-item">
-                        <div class="logout">
-                        <a class="navbar-brand" th:href="@{/logout}">
-                          <i class="fas fa-sign-out-alt"></i>
-                          Logout
-                        </a>
-                        </div>
-                    </li>
-                </ul>
-                </div>
-            </div>
-    	</div>
-        <div class="content">
-            <img src="/../Images/success-icon.png" alt="success-icon" class="success-transfer">
-            <h3>Transaksi Berhasil</h3>
-            <div class="sub-content-transaksi2">
-                <table>
-                    <tr>
-                        <td width="50%">Jenis Transaksi</td>
-                        <td width="50%" style="padding-left:30px">
-                            <label th:value="${formTransferValidationPage.jnsTransaksi}"
-                                th:text="${formTransferValidationPage.jnsTransaksi}"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Tanggal</td>
-                        <td style="padding-left:30px">
-                            <label th:value="${formTransferValidationPage.tglTransaksi}"
-                                th:text="${formTransferValidationPage.tglTransaksi}"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>No Rekening Pengirim </td>
-                        <td style="padding-left:30px">
-                            <label th:value="${formTransferValidationPage.noRek}"
-                                th:text="${formTransferValidationPage.noRek}"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>No Rekening Penerima</td>
-                        <td style="padding-left:30px">
-                            <label th:value="${formTransferValidationPage.noRekTujuan}"
-                                th:text="${formTransferValidationPage.noRekTujuan}"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nama Penerima</td>
-                        <td style="padding-left:30px">
-                            <label th:value="${formTransferValidationPage.namaPenerima}"
-                                th:text="${formTransferValidationPage.namaPenerima}"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Keterangan</td>
-                        <td style="padding-left:30px">
-                            <label th:value="${formTransferValidationPage.keterangan}"
-                                th:text="${formTransferValidationPage.keterangan}"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nominal</td>
-                        <td style="padding-left:30px">
-                            <b> <label th:value="${formTransferValidationPage.nominal}"
-                                th:text="'Rp. '+${#numbers.formatDecimal(formTransferValidationPage.nominal,3,'POINT',2,'COMMA')}"></label></b>                 
-                        </td>
-                    </tr>
-                </table>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" th:href="@{/css/West-bank.css}">
+<link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
+<title>Transfer</title>
 
-            </div>
-            <div class="ok-button">
-                <a th:href="@{/beranda}" class="btn btn-success" role="button">OK</a>
-            </div>
-        </div>
-        <div class="footer">
-            <br>
-            <p>Copyright 2020 PT West Bank Indonesia Tbk</p>
-        </div>
-    </div>
+</head>
+<body class="home-body">
+	<div class="container">
+		<div class="row">
+			<div class="all">
+				<div class="header">
+					<img src="https://i.imgur.com/AkVFWPz.png" alt="WestBank-logo"
+						class="home-logo">
+					<div class="menu">
+						<nav class="navbar navbar-expand-lg navbar-dark bg-custom"
+							style="z-index: 20">
+							<!-- Brand -->
+							<a class="navbar-brand" style="color: #c7e6ff;" href="#">West-Bank</a>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+							<!-- Toggler/collapsibe Button -->
+							<button class="navbar-toggler" type="button"
+								data-toggle="collapse" data-target="#collapsibleNavbar">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+
+							<!-- Navbar links -->
+							<div class="collapse navbar-collapse" id="collapsibleNavbar">
+								<ul class="navbar-nav">
+									<li class="nav-item"><a class="nav-link "
+										th:href="@{/beranda}">Beranda</a></li>
+									<li class="nav-item"><a class="nav-link"
+										th:href="@{/nasabah/ceksaldo}">Cek Saldo</a></li>
+									<li class="nav-item"><a class="nav-link active"
+										th:href="@{/nasabah/transfer}">Transfer</a></li>
+									<li class="nav-item dropdown"><a
+										class="nav-link dropdown-toggle" href="#" id="navbardrop"
+										data-toggle="dropdown"> Setor Tunai </a>
+										<div class="dropdown-menu">
+											<a class="dropdown-item" th:href="@{/nasabah/setor}">Transaksi
+												Setor Tunai</a> <a class="dropdown-item"
+												th:href="@{/nasabah/setor/status}">Status Setor Tunai</a>
+										</div></li>
+									<li class="nav-item"><a class="nav-link "
+										th:href="@{/nasabah/mutasi}">Cek Mutasi</a></li>
+									<li class="nav-item dropdown"><a
+										class="nav-link dropdown-toggle" href="#" id="navbardrop"
+										data-toggle="dropdown"> Pengaturan </a>
+										<div class="dropdown-menu">
+											<a class="dropdown-item" th:href="@{/nasabah/ubahpassword}">Ubah
+												Password</a> <a class="dropdown-item"
+												th:href="@{/nasabah/ubahpin}">Ubah PIN</a>
+										</div></li>
+									<li class="nav-item logout-icon"><a class="navbar-brand"
+										onclick="return confirm('apakah anda yakin ingin keluar dari sistem?')"
+										style="color: #ff6565;" th:href="@{/logout}"> <i
+											class="fas fa-sign-out-alt"></i> Logout
+									</a></li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+				</div>
+				<div class="content">
+					<div class="row">
+						<img th:src="@{/image/success-icon.png}" alt="success-icon"
+							class="success-transfer">
+					</div>
+					<h3>Transaksi Berhasil</h3>
+					<div class="sub-content-transaksi2">
+						<table>
+							<tr>
+								<td width="50%">Jenis Transaksi</td>
+								<td width="50%" style="padding-left: 30px"><label
+									th:value="${formTransferValidationPage.jnsTransaksi}"
+									th:text="${formTransferValidationPage.jnsTransaksi}"></label></td>
+							</tr>
+							<tr>
+								<td>Tanggal</td>
+								<td style="padding-left: 30px"><label
+									th:value="${formTransferValidationPage.tglTransaksi}"
+									th:text="${formTransferValidationPage.tglTransaksi}"></label></td>
+							</tr>
+							<tr>
+								<td>No Rekening Pengirim</td>
+								<td style="padding-left: 30px"><label
+									th:value="${formTransferValidationPage.noRek}"
+									th:text="${formTransferValidationPage.noRek}"></label></td>
+							</tr>
+							<tr>
+								<td>No Rekening Penerima</td>
+								<td style="padding-left: 30px"><label
+									th:value="${formTransferValidationPage.noRekTujuan}"
+									th:text="${formTransferValidationPage.noRekTujuan}"></label></td>
+							</tr>
+							<tr>
+								<td>Nama Penerima</td>
+								<td style="padding-left: 30px"><label
+									th:value="${formTransferValidationPage.namaPenerima}"
+									th:text="${formTransferValidationPage.namaPenerima}"></label></td>
+							</tr>
+							<tr>
+								<td>Keterangan</td>
+								<td style="padding-left: 30px"><label
+									th:value="${formTransferValidationPage.keterangan}"
+									th:text="${formTransferValidationPage.keterangan}"></label></td>
+							</tr>
+							<tr>
+								<td>Nominal</td>
+								<td style="padding-left: 30px"><b> <label
+										th:value="${formTransferValidationPage.nominal}"
+										th:text="'Rp. '+${#numbers.formatDecimal(formTransferValidationPage.nominal,3,'POINT',2,'COMMA')}"></label></b>
+								</td>
+							</tr>
+						</table>
+
+					</div>
+					<div class="row">
+						<div class="ok-button-pinrequest">
+							<a th:href="@{/beranda}" class="btn btn-success" role="button">OK</a>
+						</div>
+					</div>
+				</div>
+				<div class="footer">
+					<br>
+					<p>Copyright 2020 PT West Bank Indonesia Tbk</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://kit.fontawesome.com/5c4f979ba0.js"
+		crossorigin="anonymous"></script>
 </body>
 
 </html>

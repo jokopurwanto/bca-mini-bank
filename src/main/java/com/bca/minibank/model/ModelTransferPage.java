@@ -40,7 +40,4 @@ public class ModelTransferPage {
 	public void setKeterangan(String keterangan) {
 		this.keterangan = keterangan;
 	}
-	
-	
-
 }

@@ -10,8 +10,5 @@ public class ModelSession {
 
 	public void setModelTransferPage(ModelTransferPage modelTransferPage) {
 		this.modelTransferPage = modelTransferPage;
-	}
-	
-	
-
+	}	
 }

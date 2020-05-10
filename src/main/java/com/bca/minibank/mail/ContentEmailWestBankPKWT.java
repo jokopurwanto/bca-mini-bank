@@ -19,18 +19,6 @@ public class ContentEmailWestBankPKWT {
 		return contentType;
 	}
 	
-//	public String getContentHeader() {
-//		return contentHeader;
-//	}
-//
-//	public String getContentBody() {
-//		return contentBody;
-//	}
-//
-//	public String getContentFooter() {
-//		return contentFooter;
-//	}
-
 	public String getContentFull() {
 		return contentHeader + contentBody + contentFooter;
 	}

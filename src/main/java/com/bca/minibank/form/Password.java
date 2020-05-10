@@ -13,11 +13,11 @@ public class Password {
 	private String confirmpass;
 	
 	public Password() {
-		
+		super();
 	}
 
 	public Password(
-			@Size(min = 8, max = 32, message = "Rentang pengisian password harus 8 sampai 32 digit!") @Pattern(regexp = "((?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{8,32})", message = "Harus mengandung angka, huruf kapital dan huruf kecil!") String newpassword,
+			@NotBlank(message = "Password tdak boleh kosong") @Size(min = 8, max = 32, message = "Rentang pengisian password harus 8 sampai 32 digit!") @Pattern(regexp = "((?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{8,32})", message = "Harus mengandung angka, huruf kapital dan huruf kecil!") String newpassword,
 			String oldpassword, String confirmpass) {
 		super();
 		this.newpassword = newpassword;
@@ -48,5 +48,5 @@ public class Password {
 	public void setConfirmpass(String confirmpass) {
 		this.confirmpass = confirmpass;
 	}
-
+	
 }

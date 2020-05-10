@@ -1,9 +1,5 @@
 package com.bca.minibank.model;
 
-import java.util.Date;
-
-
-import com.bca.minibank.entity.TbTransaksi;
 import com.bca.minibank.form.FormTransaksi;
 
 /**
@@ -19,8 +15,7 @@ public class ModelTransaksi {
 		this.nominal = formTransaksi.getNominal();
 		this.noRek = formTransaksi.getNoRek();
 	}
-	
-	
+		
 	public String getNoRek() {
 		return noRek;
 	}
@@ -33,7 +28,4 @@ public class ModelTransaksi {
 	public void setNominal(Integer Nominal) {
 		this.nominal = Nominal;
 	}
-	
-	
-	
 }

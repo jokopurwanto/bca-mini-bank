@@ -13,18 +13,18 @@ import java.util.Properties;
 
 public class SendEmailSMTP {
 
-    private String smtpServer; 		//= "smtp.gmail.com";
-    private String port;			// = "587";
-    private String usernameEmail; 	//= "westbankPKWT@gmail.com";
-    private String passwordEmail; 	//= "westbankPKWT03";
+	private String smtpServer; 		//= "smtp.gmail.com";
+	private String port;			// = "587";
+	private String usernameEmail; 	//= "westbankPKWT@gmail.com";
+	private String passwordEmail; 	//= "westbankPKWT03";
 
-    private String emailFrom; 		//= "westbankPKWT@gmail.com";
-    private String emailTo; 		//= "hanyjulianasitio@gmail.com, billybrazzo@gmail.com";
-    private String emailToCC; 		//= "";
+	private String emailFrom; 		//= "westbankPKWT@gmail.com";
+	private String emailTo; 		//= "hanyjulianasitio@gmail.com, billybrazzo@gmail.com";
+	private String emailToCC; 		//= "";
 
-    private String emailSubject;	// = "Selamat bergabung di WEST BANK PKWT";
-    private String emailContent;		// = "Hello Java Mail \n ABC123";
-    private String emailContentType;
+	private String emailSubject;	// = "Selamat bergabung di WEST BANK PKWT";
+	private String emailContent;		// = "Hello Java Mail \n ABC123";
+	private String emailContentType;
 
 
 	public SendEmailSMTP(String smtpServer, String port, String usernameEmail, String passwordEmail, String emailFrom,
@@ -44,62 +44,54 @@ public class SendEmailSMTP {
 
 
 	public void sendEmail() {
-		
-        Properties prop = System.getProperties();
-        prop.put("mail.smtp.host", smtpServer); 
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.port", port); 		
-        prop.put("mail.smtp.starttls.enable", "true");
-        
-        Session session = Session.getInstance(prop, null);
 
-//        // Get the Session object.
-//        Session session = Session.getInstance(prop,
-//           new javax.mail.Authenticator() {
-//              protected PasswordAuthentication getPasswordAuthentication() {
-//                 return new PasswordAuthentication(usernameEmail, passwordEmail);
-//              }
-//  	});
-        try {
-            Message msg = new MimeMessage(session);
-            
+		Properties prop = System.getProperties();
+		prop.put("mail.smtp.host", smtpServer); 
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.port", port); 		
+		prop.put("mail.smtp.starttls.enable", "true");
+
+		Session session = Session.getInstance(prop, null);
+		try {
+			Message msg = new MimeMessage(session);
+
 			// from
-            msg.setFrom(new InternetAddress(emailFrom));
+			msg.setFrom(new InternetAddress(emailFrom));
 
 			// to 
-            msg.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(emailTo, false));
+			msg.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(emailTo, false));
 
 			// cc
-            msg.setRecipients(Message.RecipientType.CC,
-                    InternetAddress.parse(emailToCC, false));
+			msg.setRecipients(Message.RecipientType.CC,
+					InternetAddress.parse(emailToCC, false));
 
 			// subject
-            msg.setSubject(emailSubject);
-			
+			msg.setSubject(emailSubject);
+
 			// content 
-            //msg.setText(emailContent);
-            msg.setContent(emailContent, emailContentType);
-			
-            msg.setSentDate(new Date());
+			//msg.setText(emailContent);
+			msg.setContent(emailContent, emailContentType);
+
+			msg.setSentDate(new Date());
 
 			// Get SMTPTransport
-            SMTPTransport t = (SMTPTransport) session.getTransport("smtp");
-			
+			SMTPTransport t = (SMTPTransport) session.getTransport("smtp");
+
 			// connect
-            t.connect(smtpServer, usernameEmail, passwordEmail);
-			
+			t.connect(smtpServer, usernameEmail, passwordEmail);
+
 			// send
-            t.sendMessage(msg, msg.getAllRecipients());
+			t.sendMessage(msg, msg.getAllRecipients());
 
-            //System.out.println("Response: " + t.getLastServerResponse());
+			//System.out.println("Response: " + t.getLastServerResponse());
 
-            t.close();
+			t.close();
 
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 
 
-    }
+	}
 }

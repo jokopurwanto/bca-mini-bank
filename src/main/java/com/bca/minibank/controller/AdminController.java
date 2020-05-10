@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,22 +40,22 @@ import com.bca.minibank.mail.SendEmailSMTP;
 public class AdminController {
 	@Autowired
 	private DaoTbUsers daoUsers;
-	
+
 	@Autowired
 	private DaoTbLogAdmin daoLogAdmin;
-	
+
 	@Autowired
 	private DaoTbRekening daoRekening;
-	
+
 	@Autowired
 	private DaoTbTransaksi daoTransaksi;
-	
+
 	@Autowired
 	private DaoTbMutasi daoMutasi;
-	
+
 	@Autowired
 	private DaoTbSetting daoSetting;	
-	
+
 	@Autowired
 	private DaoTbUserJnsTmp daoUserJnsTmp;
 
@@ -79,12 +78,12 @@ public class AdminController {
 	private static final String ACTION_AUTO_DECLINE_SETOR_TUNAI = "AUTO DECLINE SETOR";
 	private static final String ACTION_NON_ACTIVE_REKENING = "NON ACTIVE REKENING";
 	private static final String ACTION_ACTIVE_REKENING = "ACTIVE REKENING";
-
 	private static final String JNSTRANSAKSI_SETOR_TUNAI = "SETOR TUNAI";
 	private static final String STATUSTRANSAKSI_PENDING = "PENDING";
 	private static final String STATUSTRANSAKSI_SUCCESS = "SUCCESS";
 	private static final String STATUSTRANSAKSI_FAILED = "FAILED";
 
+	//	============================================ LISTUSERS TERVERIFIKASI =========================================
 
 	@GetMapping("/admin/listusers/terverifikasi")
 	public String adminListuserTerverifikasi(Model model) {
@@ -111,6 +110,8 @@ public class AdminController {
 		return "/admin/listUserTerverifikasi.html";
 	}
 
+	//	============================================ LISTUSERS BARU =========================================
+
 	@GetMapping("/admin/listusers/baru")
 	public String adminListUserBaru(Model model) {
 		model.addAttribute("users", daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_PENDING,ROLE_NASABAH));		
@@ -136,6 +137,8 @@ public class AdminController {
 		return "/admin/listUserBaru.html";
 	}
 
+	//	============================================ LISTUSERS TERBLOKIR =========================================
+
 	@GetMapping("/admin/listusers/terblokir")
 	public String adminListUserTerblokir(Model model) {
 		model.addAttribute("users", daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_BLOCKED,ROLE_NASABAH));		
@@ -160,6 +163,8 @@ public class AdminController {
 		model.addAttribute("searchUsername",searchUsername);
 		return "/admin/listUserTerblokir.html";
 	}
+
+	//	============================================ LIST TRANSAKSI SETOR TUNAI =========================================
 
 	@GetMapping("/admin/listtransaksi/setortunai")
 	public String adminListTransaksiSetor(Model model) {
@@ -190,6 +195,9 @@ public class AdminController {
 		model.addAttribute("searchNoRek",searchNoRek);
 		return "/admin/listTransaksiSetorTunai.html";
 	}
+
+	//	============================================ LIST REKENING NON AKTIF =========================================
+
 	@GetMapping("/admin/listrekening/nonaktif")
 	public String adminListRekeningNonAktif(Model model) {
 		model.addAttribute("listRekening", daoRekening.getAllByStatusRekOrderByNoRekAsc( STATUSREK_NON_ACTIVE));		
@@ -221,6 +229,8 @@ public class AdminController {
 		model.addAttribute("searchNoRek",searchNoRek);
 		return "/admin/listRekeningNonAktif.html";
 	}
+
+	//	============================================ UBAH PASSWORD =========================================
 
 	@PostMapping("/admin/listuser/terverifikasi/ubahpassword")
 	public String adminUbahPassword(Model model, int idUser, FormAdminUbahPassword formAdminUbahPassword) {
@@ -277,8 +287,8 @@ public class AdminController {
 		model.addAttribute("listTransaksi", daoTransaksi.getAllByTbRekeningOrderByIdTransaksi(tbUsers.getTbRekening()));
 		return "/admin/listTransaksiUser.html";
 	}
-	
-	
+
+
 	public String genTab(int idJnsTab) {
 		Random r = new Random( System.currentTimeMillis() );
 		String tmp = "";
@@ -301,7 +311,7 @@ public class AdminController {
 				break;
 			}
 		}while(daoRekening.findById(noRekGen));
-		
+
 		return noRekGen;
 	}
 
@@ -327,6 +337,8 @@ public class AdminController {
 			return (String.valueOf(idJnsTab) + bulan + tahun + String.valueOf(nilai));
 		}
 	}
+
+	//	============================================ TERIMA USER BARU =========================================
 
 	@PostMapping("/admin/listusers/baru/terima")
 	public String adminTerimaUserBaru(Model model, int idUser) {
@@ -364,6 +376,8 @@ public class AdminController {
 		return "redirect:/admin/listusers/baru";
 	}
 
+//	============================================ TOLAK USER BARU =========================================
+
 	@PostMapping("/admin/listusers/baru/tolak")
 	public String adminTolakUserBaru(Model model, int idUser, String keterangan) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -387,6 +401,8 @@ public class AdminController {
 		return "redirect:/admin/listusers/baru";
 	}
 
+	//	============================================ USER BLOCK =========================================
+
 	@PostMapping("/admin/listusers/terverifikasi/block")
 	public String adminBlockUser(Model model, int idUser) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -398,6 +414,8 @@ public class AdminController {
 		return "/admin/listUserTerverifikasi.html";
 
 	}
+
+	//	============================================ USER UNBLOCK =========================================
 
 	@PostMapping("/admin/listusers/terblokir/unblock")
 	public String adminUnblockUser(Model model, int idUser) {
@@ -414,6 +432,8 @@ public class AdminController {
 		}
 		return "redirect:/admin/listusers/terblokir";
 	}
+
+	//	============================================ TERIMA SETOR TUNAI =========================================
 
 	@PostMapping("/admin/listtransaksi/setortunai/terima")
 	public String adminTransaksiSetorTerima(Model model, int idTransaksi) {
@@ -475,6 +495,8 @@ public class AdminController {
 		return "/admin/listTransaksiSetorTunai.html";
 	}
 
+	//	============================================ TOLAK SETOR TUNAI =========================================
+
 	@PostMapping("/admin/listtransaksi/setortunai/tolak")
 	public String adminTransaksiSetorTolak(Model model, int idTransaksi) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -499,6 +521,8 @@ public class AdminController {
 		return "/admin/listTransaksiSetorTunai.html";
 	}
 
+	//	============================================ DETAIL REKENING =========================================
+
 	@PostMapping("/admin/listuser/terverifikasi/detailrekening")
 	public String adminDetailRekening(Model model, String noRek) {
 		TbRekening rekening = daoRekening.getOne(noRek);
@@ -514,6 +538,8 @@ public class AdminController {
 		return "/admin/detailRekening.html";
 	}
 
+	//	============================================ DETAIL REKENING NON AKTIF =========================================
+
 	@PostMapping("/admin/listuser/terverifikasi/detailrekening/nonaktif")
 	public String adminNonAktifkanRekeningDariDetailRekening(Model model, String noRek) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -523,6 +549,8 @@ public class AdminController {
 		simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_NON_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
 		return "redirect:/admin/listrekening/nonaktif";
 	}
+
+	//	============================================ DETAIL REKENING AKTIF =========================================
 
 	@PostMapping("/admin/listuser/terverifikasi/detailrekening/aktif")
 	public String adminAktifkanRekeningDariDetailRekening(Model model, String noRek) {
@@ -535,6 +563,8 @@ public class AdminController {
 		//		model.addAttribute("rekening", daoRekening.getOne(noRek));
 		//		return "detailRekening.html";
 	}
+
+	//	============================================ LIST REKENING AKTIF =========================================
 
 	@PostMapping("/admin/listrekening/nonaktif/aktif")
 	public String adminAktifkanRekeningDariListRekening(Model model, String noRek) {

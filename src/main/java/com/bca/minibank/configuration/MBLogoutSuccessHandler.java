@@ -20,7 +20,7 @@ public class MBLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler implem
 	@Autowired
 	DaoTbUsers DaoTbUsers;
 	
-    @Override
+	@Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException 
     {
     	TbUsers user = DaoTbUsers.findTbUsersByUsername(authentication.getName());

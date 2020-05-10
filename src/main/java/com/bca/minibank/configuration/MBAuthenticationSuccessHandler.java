@@ -74,4 +74,5 @@ public class MBAuthenticationSuccessHandler implements AuthenticationSuccessHand
 		}
 		session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 	}
+
 }

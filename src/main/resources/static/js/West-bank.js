@@ -132,17 +132,42 @@ setInputFilter(document.getElementById("username"), function(value) {
 
 
 
-//Validasi Filter Tanggal
+
+//Validasi Filter Tanggal Mutasi
+function enabledEndDate()
+{
+  document.getElementById('dateEnd').disabled = false
+}
 function dateFilter()
 {
-    var dateStart = moment(document.getElementById('dateStart').value, 'YYYY-MM-DD');
-    var dateEnd = moment(document.getElementById('dateEnd').value, 'YYYY-MM-DD');
-    var calculate = Math.abs(parseInt(dateEnd.diff(dateStart, 'days', true)));
+  var dateStartInput = document.getElementById('dateStart').value
+  var dateEndInput = document.getElementById('dateEnd').value
 
-    if (calculate > 30){
-        alert("Rentang maksimum tanggal awal dan akhir adalah 30 hari");
-        document.getElementById('dateEnd').focus();
-        return false;
-    }
-    return true;    
+  var dateNow = moment().startOf('day');
+  var dateStart = moment(dateStartInput, 'YYYY-MM-DD');
+  var dateEnd = moment(dateEndInput, 'YYYY-MM-DD');
+  var calculate = parseInt(dateEnd.diff(dateStart, 'days', true));
+
+  var dateStartToday = parseInt(dateNow.diff(dateStart, 'days', true));
+  var dateEndToday = parseInt(dateNow.diff(dateEnd, 'days', true));
+
+  if (dateStartToday < 0 || dateEndToday < 0){
+      alert("Maksimal pemilihan tanggal adalah hari ini");
+      document.getElementById('dateStart').focus();
+      return false;
+  }
+
+  if (calculate > 30){
+      alert("Rentang maksimum tanggal awal dan akhir adalah 30 hari");
+      document.getElementById('dateEnd').focus();
+      return false;
+  }
+
+  if (calculate <= 0){
+      // alert("Tidak boleh memilih tanggal akhir yang mendahului tanggal awal")
+      alert("Silahkan memilih tanggal akhir dimulai dari "+ moment(dateStartInput).format('ll'))
+      document.getElementById('dateEnd').focus();
+      return false
+  }
+  return true;    
 }

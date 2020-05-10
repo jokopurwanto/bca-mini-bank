@@ -134,5 +134,3 @@ public class MBUserPrincipal implements UserDetails{
 		return TbUsers.getRole();
 	}
 }
-
-
