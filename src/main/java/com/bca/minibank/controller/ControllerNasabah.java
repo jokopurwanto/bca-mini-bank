@@ -106,6 +106,9 @@ public class ControllerNasabah {
 	private static final String PETTERN_DATE = "dd-MMM-yyyy";
 	private static final String STATUS_REK_NOT_ACTIVE = "NOT ACTIVE";
 	private static final String STATUS_USER_BLOCK = "BLOCK";
+	private static final String PERIODE_SEHARI = "SEHARI";
+	private static final String PERIODE_SEMINGGU = "SEMINGGU";
+	private static final String PERIODE_SEBULAN = "SEBULAN";
 	private static final String KETERANGAN_BLOCK = "Akun anda terblokir dikarenakan salah password atau salah pin sebanyak 3x berturut-turut";
 
 	//	============================================ VERIFIKASI =========================================
@@ -429,13 +432,13 @@ public class ControllerNasabah {
 		TbRekening cekSaldo = this.daoTbRekening.findByNoRek(formTransferPage.getNoRek());
 		if (cekSaldo.getTransaksiHarian() + nominal > cekSaldo.getTbJnsTab().getLimitTransaksi()) {
 			result.rejectValue("nominal", "error.formTransferPage", "maaf, sisa limit transfer harian kamu adalah "
-					+ (cekSaldo.getTbJnsTab().getLimitTransaksi() - cekSaldo.getTransaksiHarian()));
+					+ (formatRp(cekSaldo.getTbJnsTab().getLimitTransaksi() - cekSaldo.getTransaksiHarian())));
 			return "/nasabah/Transfer-1";
 		}
 
 		//      validasi saldo tidak mencukupi
 		if (nominal > cekSaldo.getSaldo()) {
-			result.rejectValue("nominal", "error.formTransferPage", "Maaf, saldo tidak mencukupi");
+			result.rejectValue("nominal", "error.formTransferPage", "Maaf, saldo tidak mencukupi, sisa saldo kamu "+ formatRp(cekSaldo.getSaldo()));
 			return "Transfer-1";
 		}
 
@@ -737,8 +740,8 @@ public class ControllerNasabah {
 			result.rejectValue("periode", "error.formMutasi", "Maaf, periode tidak boleh kosong");
 			return "/nasabah/CekMutasi-1";
 		}
-
-		if(!formMutasi.getPeriode().equalsIgnoreCase("sehari") && !formMutasi.getPeriode().equalsIgnoreCase("seminggu") && !formMutasi.getPeriode().equalsIgnoreCase("sebulan")){
+		
+		if(!formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEHARI) && !formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEMINGGU) && !formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEBULAN)){
 			result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
 			return "/nasabah/CekMutasi-1";
 		}
@@ -826,13 +829,13 @@ public class ControllerNasabah {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 		String startDate = null;
-		if (formMutasi.getPeriode().equalsIgnoreCase("sehari")) {
+		if (formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEHARI)) {
 			cal.add(Calendar.DAY_OF_MONTH, 0);
 			startDate = simpleDateFormat.format(cal.getTime());
-		} else if (formMutasi.getPeriode().equalsIgnoreCase("seminggu")) {
+		} else if (formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEMINGGU)) {
 			cal.add(Calendar.DAY_OF_MONTH, -7);
 			startDate = simpleDateFormat.format(cal.getTime());
-		} else if (formMutasi.getPeriode().equalsIgnoreCase("sebulan")) {
+		} else if (formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEBULAN)) {
 			cal.add(Calendar.DAY_OF_MONTH, -30);
 			startDate = simpleDateFormat.format(cal.getTime());
 		} 
@@ -846,7 +849,19 @@ public class ControllerNasabah {
 		return queryOut;
 
 	}
-	//	============================================END MUTASI=========================================
+	
+	public String formatRp(double nominal) {
+		DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+		DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+		formatRp.setCurrencySymbol("Rp. ");
+		formatRp.setMonetaryDecimalSeparator(',');
+		formatRp.setGroupingSeparator('.');
+
+		kursIndonesia.setDecimalFormatSymbols(formatRp);
+		return kursIndonesia.format(nominal);
+	}
+
 
 }
 
