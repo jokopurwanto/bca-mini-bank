@@ -58,7 +58,8 @@ public class HandleController {
 		{
 			model.addAttribute("message", message);
 		}
-		session.invalidate();
+		session.removeAttribute("error");
+		session.removeAttribute("message");
 		return "/handle/login";
 	}
 
@@ -127,7 +128,7 @@ public class HandleController {
 			tbUsers.setPassword(bCryptPasswordEncoder.encode(formRegisterUser.getPassword()));
 			tbUsers.setStatusUser("PENDING");
 			tbUsers.setRole("NASABAH");
-			tbUsers.setKeterangan("User sedang dalam proses verifikasi dari admin!");
+			tbUsers.setKeterangan("Akun anda sedang dalam proses verifikasi dari admin!");
 			request.getSession().setAttribute("tbUsersTemp", tbUsers);
 
 			TbJnsTab tbJnsTab = DaoTbJnsTab.getOne(formRegisterUser.getIdJnsTab());

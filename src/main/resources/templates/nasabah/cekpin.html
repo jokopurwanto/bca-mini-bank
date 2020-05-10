@@ -60,7 +60,7 @@
             </div>
         </div>
     <div class="content">
-        <form th:action="@{/nasabah/ubahpin}" name="pin" method="post" th:object="${pin}">
+        <form th:action="@{/nasabah/ubahpin}" method="post" th:object="${pin}">
         <p th:text="${msg}"></p>
         <h6>Silahkan Masukkan PIN Anda.</h6>
         <div class="sub-content-ceksaldo">
@@ -74,8 +74,8 @@
                 </div>
             </div>
         </div>
-        <div class="ok-button2">
-            <input type="submit" class="btn btn-primary"></button>
+	<div class="ok-button2">
+            <button type="submit" class="btn btn-primary">OK</button>
         </div>
 </div>
      

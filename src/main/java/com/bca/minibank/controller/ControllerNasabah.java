@@ -166,69 +166,18 @@ public class ControllerNasabah {
 		return "/nasabah/beranda";
 	}
 
-	@GetMapping("/nasabah/pin") 
-	public String pinRequestPage1(Model model, FormMasukanPin formMasukanPin) 
-	{
-		return "/nasabah/pinrequest";
-	}
-
-	@PostMapping("/nasabah/pin") 
-	public String pinRequestPost(Model model, @Valid FormMasukanPin formMasukanPin, BindingResult bindingResult, HttpSession session, HttpServletRequest request) 
-	{
-		boolean flagPin = false;
-		boolean flagBlock = false;
-		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		TbUsers tbUsers = daoTbUsers.getOne(user.getIdUser());
-		TbRekening tbRekening = daoTbRekening.getOne(user.getNoRek());
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  
-		if(tbRekening.getStatusRek().equals("NOT ACTIVE"))
-		{
-			flagBlock = true;
-		}
-		else if(!encoder.matches(formMasukanPin.getPin(), tbRekening.getPin()))
-		{  
-			int pinattempt = (Integer)session.getAttribute("pinattempt");
-			pinattempt++;
-			request.getSession().setAttribute("pinattempt", pinattempt);
-			flagPin = true;
-			if(pinattempt >= 3)
-			{
-				flagBlock = true;
-				tbRekening.setStatusRek("NOT ACTIVE");
-				tbUsers.setStatusUser("BLOCK");
-				tbUsers.setKeterangan("Akun anda terblokir dikarenakan salah pin sebanyak 3x berturut-turut");
-				daoTbRekening.update(tbRekening.getNoRek(), tbRekening);
-				daoTbUsers.update(tbUsers.getIdUser(), tbUsers);
-				return "redirect:/logout";
-			}
-		}
-		if(bindingResult.hasErrors() || flagPin == true || flagBlock == true)
-		{
-			model.addAttribute("flagPin", flagPin);
-			model.addAttribute("flagBlock", flagBlock);
-			model.addAttribute("pinattempt", session.getAttribute("pinattempt"));
-			return "nasabah/pinrequest";
-		}
-		else
-		{
-			//Reset jumlah pinattempt
-			request.getSession().setAttribute("pinattempt", 0);
-			request.getSession().setAttribute("pintervalidasi", true);
-			return (String)session.getAttribute("url");
-		}
-	}
-
 	@GetMapping("/nasabah/ceksaldo") 
 	public String cekSaldo(Model model, HttpSession session, HttpServletRequest request) 
 	{	
-		if((Boolean)session.getAttribute("pintervalidasi") == null || (Boolean)session.getAttribute("pintervalidasi") == false)
+		if((Boolean)session.getAttribute("pinTervalidasi") == null || (Boolean)session.getAttribute("pinTervalidasi") == false)
 		{
+			request.getSession().setAttribute("validateUrl", true);
 			request.getSession().setAttribute("url", "redirect:/nasabah/ceksaldo");
 			return "redirect:/nasabah/pin";
 		}
 		else
 		{
-			request.getSession().setAttribute("pintervalidasi", false);
+			request.getSession().setAttribute("pinTervalidasi", false);
 			MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			TbRekening tbRekening = daoTbRekening.getOne(user.getNoRek());
 
@@ -287,7 +236,9 @@ public class ControllerNasabah {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		TbUsers tbUsers = this.repositoryTbUsers.getOne(user.getIdUser());
 		String msg = "";
-		if(password.getNewpassword().equals(password.getConfirmpass())) {
+		if(!(rs.hasErrors()))
+		{
+			if(password.getNewpassword().equals(password.getConfirmpass())) {
 			tbUsers.setPassword(passwordEncoder.encode(password.getNewpassword()));
 			repositoryTbUsers.save(tbUsers);
 			msg = "Password berhasil diubah.";
@@ -295,6 +246,8 @@ public class ControllerNasabah {
 			msg="Konfirmasi password berbeda";
 		}
 		model.addAttribute("msg", msg);
+		return "/nasabah/UbahPassword";
+		}
 		return "/nasabah/UbahPassword";
 	}
 
@@ -307,7 +260,7 @@ public class ControllerNasabah {
 
 	// --- UPDATE PIN
 	@PostMapping("/nasabah/ubahpin")
-	public String Pinpage(Model model, String noRek, @Valid Pin pin , BindingResult rs, HttpServletRequest request) {
+	public String Pinpage(Model model, @Valid Pin pin , BindingResult rs, HttpServletRequest request) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
 		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		TbRekening tbRekening = this.repositoryTbRekening.getOne(user.getNoRek());
@@ -331,15 +284,20 @@ public class ControllerNasabah {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		TbRekening tbRekening = this.repositoryTbRekening.getOne(user.getNoRek());
 		String msg = "";
-		if(pin.getNewPin().equals(pin.getConfirmpin())) {
-			tbRekening.setPin(passwordEncoder.encode(pin.getNewPin()));
-			repositoryTbRekening.save(tbRekening);
-			msg = "Pin berhasil diubah.";
+		if(!(rs.hasErrors()))
+		{
+			if(pin.getNewPin().equals(pin.getConfirmpin())) {
+				tbRekening.setPin(passwordEncoder.encode(pin.getNewPin()));
+				repositoryTbRekening.save(tbRekening);
+				msg = "Pin berhasil diubah.";
 		} else {
 			msg="Konfirmasi pin berbeda";
 		}
 		model.addAttribute("msg", msg);
 		return "/nasabah/UbahPin";
+		}
+		return "/nasabah/UbahPin";
+		
 	}
 
 	@GetMapping("/nasabah/setor")
@@ -360,7 +318,7 @@ public class ControllerNasabah {
 	public String setor(Model model, @Valid FormTransaksi formTransaksi ,BindingResult rs) {
 		if(rs.hasErrors()) {
 
-			return"setor.html";
+			return"/nasabah/setor";
 		}
 
 		modelTransaksi = new ModelTransaksi(formTransaksi);
@@ -686,10 +644,11 @@ public class ControllerNasabah {
 		if ((Boolean) session.getAttribute("pinTervalidasi") == null
 				|| (Boolean) session.getAttribute("pinTervalidasi") == false) {
 			req.getSession().setAttribute("url", "redirect:/nasabah/mutasi");
-			return "redirect:/nasabah/pin1";
+			req.getSession().setAttribute("validateUrl", true);
+			return "redirect:/nasabah/pin";
 		} else {
 			req.getSession().setAttribute("pinTervalidasi", false);
-			req.getSession().setAttribute("pinattempt", 0);
+			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
 			FormMutasi formMutasi = new FormMutasi();
@@ -802,12 +761,20 @@ public class ControllerNasabah {
 		return "/nasabah/CekMutasi-2";
 	}
 
-	@GetMapping("/nasabah/pin1")
-	public String pinRequestPage(Model model, FormMasukanPin formMasukanPin) {
-		return "/nasabah/pinrequest1";
+	@GetMapping("/nasabah/pin")
+	public String pinRequestPage(Model model, FormMasukanPin formMasukanPin, HttpSession session) {
+		if(session.getAttribute("validateUrl") == null || (Boolean)session.getAttribute("validateUrl") == false)
+		{
+			return "redirect:/beranda";
+		}
+		else
+		{
+			session.removeAttribute("validateUrl");
+			return "/nasabah/pinrequest";
+		}
 	}
 
-	@PostMapping("/nasabah/pin1")
+	@PostMapping("/nasabah/pin")
 	public String cekSaldoPinRequestPost(Model model, @Valid FormMasukanPin formMasukanPin, BindingResult bindingResult,
 			HttpSession session, HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -837,8 +804,9 @@ public class ControllerNasabah {
 			model.addAttribute("flagPin", flagPin);
 			model.addAttribute("flagBlock", flagBlock);
 			model.addAttribute("pinattempt", session.getAttribute("pinattempt"));
-			return "pinrequest1";
+			return "/nasabah/pinrequest";
 		} else {
+			request.getSession().setAttribute("pinattempt", 0);
 			request.getSession().setAttribute("pinTervalidasi", true);
 			return (String) session.getAttribute("url");
 		}

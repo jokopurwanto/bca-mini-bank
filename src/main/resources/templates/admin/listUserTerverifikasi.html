@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<link rel="icon" href="img/icon.png" type="image/png">
+	<link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
 	<title>Data User</title>
 	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -33,14 +33,19 @@ nav a:hover {
  <div class="header">
   </div>
 <nav>
+<form th:action="@{/logout}">
   	<a href="/admin/listusers/terverifikasi" style="color:blue;">DATA USER</a>
   	<a href="/admin/listusers/baru"  >USER BARU</a>
   	<a href="/admin/listusers/terblokir" >BLOCKED USER</a>
   	<a href="/admin/listtransaksi/setortunai" >ACC SETOR</a>
     <a href="/admin/listrekening/nonaktif">NON-ACTIVE REKENING</a> 
-    <a href="/logout">LOGOUT</a>
+    <button  onclick="return confirm('yakin ingin keluar dari sistem?')"
+				type="submit" class="btn btn-danger navbar-btn btn-logout">
+				LOGOUT</button>
+	</form>
   </nav>
 <div class="content">
+	<p align="center" th:text="${msgbox}"></p>
 	<form action="/admin/listusers/terverifikasi" method="post">
 		<input name="searchUsername" th:value="${searchUsername}" class="search" type="text" placeholder="Masukkan Username" >
 		<button class="button" type="submit">cari</button>
@@ -50,7 +55,7 @@ nav a:hover {
   <input class="search" type="text" placeholder="Masukkan Username" required>	
   <input class="button" type="button" value="Cari">		
 </form> -->
-	<table cellspacing='0'>
+	<table cellspacing='0' class="scroll">
 		<thead>
 			<tr>
 				<th>Status User</th>
@@ -95,7 +100,7 @@ nav a:hover {
 				<form action="/admin/listusers/terverifikasi/block" method="post">
 				<td>
 					<input type="hidden" name="idUser" th:value="${users.idUser}">
-					<button type="submit" class="btn btn-secondary">Block</button>
+					<button onclick="return confirm('User di block?')" type="submit" class="btn btn-secondary">Block</button>
 				</td>
 				</form>
 			</tr>

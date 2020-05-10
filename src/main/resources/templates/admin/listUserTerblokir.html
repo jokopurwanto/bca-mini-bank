@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<link rel="icon" href="img/icon.png" type="image/png">
+	<link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
 	<title>Blocked User</title>
 	<link rel="stylesheet" href="/css/style_menu.css" type="text/css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -33,11 +33,15 @@ nav a:hover {
  <div class="header">
   </div>
 <nav>
+<form th:action="@{/logout}">
   	<a href="/admin/listusers/terverifikasi">DATA USER</a>
   	<a href="/admin/listusers/baru">USER BARU</a>
   	<a href="/admin/listusers/terblokir" style="color:blue;" >BLOCKED USER</a>
   	<a href="/admin/listtransaksi/setortunai">ACC SETOR</a>
     <a href="/admin/listrekening/nonaktif">NON-ACTIVE REKENING</a> 
+    <button  onclick="return confirm('yakin ingin keluar dari sistem?')"
+				type="submit" class="btn btn-danger navbar-btn btn-logout">
+				LOGOUT</button>
   </nav>
 <div class="content">
 	<form action="/admin/listusers/terblokir" method="post">
@@ -75,7 +79,7 @@ nav a:hover {
 				<form action="/admin/listusers/terblokir/unblock" method="post">
 				<td>
 					<input type="hidden" name="idUser" th:value="${users.idUser}">
-					<button type="submit" class="btn btn-secondary">Buka Block</button>
+					<button onclick="return confirm('yakin buka block?')" type="submit" class="btn btn-secondary">Buka Block</button>
 				</td>
 				</form>
 			</tr>

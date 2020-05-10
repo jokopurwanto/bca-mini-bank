@@ -16,6 +16,5 @@ public interface RepositoryTbRekening extends JpaRepository<TbRekening, String> 
     TbRekening findByNoRek(String noRek);
     
     List<TbRekening> findByStatusRekOrderByNoRekAsc(String statusRek);
-
-    
+  
 }

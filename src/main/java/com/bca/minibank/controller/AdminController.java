@@ -61,7 +61,7 @@ public class AdminController {
 	private DaoTbUserJnsTmp daoUserJnsTmp;
 
 	private static final String STATUSREK_ACTIVE = "ACTIVE";
-	private static final String STATUSREK_NON_ACTIVE = "NON ACTIVE";
+	private static final String STATUSREK_NON_ACTIVE = "NOT ACTIVE";
 	private static final String STATUSUSER_VERIFIED = "VERIFIED";
 	private static final String STATUSUSER_NOT_VERIFIED = "NOT VERIFIED";
 	private static final String STATUSUSER_PENDING = "PENDING";
@@ -277,20 +277,32 @@ public class AdminController {
 		model.addAttribute("listTransaksi", daoTransaksi.getAllByTbRekeningOrderByIdTransaksi(tbUsers.getTbRekening()));
 		return "/admin/listTransaksiUser.html";
 	}
-
+	
+	
 	public String genTab(int idJnsTab) {
 		Random r = new Random( System.currentTimeMillis() );
 		String tmp = "";
-		if(idJnsTab < 10)
-		{
-			tmp = "00" ;
-		}
-		else if(idJnsTab < 100)
-		{
-			tmp = "0";
-		}
-		tmp += String.valueOf(idJnsTab);
-		return (tmp + String.valueOf(r.nextInt(2) * 10000000 + r.nextInt(10000000)));
+		String noRekGen = "";
+		int index = 0;
+		do {
+			if(idJnsTab < 10)
+			{
+				tmp = "00" ;
+			}
+			else if(idJnsTab < 100)
+			{
+				tmp = "0";
+			}
+			tmp += String.valueOf(idJnsTab);
+			noRekGen = tmp + String.valueOf(r.nextInt(10000000));
+			index++;
+			if(index == 30000000) {
+				noRekGen = "";
+				break;
+			}
+		}while(daoRekening.findById(noRekGen));
+		
+		return noRekGen;
 	}
 
 	public String genNoKartu(int idJnsTab) {
@@ -301,7 +313,7 @@ public class AdminController {
 		SimpleDateFormat formatYY = new SimpleDateFormat(patternYY);
 		String tahun = formatYY.format(new Date());
 		Random r = new Random( System.currentTimeMillis() );
-		int nilai = r.nextInt(2) * 100000 + r.nextInt(100000);
+		int nilai = r.nextInt(100000);
 		if(idJnsTab < 10)
 		{
 			return ("00" + String.valueOf(idJnsTab)+ bulan + tahun + String.valueOf(nilai));
@@ -319,18 +331,21 @@ public class AdminController {
 	@PostMapping("/admin/listusers/baru/terima")
 	public String adminTerimaUserBaru(Model model, int idUser) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		daoUsers.updateStatusUser(idUser, STATUSUSER_VERIFIED);
-		daoUsers.updateKeterangan(idUser, null);
 		TbUserJnsTmp tbUserJnsTmp =  daoUserJnsTmp.getOneByTbUsers(daoUsers.getOne(idUser));
+		if(genTab(tbUserJnsTmp.getTbJnsTab().getIdJnsTab()) == "") {
+			return "redirect:/admin/listusers/baru";
+		}
 		TbRekening tbRekening = new TbRekening();
 		tbRekening.setSaldo(0);
 		tbRekening.setStatusRek(STATUSREK_ACTIVE);
 		tbRekening.setTbJnsTab(tbUserJnsTmp.getTbJnsTab());
 		tbRekening.setTbUsers(tbUserJnsTmp.getTbUsers());
-		tbRekening.setNoRek(String.valueOf(genTab(tbUserJnsTmp.getTbJnsTab().getIdJnsTab())));
+		tbRekening.setNoRek(genTab(tbUserJnsTmp.getTbJnsTab().getIdJnsTab()));
 		tbRekening.setNoKartu(genNoKartu(tbUserJnsTmp.getTbJnsTab().getIdJnsTab()));
 		daoRekening.add(tbRekening);
 		daoUserJnsTmp.delete(tbUserJnsTmp.getIdTmp());
+		daoUsers.updateStatusUser(idUser, STATUSUSER_VERIFIED);
+		daoUsers.updateKeterangan(idUser, null);
 		simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_VERIFY_NEW_USER, idUser);
 		//AccountEmailWestBankPKWT accEmailAdmin = new AccountEmailWestBankPKWT();
 		ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
@@ -376,8 +391,12 @@ public class AdminController {
 	public String adminBlockUser(Model model, int idUser) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoUsers.updateStatusUser(idUser, STATUSUSER_BLOCKED);
+		daoUsers.updateKeterangan(idUser, "Akun anda di block oleh admin.");
 		simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_BLOCK_USER, idUser);
-		return "redirect:/admin/listusers/terverifikasi";
+		model.addAttribute("msgbox", "User berhasil diblokir.");
+		model.addAttribute("users", daoUsers.getUsersByStatusAndRoleOrderByIdUserAsc(STATUSUSER_VERIFIED,ROLE_NASABAH));
+		return "/admin/listUserTerverifikasi.html";
+
 	}
 
 	@PostMapping("/admin/listusers/terblokir/unblock")
@@ -385,9 +404,11 @@ public class AdminController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(daoUsers.getOne(idUser).getTbRekening() == null) {
 			daoUsers.updateStatusUser(idUser, STATUSUSER_PENDING);
+			daoUsers.updateKeterangan(idUser, "Akun anda sedang dalam proses verifikasi admin");
 			simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_UNBLOCK_NEW_USER, idUser);
 		}else {
 			daoUsers.updateStatusUser(idUser, STATUSUSER_VERIFIED);
+			daoUsers.updateKeterangan(idUser, null);
 			simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_UNBLOCK_USER, idUser);
 
 		}
@@ -398,15 +419,15 @@ public class AdminController {
 	public String adminTransaksiSetorTerima(Model model, int idTransaksi) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String msgBox = "";
-		// validasi no rekenin tujuan, bila tidak terdaftar atau bukan no rekening sendiri maka langsung failed //karena setor tunai hanya bisa ke rekening sendiri
+		// validasi no rekenin tujuan, bila tidak terdaftari maka langsung failed
 		TbTransaksi tbTransaksi = daoTransaksi.getOne(idTransaksi);
-		String noRekTujuan = tbTransaksi.getNoRekTujuan();
 		String noRekAsal = tbTransaksi.getTbRekening().getNoRek();
+		String noRekTujuan = tbTransaksi.getNoRekTujuan();
 		int nominal = tbTransaksi.getNominal();
-		if(daoRekening.getOne(noRekTujuan).getNoRek().isEmpty() || !(noRekAsal.equals(noRekTujuan))){
+		if(daoRekening.getOne(noRekTujuan).getNoRek().isEmpty()){
 			daoTransaksi.updateStatusTransaksiAndTglTransaksi(idTransaksi, STATUSTRANSAKSI_FAILED, new Timestamp(System.currentTimeMillis()));
 			ContentEmailWestBankPKWT contentEmail = new ContentEmailWestBankPKWT();
-			contentEmail.getContentFailedSetorTunai(idTransaksi, tbTransaksi.getTglPengajuan(), tbTransaksi.getJnsTransaksi(), noRekAsal, noRekTujuan, nominal, daoUsers.findByUsername(auth.getName()).getNama(), " karena no. rekening tujuan tidak sama / tidak terdaftar.");
+			contentEmail.getContentFailedSetorTunai(idTransaksi, tbTransaksi.getTglPengajuan(), tbTransaksi.getJnsTransaksi(),noRekAsal,  noRekTujuan, nominal, daoUsers.findByUsername(auth.getName()).getNama(), " karena no. rekening tujuan tidak sama / tidak terdaftar.");
 			SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
 					daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
 					daoSetting.getValue("USERNAME"), //accEmailAdmin.getUsername(),
@@ -419,7 +440,7 @@ public class AdminController {
 					contentEmail.getContentType());
 			sendEmailSMTP.sendEmail();
 			simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_AUTO_DECLINE_SETOR_TUNAI, tbTransaksi.getTbRekening().getTbUsers().getIdUser(), idTransaksi);
-			msgBox = "Setor tunai gagal karena no. rekening tujuan tidak sama / tidak terdaftar.";
+			msgBox = "Setor tunai gagal karena no. rekening tujuan tidak terdaftar.";
 		}else {
 			//update status transaksi
 			daoTransaksi.updateStatusTransaksiAndTglTransaksi(idTransaksi, STATUSTRANSAKSI_SUCCESS,new Timestamp(System.currentTimeMillis()));
@@ -498,6 +519,7 @@ public class AdminController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoRekening.updateStatusRek(noRek, STATUSREK_NON_ACTIVE);
 		daoUsers.updateStatusUser(daoRekening.getOne(noRek).getTbUsers().getIdUser(), STATUSUSER_BLOCKED);
+		daoUsers.updateKeterangan(daoRekening.getOne(noRek).getTbUsers().getIdUser(), "Akun anda di block oleh admin.");
 		simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_NON_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
 		return "redirect:/admin/listrekening/nonaktif";
 	}
@@ -507,6 +529,7 @@ public class AdminController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoRekening.updateStatusRek(noRek, STATUSREK_ACTIVE);
 		daoUsers.updateStatusUser(daoRekening.getOne(noRek).getTbUsers().getIdUser(), STATUSUSER_VERIFIED);
+		daoUsers.updateKeterangan(daoRekening.getOne(noRek).getTbUsers().getIdUser(), null);
 		simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
 		return "redirect:/admin/listrekening/nonaktif";
 		//		model.addAttribute("rekening", daoRekening.getOne(noRek));
@@ -517,6 +540,8 @@ public class AdminController {
 	public String adminAktifkanRekeningDariListRekening(Model model, String noRek) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		daoRekening.updateStatusRek(noRek, STATUSREK_ACTIVE);
+		daoUsers.updateStatusUser(daoRekening.getOne(noRek).getTbUsers().getIdUser(), STATUSUSER_VERIFIED);
+		daoUsers.updateKeterangan(daoRekening.getOne(noRek).getTbUsers().getIdUser(), null);
 		simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(), ACTION_ACTIVE_REKENING, daoRekening.getOne(noRek).getTbUsers().getIdUser());
 		return "redirect:/admin/listrekening/nonaktif";
 	}

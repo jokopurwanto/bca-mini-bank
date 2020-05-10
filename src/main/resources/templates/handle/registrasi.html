@@ -4,109 +4,109 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
-     <link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png">
-    <title>Registrasi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" th:href="@{/css/West-bank.css}">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/tQl6Pq7.png"> 
+    <title>Registrasi</title>
 </head>
+	<body class="registbody">
+	  	<div class="container">
+	   		<div class="row">
+			    <nav class="navbar navbar-light bg-light fixed-top">
+			        <a class="navbar-brand" th:href="@{/login}">
+			            <img src="https://i.imgur.com/AkVFWPz.png" height="30" alt="logo west bank">
+			        </a>
+			    </nav>
+			    <div class="container form-regist">
+			        <h2>Registrasi Nasabah Baru</h2>
+			        <form th:action="@{/registrasi/konfirmasi}" name="form_registrasi" method="post" th:object="${formRegisterUser}">
+			            <p>Silahkan lengkapi data diri anda.</p>
+			            <div class="form-group">
+			                <label for="nama">Nama:</label>
+			                <input type="text" maxlength = "30" class="form-control" id="nama" th:field="*{nama}" onchange="validateName()" placeholder="masukkan nama" required>
+			                <span  class="text-danger" th:if="${#fields.hasErrors('nama')}" th:errors="*{nama}"><br></span>
+			            </div>
+			            <div class="form-group">
+			                <label for="ktp">No KTP:</label>
+			                <input type="text" maxlength = "16" class="form-control" id="ktp" th:field="*{noKtp}" onchange="validateKtp()" placeholder="masukkan no KTP"  required >
+			                <span  class="text-danger" th:if="${#fields.hasErrors('noKtp')}" th:errors="*{noKtp}"><br></span>
+			                 <span  class="text-danger" th:if="${flagNoKtp}" th:text="'No. KTP telah digunakan!'"><br></span>
+			            </div>
+			            <div class="form-group">
+			                <label for="tgl-lahir">Tanggal Lahir:</label>
+			                <input type="date" class="form-control" id="tgl-lahir" onchange="dateValidation()" name="${tbUsers.nama}" placeholder="masukkan tanggal lahir" required>
+			            </div>
+			            <div class="form-group">
+			                <label for="HP">No Handphone:</label>
+			                <input type="text" maxlength = "13" class="form-control" id="hp" th:field="*{noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon"  required>
+			                <span  class="text-danger" th:if="${#fields.hasErrors('noHp')}" th:errors="*{noHp}"><br></span>
+			                <span  class="text-danger" th:if="${flagNoHp}" th:text="'No. HP telah digunakan!'"><br></span>
+			            </div>
+			
+			            <div class="form-group">
+			                <label for="alamat">Alamat:</label>
+			                <textarea class="form-control" rows="3" id="alamat" th:field="*{alamat}" placeholder="masukkan alamat" maxlength="255" required  ></textarea>
+			                <span  class="text-danger" th:if="${#fields.hasErrors('alamat')}" th:errors="*{alamat}"><br></span>
+			            </div>
+			            <div class="form-group">
+			                <label for="email">Email:</label>
+			                <input type="email" class="form-control" id="email" placeholder="masukkan email" th:field="*{email}" onchange="validateEmail()"  maxlength = "30" required>
+			                <span  class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"><br></span>
+			                <span  class="text-danger" th:if="${flagE}" th:text="'Email telah digunakan!'"><br></span>
+			            </div>
+			         	<div class="form-group">
+			                <label for="sel1">Pilih Jenis Tabungan:</label>
+			                <select class="form-control" id="sel1" th:field="*{idJnsTab}" >
+			                	<div th:each="TbJnsTab : ${AllTbJnsTab}">
+				                    <option th:value="${TbJnsTab.idJnsTab}" th:text="${TbJnsTab.namaJnsTab}"></option>
+			                    </div>
+			                </select>
+			            </div>
+			            <div class="form-group" >
+			                <label for="username">Username:</label>
+			                <div class="input-group mb-3">
+			                <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="masukkan username" onchange="validateUsername()" maxlength=12 required>
+			                	<div class="input-group-append">
+			                      <span class="input-group-text fas fa-info"  data-toggle="popover" data-trigger="hover" data-html="true" title="Ketentuan Pengisian User Name" data-content="1.Karakter pertama harus berupa huruf, <br /> 2.Terdiri dari minimal 6 karakter dan maksimal 12 karakter, <br />3. Dapat terdiri dari huruf, angka dan simbol _-."></span>
+			                    </div>
+			                </div>
+			                <span  class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"><br></span>
+			                <span  class="text-danger" th:if="${flagU}" th:text="'Username telah digunakan!'"><br></span>
+			            </div>
+			            <div class="form-group">
+			                <label for="pwd">Password:</label>
+			                <input type="password" class="form-control" id="pwd" th:field="*{password}" onchange="validatePwd()" placeholder="masukkan password" required>
+			                <span  class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"><br></span>
+			            </div>
+			          <div class="form-group">
+			                <label for="confirm-pwd">Konfirmasi Password:</label>
+			                <input type="password" class="form-control" id="confirm-pwd" th:field="*{confirmPassword}"  onchange="checkPassword()" placeholder="konfirmasi password" required>
+			                <span  class="text-danger" th:if="${flagCPass}" th:text="'Konfirmasi Password tidak sesuai dengan Password!'"><br></span> 
+			            </div>  
+			            <div class="nextbutton-regist">
+			                <button type="submit" id="btn-submit" onclick="validateForm()" class="btn btn-primary">Lanjut</button>
+			            </div>
+			        </form>
+			    </div>
+			</div>
+		</div>
+	</body>
+	
+	
+	<footer class="regist"> Copyright 2020 PT West Bank Indonesia Tbk</footer>
 
-<body class="registbody">
-    <nav class="navbar navbar-light bg-light fixed-top">
-        <a class="navbar-brand" th:href="@{/login}">
-            <img src="https://i.imgur.com/AkVFWPz.png" height="30" alt="logo west bank">
-        </a>
-    </nav>
-    <div class="container">
-        <h2>Registrasi Nasabah Baru</h2>
-        <form th:action="@{/registrasi/konfirmasi}" name="form_registrasi" method="post" th:object="${formRegisterUser}">
-            <p>Silahkan lengkapi data diri anda.</p>
-            <div class="form-group">
-                <label for="nama">Nama:</label>
-                <input type="text" class="form-control" id="nama" th:field="*{nama}" onchange="validateName()" placeholder="masukkan nama" required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('nama')}" th:errors="*{nama}"><br></span>
-            </div>
-            <div class="form-group">
-                <label for="ktp">No KTP:</label>
-                <input type="text" class="form-control" id="ktp" th:field="*{noKtp}" onchange="validateKtp()" placeholder="masukkan no KTP" maxlength=16 onkeypress='validate(event)' required >
-                <span  class="text-danger" th:if="${#fields.hasErrors('noKtp')}" th:errors="*{noKtp}"><br></span>
-                 <span  class="text-danger" th:if="${flagNoKtp}" th:text="'No. KTP telah digunakan!'"><br></span>
-            </div>
-<!--            <div class="form-group">
-                <label for="date">Tanggal Lahir:</label>
-                <input type="date" class="form-control" id="date" name="${tbUsers.nama}" placeholder="masukkan tanggal lahir" required>
-            </div> -->
-            <div class="form-group">
-                <label for="HP">No Handphone:</label>
-                <input type="text" class="form-control" id="hp" th:field="*{noHp}" onchange="validateNoTelp()" placeholder="masukkan no telepon" maxlength=12 required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('noHp')}" th:errors="*{noHp}"><br></span>
-                <span  class="text-danger" th:if="${flagNoHp}" th:text="'No. HP telah digunakan!'"><br></span>
-            </div>
 
-            <div class="form-group">
-                <label for="alamat">Alamat:</label>
-                <textarea class="form-control" rows="3" id="alamat" th:field="*{alamat}" placeholder="masukkan alamat" required maxlength=255 ></textarea>
-                <span  class="text-danger" th:if="${#fields.hasErrors('alamat')}" th:errors="*{alamat}"><br></span>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" placeholder="masukkan email" th:field="*{email}" onchange="validateEmail()" required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"><br></span>
-                <span  class="text-danger" th:if="${flagE}" th:text="'Email telah digunakan!'"><br></span>
-            </div>
-         <div class="form-group">
-                <label for="sel1">Pilih Jenis Tabungan:</label>
-                <select class="form-control" id="sel1" th:field="*{idJnsTab}" >
-                	<div th:each="TbJnsTab : ${AllTbJnsTab}">
-	                    <option th:value="${TbJnsTab.idJnsTab}" th:text="${TbJnsTab.namaJnsTab}"></option>
-                    </div>
-                </select>
-            </div>
-            <div class="form-group" >
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="masukkan username" onchange="validateUsername()" maxlength=12 required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"><br></span>
-                <span  class="text-danger" th:if="${flagU}" th:text="'Username telah digunakan!'"><br></span>
-            </div>
-            <div class="form-group">
-                <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="pwd" th:field="*{password}" onchange="validatePwd()" placeholder="masukkan password" required>
-                <span  class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"><br></span>
-            </div>
-          <div class="form-group">
-                <label for="confirm-pwd">Konfirmasi Password:</label>
-                <input type="password" class="form-control" id="confirm-pwd" th:field="*{confirmPassword}"  onchange="checkPassword()" placeholder="konfirmasi password" required>
-                <span  class="text-danger" th:if="${flagCPass}" th:text="'Konfirmasi Password tidak sesuai dengan Password!'"><br></span> 
-            </div>  
-            <div class="nextbutton">
-                <button type="submit" id="btn-submit" onclick="validateForm()" class="btn btn-primary">Lanjut</button>
-            </div>
-        </form>
-    </div>
-</body>
-
-<!--note-->
-<!--3. disetiap inputan, harus diisi attricute "name"-->
-<!--note-->
-
-<footer class="regist"> Copyright 2020 PT West Bank Indonesia Tbk</footer>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-
-<script th:src="@{js/West-bank.js}" async></script>
-
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+ 	<script src="https://kit.fontawesome.com/5c4f979ba0.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script>
+moment().format('L');
+$(document).ready(function(){
+$('[data-toggle="popover"]').popover();   
+});
+</script>
+<script th:src="@{/js/West-bank.js}" async></script>
 </html>
