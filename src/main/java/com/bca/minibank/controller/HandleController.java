@@ -64,8 +64,8 @@ public class HandleController {
 	}
 
 	@GetMapping("/admin")
-	public String adminPage(Model model) {
-
+	public String adminPage(Model model) 
+	{
 		return "redirect:/admin/listusers/terverifikasi";
 	}
 
@@ -76,6 +76,19 @@ public class HandleController {
 		return "/handle/registrasi";
 	}
 
+	@GetMapping("/registrasi/konfirmasi")
+	public String registarasiKonfirmasiGet(Model model) 
+	{
+
+		return "redirect:/registrasi";
+	}
+	
+	@GetMapping("/registrasi/sukses")
+	public String registarasiSuksesGet(Model model) {
+
+		return "redirect:/registrasi";
+	}
+	
 	@PostMapping("/registrasi/konfirmasi")
 	public String registrasiPost(HttpServletRequest request, Model model, @Valid FormRegisterUser formRegisterUser, BindingResult bindingResult) 
 	{
