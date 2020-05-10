@@ -90,7 +90,7 @@
 						<tbody>
 							<tr th:each="status : ${status}">
 								<td th:text="${status.noRekTujuan}"></td>
-								<td th:text="${status.nominal}"></td>
+								<td th:text="'Rp. '+${#numbers.formatDecimal(status.nominal,3,'POINT',2,'COMMA')}"></td>
 								<td th:text="${status.tglPengajuan}"></td>
 								<td th:text="${status.tglTransaksi}"></td>
 								<td th:text="${status.statusTransaksi}"></td>

@@ -30,12 +30,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	};
 	
     @Bean
-    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+    public AuthenticationSuccessHandler authenticationSuccessHandler(){
         return new MBAuthenticationSuccessHandler();
     }
     
     @Bean
-    public AuthenticationFailureHandler myAuthenticationFailureHandler(){
+    public AuthenticationFailureHandler authenticationFailureHandler(){
         return new MBAuthenticationFailureHandler();
     }
     
@@ -74,8 +74,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 					.csrf().disable().formLogin()
 					.loginPage("/login")
-					.failureHandler(myAuthenticationFailureHandler())
-					.successHandler(myAuthenticationSuccessHandler())
+					.failureHandler(authenticationFailureHandler())
+					.successHandler(authenticationSuccessHandler())
 					.usernameParameter("username")
 					.passwordParameter("password")
 				.and()

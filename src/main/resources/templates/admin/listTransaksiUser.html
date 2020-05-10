@@ -56,7 +56,7 @@ nav a:hover {
 			<tr>
 				<td th:text="${user.statusUser}"></td>
 				<td th:text="${user.username}"></td>
-				<td th:text="${user.tbRekening.noRek}"></td>
+				<td th:text="${user.tbRekening.noRek}" ></td>
 				<td th:text="${user.nama}"></td>
 				<td th:text="${user.tbRekening.tbJnsTab.namaJnsTab}"></td>
 				<td th:text="${user.alamat}"></td>	
@@ -78,11 +78,11 @@ nav a:hover {
 		</thead>
 		<tbody>
 			<tr th:each="listTrans : ${listTransaksi}">
-				<td th:text="${listTrans.tglPengajuan}"></td>
-				<td th:text="${listTrans.tglTransaksi}"></td>
+				<td th:text="${#dates.format(listTrans.tglPengajuan, 'dd-MM-yyyy HH:mm:ss')}"></td>
+				<td th:text="${#dates.format(listTrans.tglTransaksi, 'dd-MM-yyyy HH:mm:ss')}"></td>
 				<td th:text="${listTrans.jnsTransaksi}"></td>
 				<td th:text="${listTrans.noRekTujuan}"></td>
-				<td th:text="${listTrans.nominal}"></td>
+				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,3,'POINT',2,'COMMA')}"></td>
 				<td th:text="${listTrans.statusTransaksi}"></td>
 			</tr>
 		</tbody>

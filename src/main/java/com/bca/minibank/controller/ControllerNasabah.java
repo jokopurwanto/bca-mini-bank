@@ -154,6 +154,21 @@ public class ControllerNasabah {
 			return "/nasabah/bikinpinberhasil";
 		}
 	}
+	
+	@GetMapping("/registrasi/konfirmasi")
+	public String registarasiKonfirmasiGet(Model model) 
+	{
+
+		return "redirect:/registrasi";
+	}
+	
+	@GetMapping("/registrasi/sukses")
+	public String registarasiSuksesGet(Model model) {
+
+		return "redirect:/registrasi";
+	}
+	
+
 
 	//	============================================ BERANDA =========================================
 
@@ -163,6 +178,13 @@ public class ControllerNasabah {
 		model.addAttribute("nama", user.getNama());
 		return "/nasabah/beranda";
 	}
+	
+	@GetMapping("/nasabah")
+	public String getNasabah(Model model) {
+
+		return "redirect:/beranda";
+	}
+	
 
 	//	============================================ CEK SALDO =========================================
 
@@ -315,8 +337,10 @@ public class ControllerNasabah {
 
 		return "/nasabah/setor";
 	}
+	
 
-	@PostMapping("/nasabah/setor/konfirmasi")
+
+	@PostMapping("/nasabah/setor")
 	public String setor(Model model, @Valid FormTransaksi formTransaksi ,BindingResult rs) {
 		if(rs.hasErrors()) {
 
@@ -327,15 +351,6 @@ public class ControllerNasabah {
 		System.out.println(modelTransaksi.getNominal());
 		System.out.println(modelTransaksi.getNoRek());
 
-		return "redirect:/nasabah/setor/konfirmasi";
-
-	}
-
-	@GetMapping("/nasabah/setor/konfirmasi")
-	public String validateSetor(Model model) {
-
-		FormTransaksi formTransaksi= new FormTransaksi();
-
 		formTransaksi.setNominal(modelTransaksi.getNominal());
 		formTransaksi.setNoRek(modelTransaksi.getNoRek());
 
@@ -343,6 +358,12 @@ public class ControllerNasabah {
 
 		return "/nasabah/SetorTunai-2";
 
+	}
+	
+	@GetMapping("/nasabah/setor/pengajuan-sukses")
+	public String getSetorKonfirmasi() {
+
+		return "redirect:/nasabah/setor";
 	}
 
 	@PostMapping("/nasabah/setor/pengajuan-sukses")
@@ -439,7 +460,7 @@ public class ControllerNasabah {
 		//      validasi saldo tidak mencukupi
 		if (nominal > cekSaldo.getSaldo()) {
 			result.rejectValue("nominal", "error.formTransferPage", "Maaf, saldo tidak mencukupi, sisa saldo kamu "+ formatRp(cekSaldo.getSaldo()));
-			return "Transfer-1";
+			return "/nasabah/Transfer-1";
 		}
 
 		ModelSession modelSession = UtilsSession.getTransferInSession(req);

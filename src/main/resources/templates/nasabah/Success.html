@@ -82,7 +82,7 @@
 							</tr>
 							<tr>
 								<td>Nominal</td>
-								<td th:text="${formTransaksi.nominal}"></td>
+								<td th:text= "'Rp. '+${#numbers.formatDecimal(formTransaksi.nominal,3,'POINT',2,'COMMA')}" ></td>
 							</tr>
 							<tr>
 								<td>Tanggal Transaksi</td>

@@ -66,11 +66,11 @@ nav a:hover {
 		</thead>
 		<tbody>
 			<tr th:each="listTrans : ${listTransaksi}">
-				<td th:text="${listTrans.tglPengajuan}"></td>
+				<td th:text="${#dates.format(listTrans.tglPengajuan, 'dd-MM-yyyy HH:mm:ss')}"></td>
 				<td th:text="${listTrans.tbRekening.noRek}"></td>
 				<td th:text="${listTrans.jnsTransaksi}"></td>
 				<td th:text="${listTrans.noRekTujuan}"></td>
-				<td th:text="${listTrans.nominal}"></td>
+				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,3,'POINT',2,'COMMA')}"></td>
 				<td th:text="${listTrans.statusTransaksi}"></td>
 				<form action="/admin/listtransaksi/setortunai/terima" method="post">
 				<td>

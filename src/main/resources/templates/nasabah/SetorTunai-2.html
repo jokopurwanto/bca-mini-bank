@@ -76,19 +76,20 @@
 						th:object="${formTransaksi}" method="post">
 						<h2>Setor Tunai</h2>
 						<div class="sub-content-setor">
-							<table>
+							<table style="font-size: 16px;">
 								<tr>
-									<td width="40%">No.Rekening</td>
-									<td width="100%"><input type="text"
-										th:value="${formTransaksi.noRek}" th:field=*{noRek} readonly /></td>
+									<td width="55%">No.Rekening</td>
+									<td width="100%"><label th:value="${formTransaksi.noRek}"
+										th:text="${formTransaksi.noRek}"></label> <input type="hidden"
+										th:field=*{noRek}></td>
 								</tr>
 								<tr>
 									<td>Nominal</td>
-									<td><input type="text" th:value="${formTransaksi.nominal}"
-										th:field=*{nominal} readonly /></td>
+									<td><label th:value="${formTransaksi.nominal}"
+										th:text="'Rp. '+${#numbers.formatDecimal(formTransaksi.nominal,3,'POINT',2,'COMMA')}"></label> <input
+										type="hidden" th:field=*{nominal}></td>
 								</tr>
 							</table>
-
 						</div>
 						<div class="row">
 							<div class="ok-button-pengaturan">

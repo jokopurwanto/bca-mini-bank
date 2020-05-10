@@ -60,7 +60,7 @@ nav a:hover {
         <tr>
           <td>Saldo</td>
           <td>: </td>
-          <td th:text="${rekening.saldo}"></td>
+          <td th:text="'Rp. '+${#numbers.formatDecimal(rekening.saldo,3,'POINT',2,'COMMA')}"></td>
         </tr>
         <tr>
           <td>Jenis Tabungan</td>
