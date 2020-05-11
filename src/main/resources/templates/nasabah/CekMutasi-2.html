@@ -182,7 +182,14 @@
 						pageLength : 3,
 						lengthChange : false,
 						scrollY : '240px',
-						buttons : [ 'pdf' ]
+						buttons: [
+						    {
+						      text: 'Export PDF',
+						      action: function ( e, dt, button, config ) {
+						    	  window.open('http://localhost:8082/nasabah/mutasi/print-mutasi', '_blank');
+						      }        
+						    }
+						]
 					});
 
 					table.buttons().container().appendTo(

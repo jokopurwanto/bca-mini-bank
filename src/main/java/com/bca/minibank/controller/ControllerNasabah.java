@@ -916,7 +916,7 @@ public class ControllerNasabah {
 		}
 	}
     
-    @GetMapping("/nasabah/printMutasi")
+    @GetMapping("/nasabah/mutasi/print-mutasi")
     public @ResponseBody void generateReport3(HttpServletResponse response, HttpServletRequest req) {    	
     	try {
     		List mutasi = null;
