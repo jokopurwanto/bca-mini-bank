@@ -24,21 +24,6 @@ function validateKtp()
     return false;
 }
 
-
-function dateValidation()
-{
-    var dateInput = moment(document.getElementById('tgl-lahir').value, 'YYYY-MM-DD');
-    var dateNow = moment();
-    var calculate = Math.abs(parseInt(dateNow.diff(dateInput, 'years', true)));
-
-    if (calculate < 17){
-        alert("Umur kurang dari 17 tahun");
-        document.getElementById('tgl-lahir').focus();
-        return false;
-    }
-    return true;
-}
-
 function validateNoTelp()
 {
     var telponNumber = document.getElementById('hp');

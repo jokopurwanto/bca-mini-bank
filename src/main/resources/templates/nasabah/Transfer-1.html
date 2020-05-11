@@ -74,125 +74,53 @@
 				<div class="content transfer">
 					<h4>Transaksi Transfer</h4>
 					<div class="sub-content-transfer">
+						<form th:action="@{/nasabah/transfer}"
+							th:object="${formTransferPage}" method="post">
+							<table>
+								<tr>
+									<td width="40%">No Rekening</td>
+									<td width="100%"><label
+										th:value="${formTransferPage.noRek}"
+										th:text="${formTransferPage.noRek}"></label> <input
+										class="input-length" type="hidden" th:field="*{noRek}"
+										id="noRek" placeholder="noRek" readonly></td>
+								</tr>
+								<tr>
+									<td valign="top"><label for="rekening">Rekening
+											Tujuan</label></td>
+									<td><input type="number" class="form-control input-length"
+										th:field="*{noRekTujuan}" id="noRekTujuan"
+										placeholder="masukkan no rekening tujuan"> <span
+										style="color: red" th:if="${#fields.hasErrors('noRek')}"
+										th:errors="*{noRek}"></span><span style="color: red"
+										th:if="${#fields.hasErrors('noRekTujuan')}"
+										th:errors="*{noRekTujuan}"></span></td>
+								</tr>
+								<tr>
+									<td valign="top"><label for="nominal">Nominal</label></td>
+									<td><input type="number" class="form-control input-length"
+										th:field="*{nominal}" id="nominal"
+										placeholder="masukkan nominal"> <span
+										style="color: red" th:if="${#fields.hasErrors('nominal')}"
+										th:errors="*{nominal}"></span></td>
+								</tr>
+								<tr>
+									<td valign="top"><label for="keterangan">Keterangan</label></td>
+									<td><textarea class="form-control input-length" rows="2"
+											th:field="*{keterangan}" id="keterangan"
+											placeholder="masukkan keterangan"></textarea><span
+										style="color: red" th:if="${#fields.hasErrors('keterangan')}"
+										th:errors="*{keterangan}"></span></td>
+								</tr>
+							</table>
 
-						<!-- Nav tabs -->
-						<ul class="nav nav-tabs">
-							<li class="nav-item menu-tab"><a class="nav-link active"
-								data-toggle="tab" href="#inputbaru">Input Baru</a></li>
-							<li class="nav-item menu-tab"><a class="nav-link"
-								data-toggle="tab" href="#history">Terakhir Dikirim</a></li>
-						</ul>
-
-						<!-- Tab panes -->
-						<div class="tab-content">
-							<div id="inputbaru" class="container tab-pane active">
-								<br>
-								<form th:action="@{/nasabah/transfer}"
-									th:object="${formTransferPage}" method="post">
-									<table>
-										<tr>
-											<td width="40%">No Rekening</td>
-											<td width="100%"><label
-												th:value="${formTransferPage.noRek}"
-												th:text="${formTransferPage.noRek}"></label> <input
-												class="input-length" type="hidden" th:field="*{noRek}"
-												id="noRek" placeholder="noRek" readonly></td>
-										</tr>
-										<tr>
-											<td valign="top"><label for="rekening">Rekening
-													Tujuan</label></td>
-											<td><input type="number"
-												class="form-control input-length" th:field="*{noRekTujuan}"
-												id="noRekTujuan" placeholder="masukkan no rekening tujuan">
-												<span style="color: red"
-												th:if="${#fields.hasErrors('noRek')}" th:errors="*{noRek}"></span><span
-												style="color: red"
-												th:if="${#fields.hasErrors('noRekTujuan')}"
-												th:errors="*{noRekTujuan}"></span></td>
-										</tr>
-										<tr>
-											<td valign="top"><label for="nominal">Nominal</label></td>
-											<td><input type="number"
-												class="form-control input-length" th:field="*{nominal}"
-												id="nominal" placeholder="masukkan nominal"> <span
-												style="color: red" th:if="${#fields.hasErrors('nominal')}"
-												th:errors="*{nominal}"></span></td>
-										</tr>
-										<tr>
-											<td valign="top"><label for="keterangan">Keterangan</label></td>
-											<td><textarea class="form-control input-length" rows="2"
-													th:field="*{keterangan}" id="keterangan"
-													placeholder="masukkan keterangan"></textarea><span
-												style="color: red"
-												th:if="${#fields.hasErrors('keterangan')}"
-												th:errors="*{keterangan}"></span></td>
-										</tr>
-									</table>
-
-									<div class="row">
-										<div class="next-button-transfer">
-											<input type="submit" class="btn btn-primary" role="button"
-												value="Lanjut">
-										</div>
-									</div>
-								</form>
+							<div class="row">
+								<div class="next-button-transfer">
+									<input type="submit" class="btn btn-primary" role="button"
+										value="Lanjut">
+								</div>
 							</div>
-							<div id="history" class="container tab-pane fade">
-								<br>
-								<form th:action="@{/nasabah/transfer}"
-									th:object="${formTransferPage}" method="post">
-									<table>
-										<tr>
-											<td width="40%">No Rekening</td>
-											<td width="100%"><label
-												th:value="${formTransferPage.noRek}"
-												th:text="${formTransferPage.noRek}"></label> <input
-												class="input-length" type="hidden" th:field="*{noRek}"
-												id="noRek" placeholder="noRek" readonly></td>
-										</tr>
-										<tr>
-											<td valign="top"><label for="rekening">Rekening
-													Tujuan</label></td>
-											<td><select class="form-control input-length"
-												th:field="*{noRekTujuan}"
-												placeholder="masukkan no rekening tujuan" id="sel1"
-												name="sellist1">
-													<option value="No Rek 1"></option>
-													<option value="No Rek 2"></option>
-													<option value="No Rek 3"></option>
-											</select></span><span style="color: red"
-												th:if="${#fields.hasErrors('noRekTujuan')}"
-												th:errors="*{noRekTujuan}"></span></td>
-										</tr>
-										<tr>
-											<td valign="top"><label for="nominal">Nominal</label></td>
-											<td><input type="number"
-												class="form-control input-length" th:field="*{nominal}"
-												id="nominal" placeholder="masukkan nominal"> <span
-												style="color: red" th:if="${#fields.hasErrors('nominal')}"
-												th:errors="*{nominal}"></span></td>
-										</tr>
-										<tr>
-											<td valign="top"><label for="keterangan">Keterangan</label></td>
-											<td><textarea class="form-control input-length" rows="2"
-													th:field="*{keterangan}" id="keterangan"
-													placeholder="masukkan keterangan"></textarea><span
-												style="color: red"
-												th:if="${#fields.hasErrors('keterangan')}"
-												th:errors="*{keterangan}"></span></td>
-										</tr>
-									</table>
-
-									<div class="row">
-										<div class="next-button-transfer">
-											<input type="submit" class="btn btn-primary" role="button"
-												value="Lanjut">
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-
+						</form>
 					</div>
 				</div>
 				<div class="footer">

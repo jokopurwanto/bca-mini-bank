@@ -93,6 +93,10 @@ table{
 }
 
 /*Registrasi*/
+.form-regist h2{
+	margin-top: 6%;
+	margin-bottom: 3%;
+}
 
 .form-create-pin{
     background-color:#4b4848f3;
@@ -250,7 +254,7 @@ footer.validregist{
 }
 .sub-content-transfer{
     width: 500px;
-    background-color: #383a3fee;
+    background-color: #454649ee;
     margin: 10px auto;
     padding : 20px;
     font-size: 14px;

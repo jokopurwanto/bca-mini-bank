@@ -45,12 +45,6 @@
 							th:if="${flagNoKtp}" th:text="'No. KTP telah digunakan!'"><br></span>
 					</div>
 					<div class="form-group">
-						<label for="tgl-lahir">Tanggal Lahir:</label> <input type="date"
-							class="form-control" id="tgl-lahir" onchange="dateValidation()"
-							name="${tbUsers.nama}" placeholder="masukkan tanggal lahir"
-							required>
-					</div>
-					<div class="form-group">
 						<label for="HP">No Handphone:</label> <input type="text"
 							maxlength="13" class="form-control" id="hp" th:field="*{noHp}"
 							onchange="validateNoTelp()" placeholder="masukkan no telepon"
@@ -150,10 +144,10 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script>
-moment().format('L');
-$(document).ready(function(){
-$('[data-toggle="popover"]').popover();   
-});
+	moment().format('L');
+	$(document).ready(function() {
+		$('[data-toggle="popover"]').popover();
+	});
 </script>
 <script th:src="@{/js/West-bank.js}" async></script>
 </html>

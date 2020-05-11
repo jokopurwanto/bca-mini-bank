@@ -91,7 +91,5 @@ public class SendEmailSMTP {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 }

@@ -34,7 +34,7 @@ public class ContentEmailWestBankPKWT {
 				"</Strong> dan password sesuai yang telah anda isi saat registrasi awal,</p>\r\n" + 
 				"<p>silahkan melanjutkan registrasi dengan login kembali dengan username tersebut melalui website kami dengan menekan tombol berikut :\r\n" + 
 				" </p>\r\n" + 
-				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
+				"<a href=\"http://localhost:8082/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 
 				"  text-decoration: none;\r\n" + 
 				"  display: inline-block;\r\n" + 
@@ -62,7 +62,7 @@ public class ContentEmailWestBankPKWT {
 				"</Strong> gagal terverifikasi, dikarenakan : "+ keterangan +"</p>\r\n" + 
 				"<p>Silahkan memperbaiki data tersebut melalui website kami dengan menekan tombol berikut dan login dengan username dan password sesuai data registrasi awal:\r\n" + 
 				" </p>\r\n" + 
-				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
+				"<a href=\"http://localhost:8082/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 
 				"  text-decoration: none;\r\n" + 
 				"  display: inline-block;\r\n" + 
@@ -133,7 +133,7 @@ public class ContentEmailWestBankPKWT {
 				"<br>\r\n" + 
 				" Telah <strong>berhasil</strong> dilakukan. <br>\r\n" + 
 				"Anda dapat mengelakukan pengecekan saldo dengan login melalui website kami dengan menekan tombol dibawah ini :<br><br>\r\n" + 
-				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
+				"<a href=\"http://localhost:8082/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 
 				"  text-decoration: none;\r\n" + 
 				"  display: inline-block;\r\n" + 
@@ -191,7 +191,7 @@ public class ContentEmailWestBankPKWT {
 				"<br>\r\n" + 
 				" Telah <strong>gagal</strong> dilakukan" + msg + " <br>\r\n" + 
 				"Anda dapat mengelakukan pengecekan saldo dengan login melalui website kami dengan menekan tombol dibawah ini :<br><br>\r\n" + 
-				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
+				"<a href=\"http://localhost:8082/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 
 				"  text-decoration: none;\r\n" + 
 				"  display: inline-block;\r\n" + 
@@ -260,7 +260,7 @@ public class ContentEmailWestBankPKWT {
 				"<br>\r\n" + 
 				" Telah <strong>berhasil</strong> dilakukan. <br>\r\n" + 
 				"Anda dapat mengelakukan pengecekan saldo dengan login melalui website kami dengan menekan tombol dibawah ini :<br><br>\r\n" + 
-				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
+				"<a href=\"http://localhost:8082/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 
 				"  text-decoration: none;\r\n" + 
 				"  display: inline-block;\r\n" + 
@@ -327,7 +327,7 @@ public class ContentEmailWestBankPKWT {
 				"<br>\r\n" + 
 				" Telah <strong>berhasil</strong> dilakukan. <br>\r\n" + 
 				"Anda dapat mengelakukan pengecekan saldo dengan login melalui website kami dengan menekan tombol dibawah ini :<br><br>\r\n" + 
-				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
+				"<a href=\"http://localhost:8082/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 
 				"  text-decoration: none;\r\n" + 
 				"  display: inline-block;\r\n" + 
@@ -389,7 +389,7 @@ public class ContentEmailWestBankPKWT {
 				" Telah <strong>Melakukan Pengajuan Setor Tunai</strong><br>\r\n" + 
 				"Pengajuan akan segera di proses, mohon tunggu Approve dari Admin<br>"+
 				"Anda dapat mengelakukan pengecekan saldo dengan login melalui website kami dengan menekan tombol dibawah ini :<br><br>\r\n" + 
-				"<a href=\"http://localhost:8081/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
+				"<a href=\"http://localhost:8082/login\"><button style=\"  background-color: DarkBlue;border: none; color: white;padding: 15px 32px;\r\n" + 
 				"  text-align: center;\r\n" + 
 				"  text-decoration: none;\r\n" + 
 				"  display: inline-block;\r\n" + 
