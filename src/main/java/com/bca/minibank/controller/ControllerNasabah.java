@@ -1,12 +1,18 @@
 package com.bca.minibank.controller;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
+import java.util.Map;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -14,10 +20,15 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.poi.sl.usermodel.ObjectMetaData.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +37,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bca.minibank.dao.DaoTbMutasi;
 import com.bca.minibank.dao.DaoTbRekening;
@@ -47,6 +62,19 @@ import com.bca.minibank.mail.SendEmailSMTP;
 import com.bca.minibank.model.ModelSession;
 import com.bca.minibank.model.ModelTransferPage;
 import com.bca.minibank.utils.UtilsSession;
+import com.ibm.icu.util.Output;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+
 import com.bca.minibank.model.ModelTransaksi;
 import com.bca.minibank.configuration.MBUserPrincipal;
 import com.bca.minibank.form.FormTransaksi;
@@ -62,7 +90,7 @@ import com.bca.minibank.dao.DaoTbJnsTab;
 public class ControllerNasabah {
 	@Autowired
 	DaoTbUsers DaoTbUsers;
-
+	
 	@Autowired
 	private DaoTbUsers daoTbUsers;
 
@@ -85,6 +113,8 @@ public class ControllerNasabah {
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	ModelTransaksi modelTransaksi;
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private static final String JNS_TRANSAKSI_TRANSFER = "TRANSFER";
 	private static final String STATUS_TRANSAKSI_SUCCESS = "SUCCESS";	
@@ -698,7 +728,7 @@ public class ControllerNasabah {
 	}
 
 	@PostMapping("/nasabah/mutasi/jangkawaktu")
-	public String postMutasiJangkaWaktu(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
+	public String postMutasiJangkaWaktu(@Valid FormMutasi formMutasi, BindingResult result, Model model, HttpServletRequest req) {
 		if (result.hasErrors()) {
 			return "/nasabah/CekMutasi-1";
 		}
@@ -707,6 +737,13 @@ public class ControllerNasabah {
 			result.rejectValue("endDate", "error.formMutasi", "Maaf, tanggal harus disi semua");
 			return "/nasabah/CekMutasi-1";
 		}
+		
+		req.getSession().setAttribute("noRek", null);
+		req.getSession().setAttribute("saldo", null);
+		req.getSession().setAttribute("rangePeriode", null);
+		req.getSession().setAttribute("jnsMutasi", null);
+		req.getSession().setAttribute("startDate", null);
+		req.getSession().setAttribute("endDate", null);
 
 		//		validasi calender
 		int compareStartDate = new Date().compareTo(formMutasi.getStartDate());	
@@ -754,6 +791,12 @@ public class ControllerNasabah {
 		model.addAttribute("rangePeriode", rangePeriode);
 		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
 		model.addAttribute("tbUsers", tbUsers);
+		req.getSession().setAttribute("startDate", startDate);
+		req.getSession().setAttribute("endDate", endDate);
+		req.getSession().setAttribute("noRek", tbUsers.getTbRekening().getNoRek());
+		req.getSession().setAttribute("saldo", tbUsers.getTbRekening().getSaldo());
+		req.getSession().setAttribute("rangePeriode", rangePeriode);
+		req.getSession().setAttribute("jnsMutasi", formMutasi.getJnsMutasi());
 		return "/nasabah/CekMutasi-2";
 	}
 
@@ -763,7 +806,7 @@ public class ControllerNasabah {
 	}
 
 	@PostMapping("/nasabah/mutasi/periode")
-	public String postMutasiPeriode(@Valid FormMutasi formMutasi, BindingResult result, Model model) {
+	public String postMutasiPeriode(@Valid FormMutasi formMutasi, BindingResult result, Model model, HttpServletRequest req) {
 		if (result.hasErrors()) {
 			return "/nasabah/CekMutasi-1";
 		}
@@ -782,13 +825,21 @@ public class ControllerNasabah {
 			result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
 			return "/nasabah/CekMutasi-1";
 		}
+		
+		req.getSession().setAttribute("noRek", null);
+		req.getSession().setAttribute("saldo", null);
+		req.getSession().setAttribute("rangePeriode", null);
+		req.getSession().setAttribute("jnsMutasi", null);
+		req.getSession().setAttribute("startDate", null);
+		req.getSession().setAttribute("endDate", null);
+		
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PETTERN_DATE);
 		String endDate = simpleDateFormat.format(new Date());
 		if (formMutasi.getJnsMutasi().equalsIgnoreCase(JNS_SEMUA_MUTASI)) {			
-			model.addAttribute("mutasi", genAllTransaksi(tbUsers.getTbRekening().getNoRek(), genStartDate(formMutasi), endDate));
+			model.addAttribute("mutasi", genAllTransaksi(tbUsers.getTbRekening().getNoRek(), genStartDate(formMutasi), endDate)); 
 		} else if (formMutasi.getJnsMutasi().equalsIgnoreCase(JNS_MUTASI_MASUK)) {
 			model.addAttribute("mutasi", this.daoTbMutasi.findByFilterTransaksiIn(tbUsers.getTbRekening().getNoRek(), genStartDate(formMutasi), endDate));
 		} else if (formMutasi.getJnsMutasi().equalsIgnoreCase(JNS_MUTASI_KELUAR)) {
@@ -803,6 +854,14 @@ public class ControllerNasabah {
 		model.addAttribute("rangePeriode", rangePeriode);
 		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
 		model.addAttribute("tbUsers", tbUsers);
+		
+		req.getSession().setAttribute("startDate", genStartDate(formMutasi));
+		req.getSession().setAttribute("endDate", endDate);
+		req.getSession().setAttribute("noRek", tbUsers.getTbRekening().getNoRek());
+		req.getSession().setAttribute("saldo", tbUsers.getTbRekening().getSaldo());
+		req.getSession().setAttribute("rangePeriode", rangePeriode);
+		req.getSession().setAttribute("jnsMutasi", formMutasi.getJnsMutasi());
+		
 		return "/nasabah/CekMutasi-2";
 	}
 
@@ -856,7 +915,46 @@ public class ControllerNasabah {
 			return (String) session.getAttribute("url");
 		}
 	}
-
+    
+    @GetMapping("/nasabah/printMutasi")
+    public @ResponseBody void generateReport3(HttpServletResponse response, HttpServletRequest req) {
+    	
+    	try {
+    		List mutasi = null;
+    		InputStream jasperStream = this.getClass().getResourceAsStream("/report/data_mutasi.jrxml");
+        	JasperDesign design = JRXmlLoader.load(jasperStream);
+        	JasperReport report = JasperCompileManager.compileReport(design);
+        	Map<String, Object> parameterMap = new HashMap<String, Object>();
+        	
+        	String jnsTansaksi = (String) req.getSession().getAttribute("jnsMutasi");
+//        	System.out.println(jnsTansaksi);
+        	if(jnsTansaksi.equalsIgnoreCase("SEMUA")) {
+        		mutasi = genAllTransaksi((String) req.getSession().getAttribute("noRek"), (String) req.getSession().getAttribute("startDate"), (String) req.getSession().getAttribute("endDate")); 
+        	}else if(jnsTansaksi.equalsIgnoreCase("UANG MASUK")) {
+        		mutasi = this.daoTbMutasi.findByFilterTransaksiIn((String) req.getSession().getAttribute("noRek"), (String) req.getSession().getAttribute("startDate"), (String) req.getSession().getAttribute("endDate"));
+        	}else if(jnsTansaksi.equalsIgnoreCase("UANG KELUAR")) {
+        		mutasi = this.daoTbMutasi.findByFilterTransaksiOut((String) req.getSession().getAttribute("noRek"), (String) req.getSession().getAttribute("startDate"), (String) req.getSession().getAttribute("endDate"));
+        	} 
+        	JRDataSource jrDataSource = new JRBeanCollectionDataSource(mutasi);
+        	parameterMap.put("noRek", req.getSession().getAttribute("noRek"));
+        	parameterMap.put("periode", req.getSession().getAttribute("rangePeriode"));  
+        	parameterMap.put("jenisTransaksi", req.getSession().getAttribute("jnsMutasi"));  
+        	parameterMap.put("saldo", req.getSession().getAttribute("saldo"));  
+            parameterMap.put("datasource", jrDataSource);
+        	JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameterMap, jrDataSource);
+        	response.setContentType("application/pdf");
+        	response.setHeader("Content-Disposition", "inline; filename=\"Report.pdf\"");
+        	
+        	final OutputStream outputStream = response.getOutputStream();   	
+        	JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+		} catch (JRException e) {
+			// TODO: handle exception
+			log.info("file jrxml tidak terbaca");
+		}catch (IOException e) {
+			// TODO: handle exception
+			log.info("output stream dari response tidak bs d ambil");
+		}
+    }
 
 	private long daysBetween(Calendar tanggalAwal, Calendar tanggalAkhir) {
 		long lama = 0;
@@ -911,6 +1009,7 @@ public class ControllerNasabah {
 		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
 		model.addAttribute("tbUsers", tbUsers);
 		return "/nasabah/CekMutasi-2";
+		}
 	}
-}
+
 
