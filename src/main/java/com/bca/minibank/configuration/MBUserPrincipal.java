@@ -25,13 +25,17 @@ public class MBUserPrincipal implements UserDetails{
     	{
     		return Collections.singleton(new SimpleGrantedAuthority("ADMIN"));
     	}
-    	else if(TbUsers.getRole().equals("NASABAH") && TbUsers.getTbRekening().getPin() != null )
+    	else if(TbUsers.getRole().equals("NASABAH") && TbUsers.getTbRekening().getPin() == null )
     	{
-    		return Collections.singleton(new SimpleGrantedAuthority("NASABAH"));
+    		return Collections.singleton(new SimpleGrantedAuthority("AKUNBARU"));		
+    	}
+      	else if(TbUsers.getRole().equals("NASABAH") && TbUsers.getTbRekening().getStatusRek().equals("NOT ACTIVE"))
+    	{
+    		return Collections.singleton(new SimpleGrantedAuthority("NASABAHNOTACTIVE"));
     	}
     	else
     	{
-    		return Collections.singleton(new SimpleGrantedAuthority("AKUNBARU"));
+    		return Collections.singleton(new SimpleGrantedAuthority("NASABAH"));
     	}
 	}
 	
@@ -132,5 +136,10 @@ public class MBUserPrincipal implements UserDetails{
 	public String getRole()
 	{
 		return TbUsers.getRole();
+	}
+	
+	public String getStatusRek()
+	{
+		return TbUsers.getTbRekening().getStatusRek();
 	}
 }
