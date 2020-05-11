@@ -49,6 +49,7 @@ public class MBAuthenticationSuccessHandler implements AuthenticationSuccessHand
 		//        roleTargetUrlMap.put("NASABAH", "/default");
 		roleTargetUrlMap.put("ADMIN", "/admin");
 		roleTargetUrlMap.put("NASABAH", "/beranda");
+		roleTargetUrlMap.put("NASABAHNOTACTIVE", "/beranda");
 		roleTargetUrlMap.put("AKUNBARU", "/verifikasi");
 
 		//ngecek autoritas
