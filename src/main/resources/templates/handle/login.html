@@ -21,30 +21,5 @@
 		<a class="a" th:href="@{/registrasi}">Daftar User Baru</a>
 	</form>
 
-	<script>
-            function validasi(){
-                var username = document.getElementById('username');
-                var password = document.getElementById('password');
-
-                if (harusDiisi(username, "Username tidak boleh kosong")) 
-                {
-                    if (harusDiisi(password, "Password tidak boleh kosong")) {
-                            return true;
-                        };
-                    };
-                return false;
-            }
-
-            function harusDiisi(att, msg){
-                if (att.value.length == 0) {
-                    alert(msg);
-                    att.focus();
-                    return false;
-                }
-
-                return true;
-            }
-        </script>
-
 </body>
 </html>
