@@ -19,7 +19,6 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 public class MBAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-	protected Log logger = LogFactory.getLog(this.getClass());
 
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -37,7 +36,7 @@ public class MBAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
 		if (response.isCommitted()) 
 		{
-			logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+			System.out.println("Response has already been committed. Unable to redirect to " + targetUrl);
 			return;
 		}
 
@@ -50,6 +49,7 @@ public class MBAuthenticationSuccessHandler implements AuthenticationSuccessHand
 		//        roleTargetUrlMap.put("NASABAH", "/default");
 		roleTargetUrlMap.put("ADMIN", "/admin");
 		roleTargetUrlMap.put("NASABAH", "/beranda");
+		roleTargetUrlMap.put("NASABAHNOTACTIVE", "/beranda");
 		roleTargetUrlMap.put("AKUNBARU", "/verifikasi");
 
 		//ngecek autoritas

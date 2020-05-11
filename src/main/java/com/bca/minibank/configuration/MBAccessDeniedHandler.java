@@ -26,6 +26,7 @@ public class MBAccessDeniedHandler implements AccessDeniedHandler {
 	      roleTargetUrlMap.put("ADMIN", "/admin");
 	      roleTargetUrlMap.put("NASABAH", "/beranda");
 	      roleTargetUrlMap.put("AKUNBARU", "/verifikasi");
+	      roleTargetUrlMap.put("NASABAHNOTACTIVE", "/beranda");
 	      
 	      //ngecek autoritas
 	      final Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();

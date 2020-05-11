@@ -68,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.antMatchers("/registrasi/**").anonymous()
 					.antMatchers("/admin/**").hasAuthority("ADMIN")
 					.antMatchers("/verifikasi/**").hasAuthority("AKUNBARU")
-					.antMatchers("/beranda").hasAuthority("NASABAH")
+					.antMatchers("/beranda").hasAnyAuthority("NASABAH", "NASABAHNOTACTIVE")
 					.antMatchers("/nasabah/**").hasAuthority("NASABAH")
 					.anyRequest().authenticated()
 				.and()
