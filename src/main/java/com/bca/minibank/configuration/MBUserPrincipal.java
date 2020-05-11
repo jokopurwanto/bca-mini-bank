@@ -137,4 +137,9 @@ public class MBUserPrincipal implements UserDetails{
 	{
 		return TbUsers.getRole();
 	}
+	
+	public String getStatusRek()
+	{
+		return TbUsers.getTbRekening().getStatusRek();
+	}
 }

@@ -175,6 +175,12 @@ public class ControllerNasabah {
 	@GetMapping("/beranda")
 	public String homePage(HttpServletRequest request, Model model) {
 		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if(user.getStatusRek().equals("NOT ACTIVE"))
+		{
+			model.addAttribute("message1", "Status Rekening : Tidak Aktif");
+			model.addAttribute("message2", "Rekening anda tidak dapat mengakses fitur WestBank. Silahkan kontak admin untuk mengaktifkan rekening anda!");
+		}
 		model.addAttribute("nama", user.getNama());
 		return "/nasabah/beranda";
 	}
