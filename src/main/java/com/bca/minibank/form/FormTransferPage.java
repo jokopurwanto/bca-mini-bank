@@ -27,7 +27,7 @@ public class FormTransferPage {
 	private String noRekTujuan;
 	
 	@Pattern(regexp="([0-9]+)", message = "Maaf, nominal invalid [angka]")
-	@Min(value=10000, message="Minimum transfer 10000")
+	@Min(value=10000, message="Minimum transfer Rp. 10.000,00")
 	private String nominal;
 	
 //	@NotEmpty(message = "Keterangan tidak boleh kosong")
