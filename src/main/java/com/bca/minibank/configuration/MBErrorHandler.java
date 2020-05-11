@@ -18,17 +18,22 @@ public class MBErrorHandler implements ErrorController  {
     public String handleError(Model model, HttpServletRequest request) 
     {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        
+       
         if (status != null) {
-            Integer statusCode = Integer.valueOf(status.toString());
-            model.addAttribute("errorCode", statusCode);
-            if(statusCode == HttpStatus.NOT_FOUND.value()) 
+        	HttpStatus httpStatus = HttpStatus.valueOf(Integer.valueOf(status.toString()));
+
+            model.addAttribute("errorCode", httpStatus.value());
+            if(httpStatus.value() == HttpStatus.NOT_FOUND.value()) 
             {
                 model.addAttribute("errorMessage", "Maaf, halaman anda yang cari tidak ditemukan!");
             }
-            else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) 
+            else if(httpStatus.value() == HttpStatus.INTERNAL_SERVER_ERROR.value()) 
             {
             	model.addAttribute("errorMessage", "Maaf, terdapat kendala pada server kami!");
+            }
+            else
+            {
+            	model.addAttribute("errorMessage", httpStatus.getReasonPhrase());
             }
         }
         return "error";
