@@ -79,19 +79,19 @@ nav a:hover {
 				<td th:text="${users.noHp}"></td>
 				<td th:text="${users.email}"></td>
 				<td th:if="${users.tbRekening == null}" colspan="2"> User baru belum punya REKENING & TRANSAKSI</td>
-				<form action="/admin/listuser/terverifikasi/detailrekening" method="post" th:if="${users.tbRekening != null}">
+				<form action="/admin/listusers/terverifikasi/detailrekening" method="post" th:if="${users.tbRekening != null}">
 				<td>
 					<input type="hidden"  name="noRek" th:value="${users.tbRekening.noRek}">
 					<button type="submit"  class="btn" style="color:#000080;"><span th:text="${users.tbRekening.noRek}"></span></button>
 				</td>
 				</form>
-				<form action=/admin/listuser/terverifikasi/listtransaksi method="post" th:if="${users.tbRekening != null}">
+				<form action=/admin/listusers/terverifikasi/listtransaksi method="post" th:if="${users.tbRekening != null}">
 					<td>
 						<input type="hidden"  name="idUser" th:value="${users.idUser}">
 						<button type="submit" class="btn btn-secondary">Transaksi</button>
 					</td>
 				</form>		
-				<form action="/admin/listuser/terverifikasi/ubahpassword" method="post">
+				<form action="/admin/listusers/terverifikasi/ubahpassword" method="post">
 					<td>
 						<input type="hidden" name="idUser" th:value="${users.idUser}">
 						<button type="submit" class="btn btn-secondary">Ganti Pass</button>

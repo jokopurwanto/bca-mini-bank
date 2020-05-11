@@ -247,9 +247,13 @@ public class AdminController {
 		{
 			if(formAdminUbahPassword.getPassword().equals(formAdminUbahPassword.getConfirmedPassword())) {
 				String hashedPassword = passwordEncoder.encode(formAdminUbahPassword.getPassword());
-				daoUsers.updatePassword(idUser, hashedPassword);
-				simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(),ACTION_CHANGE_PASSWORD,idUser); //<-- daoUsers.findByUsername(auth.getName()) nanti diupdate mengambil dari session
-				msg = "Password berhasil diubah.";
+				if(passwordEncoder.matches(formAdminUbahPassword.getPassword(), daoUsers.getOne(idUser).getPassword())){
+					msg = "Password tidak boleh sama dengan password lama";
+				}else {
+					daoUsers.updatePassword(idUser, hashedPassword);
+					simpanLogAdmin(daoUsers.findByUsername(auth.getName()).getIdUser(),ACTION_CHANGE_PASSWORD,idUser); //<-- daoUsers.findByUsername(auth.getName()) nanti diupdate mengambil dari session
+					msg = "Password berhasil diubah.";
+				}
 			}else {
 				msg = "Password dan konfirmasi password tidak sama..";
 			}

@@ -57,10 +57,6 @@ public class DaoTbTransaksi {
 		tbTransaksi.setTglTransaksi(tglTransaksi);
 	}
 	
-	public List<TbTransaksi> findByNoRekTujuanANDJnsTransaksi(String noRekTujuan, String jenis){
-		return this.repostitoryTbTransaksi.findByNoRekTujuanANDJnsTransaksi(noRekTujuan, jenis);
-	}
-	
 	public List<TbTransaksi> getAllByTbRekeningOrderByIdTransaksi(TbRekening tbRekening){
 		return  this.repostitoryTbTransaksi.findByTbRekeningOrderByIdTransaksi(tbRekening);
 	}
@@ -73,4 +69,11 @@ public class DaoTbTransaksi {
 		return  this.repostitoryTbTransaksi.findByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(jnsTransaksi, statusTransaksi, tbRekening);
 	}
 	
+	public List<TbTransaksi> findByNoRekTujuanANDJnsTransaksiANDStatusTransaksi(String statusTransaksi,String noRekTujuan, String jnsTransaksi){
+		return this.repostitoryTbTransaksi.findByNoRekTujuanANDJnsTransaksiANDStatusTransaksi(statusTransaksi,noRekTujuan, jnsTransaksi);
+	}
+	
+	public List<TbTransaksi> findTop7ByStatusTransaksiAndNoRekTujuanAndJnsTransaksiOrderByTglTransaksi(String statusTransaksi,String noRekTujuan, String jnsTransaksi){
+		return this.repostitoryTbTransaksi.findTop7ByStatusTransaksiAndNoRekTujuanAndJnsTransaksiOrderByTglTransaksi(statusTransaksi,noRekTujuan,jnsTransaksi);
+	}
 }

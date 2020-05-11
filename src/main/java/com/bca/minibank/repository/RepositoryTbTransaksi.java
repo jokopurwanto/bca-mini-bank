@@ -12,13 +12,11 @@ import com.bca.minibank.entity.TbTransaksi;
 
 @Repository
 public interface RepositoryTbTransaksi extends JpaRepository<TbTransaksi, Integer> {
-
-	@Query("Select a from TbTransaksi a WHERE a.noRekTujuan=?1")
-	 List<TbTransaksi> findByNoRekTujuan(String noRekTujuan);
-	
-	 @Query("SELECT a from TbTransaksi a where a.noRekTujuan =:noRekTujuan AND a.jnsTransaksi = :jenis")
-	   List<TbTransaksi> findByNoRekTujuanANDJnsTransaksi(@Param("noRekTujuan") String noRekTujuan, @Param("jenis")String jenis);
+		
+		@Query("SELECT a from TbTransaksi a where  a.statusTransaksi = :statusTransaksi AND a.noRekTujuan =:noRekTujuan AND a.jnsTransaksi = :jnsTransaksi ")
+		List<TbTransaksi> findByNoRekTujuanANDJnsTransaksiANDStatusTransaksi(@Param("statusTransaksi")String status,@Param("noRekTujuan") String noRekTujuan, @Param("jnsTransaksi")String jnsTransaksi);
 	 
+		List<TbTransaksi>findTop7ByStatusTransaksiAndNoRekTujuanAndJnsTransaksiOrderByTglTransaksi(String statusTransaksi,String noRekTujuan,String jnsTransaksi);
 	 	List<TbTransaksi> findByTbRekening(TbRekening tbRekening);
 		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksi(String jnsTransaksi, String statusTransaksi);
 		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiAndTbRekening(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening);
@@ -26,4 +24,5 @@ public interface RepositoryTbTransaksi extends JpaRepository<TbTransaksi, Intege
 		List<TbTransaksi> findByTbRekeningOrderByIdTransaksi(TbRekening tbRekening);
 		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi);
 		List<TbTransaksi> findByJnsTransaksiAndStatusTransaksiAndTbRekeningOrderByIdTransaksi(String jnsTransaksi, String statusTransaksi, TbRekening tbRekening);
+
 }

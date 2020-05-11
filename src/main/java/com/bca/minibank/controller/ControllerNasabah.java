@@ -154,20 +154,20 @@ public class ControllerNasabah {
 			return "/nasabah/bikinpinberhasil";
 		}
 	}
-	
+
 	@GetMapping("/registrasi/konfirmasi")
 	public String registarasiKonfirmasiGet(Model model) 
 	{
 
 		return "redirect:/registrasi";
 	}
-	
+
 	@GetMapping("/registrasi/sukses")
 	public String registarasiSuksesGet(Model model) {
 
 		return "redirect:/registrasi";
 	}
-	
+
 
 
 	//	============================================ BERANDA =========================================
@@ -178,13 +178,13 @@ public class ControllerNasabah {
 		model.addAttribute("nama", user.getNama());
 		return "/nasabah/beranda";
 	}
-	
+
 	@GetMapping("/nasabah")
 	public String getNasabah(Model model) {
 
 		return "redirect:/beranda";
 	}
-	
+
 
 	//	============================================ CEK SALDO =========================================
 
@@ -337,7 +337,7 @@ public class ControllerNasabah {
 
 		return "/nasabah/setor";
 	}
-	
+
 
 
 	@PostMapping("/nasabah/setor")
@@ -359,7 +359,7 @@ public class ControllerNasabah {
 		return "/nasabah/SetorTunai-2";
 
 	}
-	
+
 	@GetMapping("/nasabah/setor/pengajuan-sukses")
 	public String getSetorKonfirmasi() {
 
@@ -413,13 +413,21 @@ public class ControllerNasabah {
 		formTransaksi.setNoRek(tbUsers.getTbRekening().getNoRek());
 		tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
 		tbTransaksi.setJnsTransaksi("SETOR TUNAI");
-		//model.addAttribute("status", this.daoTbTransaksi.findByNoRekTujuan(tbTransaksi.getNoRekTujuan()));
-		model.addAttribute("status", this.repositoryTbTransaksi.findByNoRekTujuanANDJnsTransaksi(tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
+		model.addAttribute("status", getAllTransaksiSetor(tbTransaksi.getStatusTransaksi(),tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
+
 		return "/nasabah/SetorTunai-3";
+	}
+	
+	private List getAllTransaksiSetor(String statusTransaksi,String noRekTujuan, String jnsTransaksi) {
+		
+		List queryPending = this.daoTbTransaksi.findByNoRekTujuanANDJnsTransaksiANDStatusTransaksi( "PENDING",noRekTujuan, jnsTransaksi);
+		List querySuccess = this.daoTbTransaksi.findTop7ByStatusTransaksiAndNoRekTujuanAndJnsTransaksiOrderByTglTransaksi("SUCCESS", noRekTujuan, jnsTransaksi);
+		queryPending.addAll(querySuccess);
+		return queryPending;
 
 	}
 
-	//	============================================START TRANSFER=========================================
+	//	============================================ TRANSFER =========================================
 
 	@GetMapping("/nasabah/transfer")
 	public String getTransfer(Model model, HttpServletRequest req) {
@@ -462,13 +470,13 @@ public class ControllerNasabah {
 			result.rejectValue("nominal", "error.formTransferPage", "Maaf, saldo tidak mencukupi, sisa saldo kamu "+ formatRp(cekSaldo.getSaldo()));
 			return "/nasabah/Transfer-1";
 		}
-		
-		
+
+
 
 		ModelSession modelSession = UtilsSession.getTransferInSession(req);
 		ModelTransferPage modelTransferPage = new ModelTransferPage(formTransferPage);
 		modelSession.setModelTransferPage(modelTransferPage);
-		
+
 		FormTransferValidationPage formTransferValidationPage = new FormTransferValidationPage();
 		formTransferValidationPage.setNoRek(formTransferPage.getNoRek());
 		formTransferValidationPage.setKeterangan(formTransferPage.getKeterangan());
@@ -484,7 +492,7 @@ public class ControllerNasabah {
 		TbRekening rekTujuan = this.daoTbRekening.findByNoRek(formTransferPage.getNoRekTujuan());
 		formTransferValidationPage.setNamaPenerima(rekTujuan.getTbUsers().getNama());
 		model.addAttribute("formTransferValidationPage", formTransferValidationPage);
-		
+
 		return "/nasabah/Transfer-2";
 	}
 
@@ -496,7 +504,7 @@ public class ControllerNasabah {
 	@PostMapping("/nasabah/transfer/konfirmasi")
 	public String postTransferValidation(@Valid FormTransferValidationPage formTransferValidationPage,
 			BindingResult result, Model model, HttpServletRequest req) {
-		
+
 		if (result.hasErrors()) {
 			return "/nasabah/Transfer-2";
 		}
@@ -657,9 +665,7 @@ public class ControllerNasabah {
 
 		return "/nasabah/Transfer-3";
 	}
-	//	============================================END TRANSFER=========================================
-
-	//	============================================START MUTASI=========================================
+	//	============================================ MUTASI =========================================
 	@GetMapping("/nasabah/mutasi")
 	public String getMutasi(Model model, HttpSession session, HttpServletRequest req) {
 		if ((Boolean) session.getAttribute("pinTervalidasi") == null
@@ -695,7 +701,7 @@ public class ControllerNasabah {
 			return "/nasabah/CekMutasi-1";
 		}
 
-//		validasi calender
+		//		validasi calender
 		int compareStartDate = new Date().compareTo(formMutasi.getStartDate());	
 		int compareEndDate = new Date().compareTo(formMutasi.getEndDate());
 		int compareRangeDate = formMutasi.getEndDate().compareTo(formMutasi.getStartDate());			
@@ -736,7 +742,7 @@ public class ControllerNasabah {
 			result.rejectValue("jnsMutasi", "error.formMutasi", "Maaf, jenis transaksi yang kamu masukan salah");
 			return "/nasabah/CekMutasi-1";
 		}	
-		
+
 		String rangePeriode = startDate + " s.d " + endDate;
 		model.addAttribute("rangePeriode", rangePeriode);
 		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
@@ -764,7 +770,7 @@ public class ControllerNasabah {
 			result.rejectValue("periode", "error.formMutasi", "Maaf, periode tidak boleh kosong");
 			return "/nasabah/CekMutasi-1";
 		}
-		
+
 		if(!formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEHARI) && !formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEMINGGU) && !formMutasi.getPeriode().equalsIgnoreCase(PERIODE_SEBULAN)){
 			result.rejectValue("periode", "error.formMutasi", "maaf, periode yg kamu masukan salah");
 			return "/nasabah/CekMutasi-1";
@@ -784,8 +790,8 @@ public class ControllerNasabah {
 			result.rejectValue("jnsMutasi", "error.formMutasi", "Maaf, jenis transaksi yang kamu masukan salah");
 			return "/nasabah/CekMutasi-1";
 		}
-				
-//		genReturn(genStartDate(formMutasi), endDate, model, formMutasi, tbUsers);
+
+		//		genReturn(genStartDate(formMutasi), endDate, model, formMutasi, tbUsers);
 		String rangePeriode = genStartDate(formMutasi) + " s.d " + endDate;
 		model.addAttribute("rangePeriode", rangePeriode);
 		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
@@ -879,7 +885,7 @@ public class ControllerNasabah {
 		return queryOut;
 
 	}
-	
+
 	public String formatRp(double nominal) {
 		DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
 		DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
@@ -891,7 +897,7 @@ public class ControllerNasabah {
 		kursIndonesia.setDecimalFormatSymbols(formatRp);
 		return kursIndonesia.format(nominal);
 	}
-	
+
 	public String genReturn(String startDate, String endDate, Model model, FormMutasi formMutasi, TbUsers tbUsers) {
 		String rangePeriode = startDate + " s.d " + endDate;
 		model.addAttribute("rangePeriode", rangePeriode);
