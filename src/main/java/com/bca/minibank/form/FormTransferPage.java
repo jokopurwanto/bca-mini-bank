@@ -17,20 +17,20 @@ import org.springframework.lang.NonNull;
 import com.bca.minibank.model.ModelTransferPage;
 import com.bca.minibank.utils.FieldMatch;
 
-@FieldMatch(first = "noRek", second = "noRekTujuan", message = "no rek pengirim & no rek tujuan tidak boleh sama")
+@FieldMatch(first = "noRek", second = "noRekTujuan", message = "No rek pengirim & no rek tujuan tidak boleh sama")
 public class FormTransferPage {
 
 //	@Pattern(regexp="(^[0-9]{10})", message = "No Rek harus berupa angka dan min 10 digit")
 	private String noRek;
 	
-	@Pattern(regexp="(^[0-9]{10})", message = "No Rek tujuan tidak boleh kosong & berupa angka, min 10 digit")
+	@Pattern(regexp="(^[0-9]{10})", message = "Maaf, No rekening invalid [angka & 10 digit]")
 	private String noRekTujuan;
 	
-	@Pattern(regexp="([0-9]+)", message = "nominal tidak boleh kosong & berupa angka")
+	@Pattern(regexp="([0-9]+)", message = "Maaf, nominal invalid [angka]")
 	@Min(value=10000, message="Minimum transfer 10000")
 	private String nominal;
 	
-	@NotEmpty(message = "Keterangan tidak boleh kosong")
+//	@NotEmpty(message = "Keterangan tidak boleh kosong")
 	private String keterangan;
 	
 	public FormTransferPage(ModelTransferPage modelTransferPage) {

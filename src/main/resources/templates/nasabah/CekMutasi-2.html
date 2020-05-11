@@ -82,23 +82,23 @@
 						style="background-color: #0925723b; width: 92%; color: black; margin-bottom: 8px;">
 						<tr>
 							<td width="20%">No.Rekening</td>
-							<td width="80%">:Tampilkan No Rekening</td>
+							<td width="80%">: <label th:text="${tbUsers.tbRekening.noRek}"></td>
 						</tr>
 						<tr>
 							<td>Periode</td>
-							<td>:Tampilkan Periode</td>
+							<td>: <label th:text="${rangePeriode}"></label></td>
 						</tr>
 						<tr>
 							<td>Tanggal Inquiry</td>
-							<td>:Tampilkan Tanggal Inquiry</td>
+							<td>: <label th:text="${#calendars.format(#calendars.createNow(), 'dd-MMM-yyyy HH:mm:ss')}"></label></td>
 						</tr>
 						<tr>
 							<td>Jenis Transaksi</td>
-							<td>:Tampilkan Jenis Transaksi</td>
+							<td>: <label th:text="${#strings.capitalize(jnsMutasi)}"></td>
 						</tr>
 						<tr>
 							<td>Saldo</td>
-							<td>:Tampilkan Saldo</td>
+							<td>: <label th:text="'Rp. '+${#numbers.formatDecimal(tbUsers.tbRekening.saldo,3,'POINT',2,'COMMA')}"></td>
 						</tr>
 					</table>
 					<table id="mutasi" class="table table-striped table-bordered"

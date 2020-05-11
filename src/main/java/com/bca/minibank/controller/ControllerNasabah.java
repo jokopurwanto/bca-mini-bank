@@ -462,22 +462,13 @@ public class ControllerNasabah {
 			result.rejectValue("nominal", "error.formTransferPage", "Maaf, saldo tidak mencukupi, sisa saldo kamu "+ formatRp(cekSaldo.getSaldo()));
 			return "/nasabah/Transfer-1";
 		}
+		
+		
 
 		ModelSession modelSession = UtilsSession.getTransferInSession(req);
 		ModelTransferPage modelTransferPage = new ModelTransferPage(formTransferPage);
 		modelSession.setModelTransferPage(modelTransferPage);
-		return "redirect:/nasabah/transfer/konfirmasi";
-	}
-
-	@GetMapping("/nasabah/transfer/konfirmasi")
-	public String getTransferValidation(Model model, HttpServletRequest req) {
-		ModelSession modelSession = UtilsSession.getTransferInSession(req);
-		ModelTransferPage modelTransferPage = modelSession.getModelTransferPage();
-		//		jika null direct ke transfer (refresh halaman direct ke transfer)
-		if (null == modelTransferPage) {
-			return "redirect:/nasabah/transfer";
-		}
-		FormTransferPage formTransferPage = new FormTransferPage(modelTransferPage);
+		
 		FormTransferValidationPage formTransferValidationPage = new FormTransferValidationPage();
 		formTransferValidationPage.setNoRek(formTransferPage.getNoRek());
 		formTransferValidationPage.setKeterangan(formTransferPage.getKeterangan());
@@ -486,21 +477,26 @@ public class ControllerNasabah {
 		formTransferValidationPage.setJnsTransaksi(JNS_TRANSAKSI_TRANSFER);
 
 		//		menampilkan tanggal
-		String pattern = "dd-MM-yyyy";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PETTERN_DATE_TIME);
 		String date = simpleDateFormat.format(new Date());
 		formTransferValidationPage.setTglTransaksi(date);
 
 		TbRekening rekTujuan = this.daoTbRekening.findByNoRek(formTransferPage.getNoRekTujuan());
 		formTransferValidationPage.setNamaPenerima(rekTujuan.getTbUsers().getNama());
 		model.addAttribute("formTransferValidationPage", formTransferValidationPage);
-
+		
 		return "/nasabah/Transfer-2";
+	}
+
+	@GetMapping("/nasabah/transfer/konfirmasi")
+	public String getTransferValidation() {
+		return "redirect:/nasabah/transfer";
 	}
 
 	@PostMapping("/nasabah/transfer/konfirmasi")
 	public String postTransferValidation(@Valid FormTransferValidationPage formTransferValidationPage,
 			BindingResult result, Model model, HttpServletRequest req) {
+		
 		if (result.hasErrors()) {
 			return "/nasabah/Transfer-2";
 		}
@@ -544,7 +540,7 @@ public class ControllerNasabah {
 		transaksi.setNominal(nominal);
 		transaksi.setNoRekTujuan(formTransferValidationPage.getNoRekTujuan());
 		transaksi.setStatusTransaksi(STATUS_TRANSAKSI_SUCCESS);
-		transaksi.setNote(formTransferValidationPage.getKeterangan());
+		transaksi.setNote("TF - "+ rekPengirim.getTbUsers().getNama()+" ke "+rekPenerima.getNoRek()+" ("+rekPenerima.getTbUsers().getNama()+") "+formTransferValidationPage.getKeterangan());
 		transaksi.setTglTransaksi(new Timestamp(System.currentTimeMillis()));
 		transaksi.setTbRekening(rekPengirim);
 		this.daoTbTransaksi.add(transaksi);
@@ -588,7 +584,7 @@ public class ControllerNasabah {
 				userPengirim.getTbRekening().getNoRek(), 
 				formTransferValidationPage.getNoRekTujuan(), 
 				formTransferValidationPage.getNamaPenerima(), 
-				formTransferValidationPage.getKeterangan(), 
+				"TF - "+ rekPengirim.getTbUsers().getNama()+" ke "+rekPenerima.getNoRek()+" ("+rekPenerima.getTbUsers().getNama()+") "+formTransferValidationPage.getKeterangan(), 
 				nominal);
 		SendEmailSMTP sendEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
 				daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
@@ -606,7 +602,7 @@ public class ControllerNasabah {
 				JNS_TRANSAKSI_TRANSFER, 
 				userPengirim.getTbRekening().getNoRek(), 
 				userPengirim.getNama(), 
-				formTransferValidationPage.getKeterangan(), 
+				"TF - "+ rekPengirim.getTbUsers().getNama()+" ke "+rekPenerima.getNoRek()+" ("+rekPenerima.getTbUsers().getNama()+") "+formTransferValidationPage.getKeterangan(), 
 				nominal);
 		SendEmailSMTP receiveEmailSMTP = new SendEmailSMTP(daoSetting.getValue("SMTP_SERVER"), //accEmailAdmin.getSmtpServer(),
 				daoSetting.getValue("PORT"), //accEmailAdmin.getPort(),
@@ -621,6 +617,8 @@ public class ControllerNasabah {
 
 		sendEmailSMTP.sendEmail();
 		receiveEmailSMTP.sendEmail();
+
+
 		return "redirect:/nasabah/transfer/sukses";
 	}
 
@@ -697,7 +695,7 @@ public class ControllerNasabah {
 			return "/nasabah/CekMutasi-1";
 		}
 
-		//		validasi calender
+//		validasi calender
 		int compareStartDate = new Date().compareTo(formMutasi.getStartDate());	
 		int compareEndDate = new Date().compareTo(formMutasi.getEndDate());
 		int compareRangeDate = formMutasi.getEndDate().compareTo(formMutasi.getStartDate());			
@@ -738,6 +736,11 @@ public class ControllerNasabah {
 			result.rejectValue("jnsMutasi", "error.formMutasi", "Maaf, jenis transaksi yang kamu masukan salah");
 			return "/nasabah/CekMutasi-1";
 		}	
+		
+		String rangePeriode = startDate + " s.d " + endDate;
+		model.addAttribute("rangePeriode", rangePeriode);
+		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
+		model.addAttribute("tbUsers", tbUsers);
 		return "/nasabah/CekMutasi-2";
 	}
 
@@ -781,6 +784,12 @@ public class ControllerNasabah {
 			result.rejectValue("jnsMutasi", "error.formMutasi", "Maaf, jenis transaksi yang kamu masukan salah");
 			return "/nasabah/CekMutasi-1";
 		}
+				
+//		genReturn(genStartDate(formMutasi), endDate, model, formMutasi, tbUsers);
+		String rangePeriode = genStartDate(formMutasi) + " s.d " + endDate;
+		model.addAttribute("rangePeriode", rangePeriode);
+		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
+		model.addAttribute("tbUsers", tbUsers);
 		return "/nasabah/CekMutasi-2";
 	}
 
@@ -881,6 +890,14 @@ public class ControllerNasabah {
 
 		kursIndonesia.setDecimalFormatSymbols(formatRp);
 		return kursIndonesia.format(nominal);
+	}
+	
+	public String genReturn(String startDate, String endDate, Model model, FormMutasi formMutasi, TbUsers tbUsers) {
+		String rangePeriode = startDate + " s.d " + endDate;
+		model.addAttribute("rangePeriode", rangePeriode);
+		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
+		model.addAttribute("tbUsers", tbUsers);
+		return "/nasabah/CekMutasi-2";
 	}
 
 
