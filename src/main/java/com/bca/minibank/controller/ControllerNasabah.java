@@ -917,8 +917,7 @@ public class ControllerNasabah {
 	}
     
     @GetMapping("/nasabah/printMutasi")
-    public @ResponseBody void generateReport3(HttpServletResponse response, HttpServletRequest req) {
-    	
+    public @ResponseBody void generateReport3(HttpServletResponse response, HttpServletRequest req) {    	
     	try {
     		List mutasi = null;
     		InputStream jasperStream = this.getClass().getResourceAsStream("/report/data_mutasi.jrxml");

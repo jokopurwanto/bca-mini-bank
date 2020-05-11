@@ -82,7 +82,8 @@ nav a:hover {
 				<td th:text="${#dates.format(listTrans.tglTransaksi, 'dd-MM-yyyy HH:mm:ss')}"></td>
 				<td th:text="${listTrans.jnsTransaksi}"></td>
 				<td th:text="${listTrans.noRekTujuan}"></td>
-				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,3,'POINT',2,'COMMA')}"></td>
+				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,3,'POINT',2,'COMMA')}"  th:if="${listTrans.nominal != 0}"></td>
+				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,1,'POINT',2,'COMMA')}"  th:if="${listTrans.nominal == 0}"></td>
 				<td th:text="${listTrans.statusTransaksi}"></td>
 			</tr>
 		</tbody>

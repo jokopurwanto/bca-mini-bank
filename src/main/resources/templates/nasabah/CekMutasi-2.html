@@ -77,7 +77,7 @@
 					</div>
 				</div>
 				<div class="content data-mutasi">
-					<h3>Mutasi Rekening</h3>
+					
 					<table
 						style="background-color: #0925723b; width: 92%; color: black; margin-bottom: 8px;">
 						<tr>
@@ -105,11 +105,11 @@
 						style="width: 900px;">
 						<thead>
 							<tr>
-								<th>Tanggal Transaksi</th>
-								<th>Jenis Transaksi</th>
-								<th>Keterangan</th>
-								<th>Nominal</th>
-								<th>Saldo Akhir</th>
+								<th width= "20%">Tanggal Transaksi</th>
+								<th width= "20%">Jenis Transaksi</th>
+								<th width= "20%">Keterangan</th>
+								<th width= "20%">Nominal</th>
+								<th width= "20%">Saldo Akhir</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -164,6 +164,7 @@
             $('#mutasi').DataTable({
                 pageLength: 4,
                 lengthChange: false,
+                scrollY: '200px',
                 order: [
                     [0, "desc"]
                 ]

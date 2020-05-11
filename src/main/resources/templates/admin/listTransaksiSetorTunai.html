@@ -42,6 +42,7 @@ nav a:hover {
     <button  onclick="return confirm('yakin ingin keluar dari sistem?')"
 				type="submit" class="btn btn-danger navbar-btn btn-logout">
 				LOGOUT</button>
+ </form>
   </nav>
 <div class="content">
 	<p th:text="${msgBox}"></p>
@@ -70,7 +71,8 @@ nav a:hover {
 				<td th:text="${listTrans.tbRekening.noRek}"></td>
 				<td th:text="${listTrans.jnsTransaksi}"></td>
 				<td th:text="${listTrans.noRekTujuan}"></td>
-				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,3,'POINT',2,'COMMA')}"></td>
+				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,3,'POINT',2,'COMMA')}"  th:if="${listTrans.nominal != 0}"></td>
+				<td th:text="'Rp. '+${#numbers.formatDecimal(listTrans.nominal,1,'POINT',2,'COMMA')}"  th:if="${listTrans.nominal == 0}"></td>
 				<td th:text="${listTrans.statusTransaksi}"></td>
 				<form action="/admin/listtransaksi/setortunai/terima" method="post">
 				<td>
