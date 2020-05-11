@@ -149,10 +149,9 @@
 								</tr>
 								<tr>
 									<td><label for="pin-transaksi"> PIN Transaksi</label></td>
-									<td><input type="number"
-										style="-webkit-text-security: disc" th:field="*{pin}"
+									<td><input type="password" th:field="*{pin}"
 										class="form-control" id="pin-transaksi"
-										placeholder="masukkan PIN transaksi"> <span
+										placeholder="masukkan PIN transaksi" maxlength=6> <span
 										th:if="${#fields.hasErrors('pin')}" th:errors="*{pin}"
 										style="color: red"></span></td>
 								</tr>

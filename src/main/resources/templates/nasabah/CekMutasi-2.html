@@ -117,7 +117,7 @@
 								<td
 									th:text="${#dates.format(tab.tbTransaksi.tglTransaksi,'dd-MM-yyyy HH:mm:ss')}"></td>
 								<td th:text="${tab.jnsMutasi}"></td>
-								<td></td>
+								<td th:text="${tab.tbTransaksi.note}"></td>
 								<td
 									th:text="'Rp. '+${#numbers.formatDecimal(tab.tbTransaksi.nominal,3,'POINT',2,'COMMA')}"></td>
 								<td
