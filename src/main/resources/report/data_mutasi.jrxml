@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="users_data" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="566df131-c97b-4f1e-a034-4bfd65f611e5">
+	<parameter name="noRek" class="java.lang.String"/>
+	<parameter name="saldo" class="java.lang.Double"/>
+	<parameter name="periode" class="java.lang.String"/>
+	<parameter name="jenisTransaksi" class="java.lang.String"/>
+	<field name="tbTransaksi.note" class="java.lang.String"/>
+	<field name="jnsMutasi" class="java.lang.String"/>
+	<field name="tbTransaksi.nominal" class="java.lang.Integer"/>
+	<field name="saldoAkhir" class="java.lang.Double"/>
+	<field name="tbTransaksi.tglTransaksi" class="java.sql.Timestamp"/>
+	<field name="tbTransaksi.tbRekening.noRek" class="java.lang.String"/>
+	<field name="tbTransaksi.tbRekening.statusRek" class="java.lang.String"/>
+	<background>
+		<band height="63"/>
+	</background>
+	<title>
+		<band height="152">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="172" backcolor="#006699" uuid="bdd9a839-eb21-4725-802f-75171b814c3a"/>
+				<staticText>
+					<reportElement x="0" y="3" width="593" height="43" forecolor="#FFFFFF" uuid="e4e7e1c8-ef05-488d-970a-befc4e72d73b"/>
+					<textElement textAlignment="Center">
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[MUTASI REKENING]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="6" y="55" width="183" height="27" forecolor="#FFFFFF" uuid="464df8c6-c1c1-499e-bf7a-dbdcf640355a"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[No Rek			:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="6" y="82" width="174" height="27" forecolor="#FFFFFF" uuid="de0c32c7-1107-4519-a262-9398a76feb1c"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Periode 			:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="6" y="133" width="183" height="27" forecolor="#FFFFFF" uuid="3e14bdb8-8506-461c-83e6-a5088f6abdde"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Saldo 				:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="6" y="108" width="184" height="27" forecolor="#FFFFFF" uuid="150531d6-9c3b-4995-9175-32c0cf8fa46d"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Jenis Transaksi		:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="187" y="58" width="301" height="30" forecolor="#FFFFFF" uuid="ae7b0ae4-ec22-449d-a6fa-a6d12b466f3c"/>
+					<textElement>
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{noRek}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="186" y="85" width="321" height="30" forecolor="#FFFFFF" uuid="d30e8762-1cb4-4507-b066-931d601b672a"/>
+					<textElement>
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{periode}]]></textFieldExpression>
+				</textField>
+				<textField pattern="Rp #,##0.##;Rp -#,##0.##">
+					<reportElement x="187" y="137" width="252" height="30" forecolor="#FFFFFF" uuid="2e8699a8-915f-4849-962e-1f89981c6ba6"/>
+					<textElement>
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{saldo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="187" y="112" width="321" height="30" forecolor="#FFFFFF" uuid="e73b4f64-6c54-423b-80f4-a3f9aed459c6"/>
+					<textElement>
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{jenisTransaksi}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="27">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="96f6e602-1fa6-421a-9929-76b9f4f7ceba"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="99" y="0" width="111" height="20" forecolor="#006699" backcolor="rgba(230, 230, 230, 0.0)" uuid="27840ea5-062c-40d9-9fbf-99e854f66abf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d3aefea8-94f8-46d8-bbb0-346fbb3772e6"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jenis Mutasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="344" y="0" width="111" height="20" forecolor="#006699" backcolor="rgba(230, 230, 230, 0.0)" uuid="902b12fb-eb19-4ca0-8db3-9f4ee143ef1e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="05ffb0f0-c57a-4c9f-9743-38a30a5c6536"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nominal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="463" y="0" width="111" height="20" forecolor="#006699" backcolor="rgba(230, 230, 230, 0.0)" uuid="d521487f-95d0-4371-9462-d9f98ff4f1fe">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="42ecf468-4c04-451d-8eac-35d85eb65607"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Akhir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="219" y="0" width="111" height="20" forecolor="#006699" backcolor="rgba(230, 230, 230, 0.0)" uuid="b71b4e30-a82f-461b-97fc-da88fbbfb8b4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="05ffb0f0-c57a-4c9f-9743-38a30a5c6536"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-17" y="0" width="111" height="20" forecolor="#006699" backcolor="rgba(230, 230, 230, 0.0)" uuid="d201162a-bf64-4d66-bae1-e543624fd3b3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d3aefea8-94f8-46d8-bbb0-346fbb3772e6"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Transaksi]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-18" y="19" width="591" height="1" uuid="2108fd2a-f94f-4d3c-b261-f191722b892c"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="109" y="0" width="111" height="20" uuid="4f87eb8c-5154-493a-aa99-b47110dc95d8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d3aefea8-94f8-46d8-bbb0-346fbb3772e6"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jnsMutasi}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="Rp #,##0.##;Rp -#,##0.##">
+				<reportElement x="351" y="0" width="111" height="20" uuid="8a264feb-5e79-44a0-906c-59425be8723f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="05ffb0f0-c57a-4c9f-9743-38a30a5c6536"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tbTransaksi.nominal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="Rp #,##0.##;Rp -#,##0.##">
+				<reportElement x="478" y="0" width="111" height="20" uuid="82ca6cc4-d5f4-4e39-87c9-a3628783cf5a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="42ecf468-4c04-451d-8eac-35d85eb65607"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldoAkhir}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="221" y="0" width="111" height="20" uuid="8a264feb-5e79-44a0-906c-59425be8723f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="05ffb0f0-c57a-4c9f-9743-38a30a5c6536"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tbTransaksi.note}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy HH:MM">
+				<reportElement x="-1" y="1" width="111" height="20" uuid="ddee363a-46c2-43cf-947f-d6e449fc6fdd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d3aefea8-94f8-46d8-bbb0-346fbb3772e6"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tbTransaksi.tglTransaksi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="4990b25e-ca13-4eb3-ae85-3558536f98f6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="9884f344-a3d2-4016-ada4-5057220fbceb"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="9cc95321-1c21-4df3-aecc-6bc120ba7c10"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
