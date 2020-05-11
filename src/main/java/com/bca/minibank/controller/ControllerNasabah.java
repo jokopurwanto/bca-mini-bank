@@ -64,7 +64,6 @@ public class ControllerNasabah {
 	DaoTbUsers DaoTbUsers;
 
 	@Autowired
-
 	private DaoTbUsers daoTbUsers;
 
 	@Autowired
@@ -85,17 +84,7 @@ public class ControllerNasabah {
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Autowired
-	RepositoryTbUsers repositoryTbUsers;
-
-	@Autowired
-	RepositoryTbRekening repositoryTbRekening;
-
-	@Autowired
-	RepositoryTbTransaksi repositoryTbTransaksi;
-
 	ModelTransaksi modelTransaksi;
-
 
 	private static final String JNS_TRANSAKSI_TRANSFER = "TRANSFER";
 	private static final String STATUS_TRANSAKSI_SUCCESS = "SUCCESS";	
@@ -168,16 +157,15 @@ public class ControllerNasabah {
 		return "redirect:/registrasi";
 	}
 
-
-
 	//	============================================ BERANDA =========================================
 
 	@GetMapping("/beranda")
 	public String homePage(HttpServletRequest request, Model model) {
 		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		if(user.getStatusRek().equals("NOT ACTIVE"))
 		{
+			model.addAttribute("flagNotActive", true);
 			model.addAttribute("message1", "Status Rekening : Tidak Aktif");
 			model.addAttribute("message2", "Rekening anda tidak dapat mengakses fitur WestBank. Silahkan kontak admin untuk mengaktifkan rekening anda!");
 		}
@@ -241,13 +229,12 @@ public class ControllerNasabah {
 	public String Passwordpage(Model model, @Valid Password password , BindingResult rs, HttpServletRequest request) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
 		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		TbUsers tbUsers = this.repositoryTbUsers.getOne(user.getIdUser());
+		TbUsers tbUsers = daoTbUsers.getOne(user.getIdUser());
 		String msg = "";
 		if(!(rs.hasErrors()))
 		{
 			if((encoder.matches(password.getOldpassword(), tbUsers.getPassword()))) {
 				return "/nasabah/UbahPassword";
-
 			} else {
 				msg = "Password anda salah";
 				model.addAttribute("msg", msg);
@@ -262,16 +249,20 @@ public class ControllerNasabah {
 	public String updatePasswordpage(Model model, @Valid Password password , BindingResult rs, HttpServletRequest request) {
 		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		TbUsers tbUsers = this.repositoryTbUsers.getOne(user.getIdUser());
+		TbUsers tbUsers = daoTbUsers.getOne(user.getIdUser());
 		String msg = "";
 		if(!(rs.hasErrors()))
-		{
-			if(password.getNewpassword().equals(password.getConfirmpass())) {
-				tbUsers.setPassword(passwordEncoder.encode(password.getNewpassword()));
-				repositoryTbUsers.save(tbUsers);
-				msg = "Password berhasil diubah.";
-			} else {
-				msg="Konfirmasi password berbeda";
+		{ 
+			if(passwordEncoder.matches(password.getNewpassword(), tbUsers.getPassword())){
+				msg = "Password tidak boleh sama dengan password lama"; }
+			else {
+				if(password.getNewpassword().equals(password.getConfirmpass())) {
+					tbUsers.setPassword(passwordEncoder.encode(password.getNewpassword()));
+					daoTbUsers.updateData(tbUsers);
+					msg = "Password berhasil diubah.";
+				} else {
+					msg="Konfirmasi password berbeda";
+				}
 			}
 			model.addAttribute("msg", msg);
 			return "/nasabah/UbahPassword";
@@ -291,7 +282,7 @@ public class ControllerNasabah {
 	public String Pinpage(Model model, @Valid Pin pin , BindingResult rs, HttpServletRequest request) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
 		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		TbRekening tbRekening = this.repositoryTbRekening.getOne(user.getNoRek());
+		TbRekening tbRekening = daoTbRekening.getOne(user.getNoRek());
 		String msg = "";
 		if(!(rs.hasErrors()))
 		{
@@ -310,22 +301,25 @@ public class ControllerNasabah {
 	public String updatePinpage(Model model, @Valid Pin pin , BindingResult rs, HttpServletRequest request) {
 		MBUserPrincipal user = (MBUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		TbRekening tbRekening = this.repositoryTbRekening.getOne(user.getNoRek());
+		TbRekening tbRekening = daoTbRekening.getOne(user.getNoRek());
 		String msg = "";
 		if(!(rs.hasErrors()))
 		{
-			if(pin.getNewPin().equals(pin.getConfirmpin())) {
-				tbRekening.setPin(passwordEncoder.encode(pin.getNewPin()));
-				repositoryTbRekening.save(tbRekening);
-				msg = "Pin berhasil diubah.";
-			} else {
-				msg="Konfirmasi pin berbeda";
-			}
+			if(passwordEncoder.matches(pin.getNewPin(), tbRekening.getPin())){
+				msg = "Pin tidak boleh sama dengan pin lama"; } 
+			else {
+				if(pin.getNewPin().equals(pin.getConfirmpin())) {
+					tbRekening.setPin(passwordEncoder.encode(pin.getNewPin()));
+					daoTbRekening.updateData(tbRekening);
+					msg = "Pin berhasil diubah.";
+				} else {
+					msg="Konfirmasi pin berbeda";
+				}
+			}	
 			model.addAttribute("msg", msg);
 			return "/nasabah/UbahPin";
 		}
 		return "/nasabah/UbahPin";
-
 	}
 
 	//	============================================ SETOR TUNAI =========================================
@@ -343,8 +337,6 @@ public class ControllerNasabah {
 
 		return "/nasabah/setor";
 	}
-
-
 
 	@PostMapping("/nasabah/setor")
 	public String setor(Model model, @Valid FormTransaksi formTransaksi ,BindingResult rs) {
@@ -407,25 +399,35 @@ public class ControllerNasabah {
 	}
 
 	@GetMapping("/nasabah/setor/status")
-	public  String statusSetor(Model model){
-
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
-
-
-		TbTransaksi tbTransaksi = new TbTransaksi();
-
-		FormTransaksi formTransaksi = new FormTransaksi();
-		formTransaksi.setNoRek(tbUsers.getTbRekening().getNoRek());
-		tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
-		tbTransaksi.setJnsTransaksi("SETOR TUNAI");
-		model.addAttribute("status", getAllTransaksiSetor(tbTransaksi.getStatusTransaksi(),tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
-
-		return "/nasabah/SetorTunai-3";
-	}
-	
-	private List getAllTransaksiSetor(String statusTransaksi,String noRekTujuan, String jnsTransaksi) {
+	public  String statusSetor(Model model, HttpSession session, HttpServletRequest request){
 		
+		if((Boolean)session.getAttribute("pinTervalidasi") == null || (Boolean)session.getAttribute("pinTervalidasi") == false)
+		{
+			request.getSession().setAttribute("validateUrl", true);
+			request.getSession().setAttribute("url", "redirect:/nasabah/setor/status");
+			return "redirect:/nasabah/pin";
+		}
+		else
+		{
+			request.getSession().setAttribute("pinTervalidasi", false);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			TbUsers tbUsers = this.daoTbUsers.findByUsername(auth.getName());
+	
+			TbTransaksi tbTransaksi = new TbTransaksi();
+		
+			FormTransaksi formTransaksi = new FormTransaksi();
+			formTransaksi.setNoRek(tbUsers.getTbRekening().getNoRek());
+			tbTransaksi.setNoRekTujuan(formTransaksi.getNoRek());
+			tbTransaksi.setJnsTransaksi("SETOR TUNAI");
+
+			model.addAttribute("status", getAllTransaksiSetor(tbTransaksi.getStatusTransaksi(),tbTransaksi.getNoRekTujuan(),tbTransaksi.getJnsTransaksi()));
+			return "/nasabah/SetorTunai-3";
+		
+		}
+	}
+
+	private List getAllTransaksiSetor(String statusTransaksi,String noRekTujuan, String jnsTransaksi) {
+
 		List queryPending = this.daoTbTransaksi.findByNoRekTujuanANDJnsTransaksiANDStatusTransaksi( "PENDING",noRekTujuan, jnsTransaksi);
 		List querySuccess = this.daoTbTransaksi.findTop7ByStatusTransaksiAndNoRekTujuanAndJnsTransaksiOrderByTglTransaksi("SUCCESS", noRekTujuan, jnsTransaksi);
 		queryPending.addAll(querySuccess);
@@ -476,9 +478,6 @@ public class ControllerNasabah {
 			result.rejectValue("nominal", "error.formTransferPage", "Maaf, saldo tidak mencukupi, sisa saldo kamu "+ formatRp(cekSaldo.getSaldo()));
 			return "/nasabah/Transfer-1";
 		}
-
-
-
 		ModelSession modelSession = UtilsSession.getTransferInSession(req);
 		ModelTransferPage modelTransferPage = new ModelTransferPage(formTransferPage);
 		modelSession.setModelTransferPage(modelTransferPage);
@@ -671,7 +670,9 @@ public class ControllerNasabah {
 
 		return "/nasabah/Transfer-3";
 	}
+	
 	//	============================================ MUTASI =========================================
+	
 	@GetMapping("/nasabah/mutasi")
 	public String getMutasi(Model model, HttpSession session, HttpServletRequest req) {
 		if ((Boolean) session.getAttribute("pinTervalidasi") == null
@@ -911,7 +912,5 @@ public class ControllerNasabah {
 		model.addAttribute("tbUsers", tbUsers);
 		return "/nasabah/CekMutasi-2";
 	}
-
-
 }
 

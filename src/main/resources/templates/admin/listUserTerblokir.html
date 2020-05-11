@@ -61,9 +61,6 @@ nav a:hover {
 				<th>Email</th>
 				<th>Jen.Tab</th>
 				<th></th>
-				
-				
-
 			</tr>
 		</thead>
 		<tbody>
@@ -79,7 +76,7 @@ nav a:hover {
 				<form action="/admin/listusers/terblokir/unblock" method="post">
 				<td>
 					<input type="hidden" name="idUser" th:value="${users.idUser}">
-					<button onclick="return confirm('yakin buka block?')" type="submit" class="btn btn-secondary">Buka Block</button>
+					<button onclick="return confirm('Anda yakin ingin membuka block?')" type="submit" class="btn btn-secondary">Buka Block</button>
 				</td>
 				</form>
 			</tr>

@@ -79,16 +79,16 @@
 							<table height="10px">
 								<tr>
 									<td width="45%"><label for="pin-new">Pin Baru</label></td>
-									<td width="100%"><input th:field="*{newPin}" type="number"
+									<td width="100%"><input th:field="*{newPin}" type="password"
 										style="-webkit-text-security: disc" class="form-control"
-										onchange="validatePin2()" id="pin-new"
+										id="pin"
 										placeholder="masukkan pin baru"></td>
 								</tr>
 								<tr>
 									<td><label for="pin-new2"> Konfirmasi Pin Baru</label></td>
-									<td><input type="number" th:field="*{confirmpin}"
+									<td><input type="password" th:field="*{confirmpin}"
 										style="-webkit-text-security: disc" class="form-control"
-										onchange="checkPin2()" id="pin-new2"
+										id="conf-pin"
 										placeholder="konfirmasi pin baru"></td>
 								</tr>
 							</table>
@@ -127,5 +127,6 @@
 		crossorigin="anonymous"></script>
 	<script src="https://kit.fontawesome.com/5c4f979ba0.js"
 		crossorigin="anonymous"></script>
+	<script th:src="@{/js/bikinpinfilter.js}"></script>
 </body>
 </html>
