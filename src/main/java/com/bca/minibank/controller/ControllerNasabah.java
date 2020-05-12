@@ -919,11 +919,11 @@ public class ControllerNasabah {
         	
         	String jnsTansaksi = (String) req.getSession().getAttribute("jnsMutasi");
 //        	System.out.println(jnsTansaksi);
-        	if(jnsTansaksi.equalsIgnoreCase("SEMUA")) {
+        	if(jnsTansaksi.equalsIgnoreCase(JNS_SEMUA_MUTASI)) {
         		mutasi = genAllTransaksi((String) req.getSession().getAttribute("noRek"), (String) req.getSession().getAttribute("startDate"), (String) req.getSession().getAttribute("endDate")); 
-        	}else if(jnsTansaksi.equalsIgnoreCase("UANG MASUK")) {
+        	}else if(jnsTansaksi.equalsIgnoreCase(JNS_MUTASI_MASUK)) {
         		mutasi = this.daoTbMutasi.findByFilterTransaksiIn((String) req.getSession().getAttribute("noRek"), (String) req.getSession().getAttribute("startDate"), (String) req.getSession().getAttribute("endDate"));
-        	}else if(jnsTansaksi.equalsIgnoreCase("UANG KELUAR")) {
+        	}else if(jnsTansaksi.equalsIgnoreCase(JNS_MUTASI_KELUAR)) {
         		mutasi = this.daoTbMutasi.findByFilterTransaksiOut((String) req.getSession().getAttribute("noRek"), (String) req.getSession().getAttribute("startDate"), (String) req.getSession().getAttribute("endDate"));
         	} 
         	JRDataSource jrDataSource = new JRBeanCollectionDataSource(mutasi);
