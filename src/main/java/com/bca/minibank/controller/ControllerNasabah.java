@@ -738,12 +738,8 @@ public class ControllerNasabah {
 			return "/nasabah/CekMutasi-1";
 		}
 		
-		req.getSession().setAttribute("noRek", null);
-		req.getSession().setAttribute("saldo", null);
-		req.getSession().setAttribute("rangePeriode", null);
-		req.getSession().setAttribute("jnsMutasi", null);
-		req.getSession().setAttribute("startDate", null);
-		req.getSession().setAttribute("endDate", null);
+//		set null variabel session
+    	setNull(req);
 
 		//		validasi calender
 		int compareStartDate = new Date().compareTo(formMutasi.getStartDate());	
@@ -826,12 +822,8 @@ public class ControllerNasabah {
 			return "/nasabah/CekMutasi-1";
 		}
 		
-		req.getSession().setAttribute("noRek", null);
-		req.getSession().setAttribute("saldo", null);
-		req.getSession().setAttribute("rangePeriode", null);
-		req.getSession().setAttribute("jnsMutasi", null);
-		req.getSession().setAttribute("startDate", null);
-		req.getSession().setAttribute("endDate", null);
+//		set null variabel session
+    	setNull(req);
 		
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -944,7 +936,10 @@ public class ControllerNasabah {
         	response.setContentType("application/pdf");
         	response.setHeader("Content-Disposition", "inline; filename=\"Report.pdf\"");
         	
-        	final OutputStream outputStream = response.getOutputStream();   	
+        	final OutputStream outputStream = response.getOutputStream();  
+//        	set variabel session null
+        	setNull(req);
+        	
         	JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
 		} catch (JRException e) {
 			// TODO: handle exception
@@ -990,7 +985,7 @@ public class ControllerNasabah {
 
 	}
 
-	public String formatRp(double nominal) {
+	private String formatRp(double nominal) {
 		DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
 		DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
@@ -1002,13 +997,23 @@ public class ControllerNasabah {
 		return kursIndonesia.format(nominal);
 	}
 
-	public String genReturn(String startDate, String endDate, Model model, FormMutasi formMutasi, TbUsers tbUsers) {
+	private String genReturn(String startDate, String endDate, Model model, FormMutasi formMutasi, TbUsers tbUsers) {
 		String rangePeriode = startDate + " s.d " + endDate;
 		model.addAttribute("rangePeriode", rangePeriode);
 		model.addAttribute("jnsMutasi", formMutasi.getJnsMutasi());
 		model.addAttribute("tbUsers", tbUsers);
 		return "/nasabah/CekMutasi-2";
 		}
+	
+	private void setNull(HttpServletRequest req) {
+		req.getSession().setAttribute("noRek", null);
+		req.getSession().setAttribute("saldo", null);
+		req.getSession().setAttribute("rangePeriode", null);
+		req.getSession().setAttribute("jnsMutasi", null);
+		req.getSession().setAttribute("startDate", null);
+		req.getSession().setAttribute("endDate", null);
+	}
+	
 	}
 
 
