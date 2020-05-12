@@ -1,6 +1,12 @@
 package com.bca.minibank.controller;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -17,6 +23,7 @@ import com.bca.minibank.entity.TbJnsTab;
 import com.bca.minibank.entity.TbUserJnsTmp;
 import com.bca.minibank.entity.TbUsers;
 import com.bca.minibank.form.FormRegisterUser;
+import com.bca.minibank.model.ModelJenisTabungan;
 import com.bca.minibank.dao.DaoTbUsers;
 import com.bca.minibank.dao.DaoTbJnsTab;
 import com.bca.minibank.dao.DaoTbRekening;
@@ -82,6 +89,29 @@ public class HandleController {
 		return "/handle/registrasi";
 	}
 
+	@GetMapping("/registrasi/jenistabungan")
+	public String jenistabunganPage(Model model) {
+		List<TbJnsTab> AllTbJnsTab = DaoTbJnsTab.getAll();
+		List<ModelJenisTabungan> AllModelJenisTabungan = new ArrayList<ModelJenisTabungan>();
+		
+		DecimalFormat formatter = (DecimalFormat)NumberFormat.getCurrencyInstance(Locale.ROOT);
+		DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.ITALY);
+		symbol.setCurrencySymbol("Rp.");
+		formatter.setDecimalFormatSymbols(symbol);
+		
+		DecimalFormat InterestFormat = new DecimalFormat("#.##");
+		for(TbJnsTab TbJnsTab : AllTbJnsTab)
+		{
+			ModelJenisTabungan ModelJenisTabungan = new ModelJenisTabungan();
+			ModelJenisTabungan.setNamaJnsTab(TbJnsTab.getNamaJnsTab());
+			ModelJenisTabungan.setLimitTransaksi(formatter.format(TbJnsTab.getLimitTransaksi()));
+			ModelJenisTabungan.setBiayaAdmin(formatter.format(TbJnsTab.getBiayaAdmin()));
+			ModelJenisTabungan.setBunga(InterestFormat.format(TbJnsTab.getBunga()*100) + " %");
+			AllModelJenisTabungan.add(ModelJenisTabungan);
+		}
+		model.addAttribute("AllJnsTab", AllModelJenisTabungan);
+		return "/handle/registrasijenistabungan";
+	}
 	@PostMapping("/registrasi/konfirmasi")
 	public String registrasiPost(HttpServletRequest request, Model model, @Valid FormRegisterUser formRegisterUser, BindingResult bindingResult) 
 	{
